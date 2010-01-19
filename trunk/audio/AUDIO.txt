@@ -1,0 +1,104 @@
+contructor audBackground
+
+Description
+	This contructs a background source
+
+	audBackground(
+		int buffersize
+	);
+
+Parameters
+
+	buffersize	The size of the buffer queue, more buffers means more memory
+
+
+destructor ~audBackground
+
+Description
+	This cleans up the background class
+
+	~audBackground();
+
+audLoadDir
+
+Description
+	This loads the files from the directory
+
+	int audLoadDir(
+		string folder,
+		string type = ""
+	);
+
+Parameters
+
+	folder		The folder with the files to load
+	type		The type of file to load, "" loads all files in folder
+
+Returns
+
+	int		0 if successful, others if unsuccessful (error returns not determined)
+
+audChangeDir
+
+Description
+	This unloads the current directory and loads the files from the new directory
+
+	int audChangeDir{
+		string folder,
+		string type = ""
+	);
+
+Parameters
+
+	folder		The folder with the files to load
+	type		The type of file to load, "" loads all files in folder
+
+Returns
+
+	int		0 if successful, others if unsuccessful (error returns not determined)
+
+audCheck
+
+Description
+	This checks the status of the background audio
+
+	ALint audCheck();
+
+audUpdateQueue
+
+Description
+	This removes played files from the queue, loads the next files into the buffer, then adds it to the queue to keep the queue at the buffersize
+
+	int audUpdateQueue(
+		int play
+	);
+
+Parameters
+
+	play		decides if the queue will be restarted if it is stoped, 1 for yes and 0 for no
+
+Returns
+
+	int		0 if successful, others if unsuccessful (error returns not determined)
+
+audPlay
+
+Description
+	This starts playing the background audio
+
+	int audPlay();
+
+Returns
+
+	int		0 if successful, others if unsuccessful (error returns not determined)
+
+audStop
+
+Description
+	This stops playing the background audio
+
+	int audStop();
+
+Returns
+
+	int		0 if successful, others if unsuccessful (error returns not determined)
