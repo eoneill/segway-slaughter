@@ -9,27 +9,37 @@ audBackground::audBackground(int buffersize) {
 	alutGetError();				//Clear alut error status
 	alGetError();				//Clear al error status
 
-	alGenSources(1,&backgroundSource);	//Create background source
+	alutGetMIMETypes(ALUT_LOADER_BUFFER);
 
 	//Check for errors
-	ALenum error = alGetError();
+	ALenum error = alutGetError();
 
 	if (error == AL_INVALID_OPERATION) {
-		cout << "alut not initalized, initalizing alut to alutInit(NULL, NULL)\n";
-		cout << "\tplease initalize alut first by calling alutInit(int *argc, char **argv)" << endl;
+		cout << "alut not initalized before class, initalizing alut to alutInit(NULL, NULL)\n";
+		cout << "\tplease initalize alut first by calling alutInit(int *argc, char **argv) in main" << endl;
 		alutInit(NULL,NULL);
 		if ((error = alutGetError()) != ALUT_ERROR_NO_ERROR) {
 			cout << "alutInit error " << alutGetErrorString(error) << endl;
 			exit(0);
 		}
-		alGenSources(1,&backgroundSource);
-		error = alGetError();
 	}
+
+	alGenSources(1,&backgroundSource);	//Create background source
+
+	//Check for more errors
+	error = alGetError();
+
 	if (error != AL_NO_ERROR) {
 		cout << "audBackground::alGenSources :" << error << endl;
 		exit(0);
 	}
-	//Finished checking for errors
+
+	//Set background parameters
+	alSource3f(backgroundSource, AL_POSITION,        0.0, 0.0, 0.0);
+	alSource3f(backgroundSource, AL_VELOCITY,        0.0, 0.0, 0.0);
+	alSource3f(backgroundSource, AL_DIRECTION,       0.0, 0.0, 0.0);
+	alSourcef (backgroundSource, AL_ROLLOFF_FACTOR,  0.0          );
+	alSourcei (backgroundSource, AL_SOURCE_RELATIVE, AL_TRUE      );
 	
 	this->buffersize = buffersize;
 }
@@ -104,8 +114,9 @@ int audBackground::audLoadDir(string folder, string type) {
 		backgroundBuffer = alutCreateBufferFromFile ((folder + "/" + files[i]).c_str());
 		//Check for buffer errors
 		if ((error = alutGetError()) != ALUT_ERROR_NO_ERROR) {
-			cout << "Background create buffer error: " << alutGetErrorString(error) << endl;
-			return -1;
+			cout << "Background create buffer error: " << alutGetErrorString(error) << " Removing " << files[i] << " from files" << endl;
+			files.erase(files.begin()+i);	//Remove problem file from queue
+			i--;
 		}
 
 		alSourceQueueBuffers(backgroundSource,1,&backgroundBuffer);
@@ -213,4 +224,161 @@ int audBackground::audStop() {
 	return -1;
 }
 
+audSFX::audSFX() {
+	alutGetError();				//Clear alut error status
+	alGetError();				//Clear al error status
 
+	alutGetMIMETypes(ALUT_LOADER_BUFFER);
+
+	//Check for errors
+	ALenum error = alutGetError();
+
+	if (error == AL_INVALID_OPERATION) {
+		cout << "alut not initalized before class, initalizing alut to alutInit(NULL, NULL)\n";
+		cout << "\tplease initalize alut first by calling alutInit(int *argc, char **argv) in main" << endl;
+		alutInit(NULL,NULL);
+		if ((error = alutGetError()) != ALUT_ERROR_NO_ERROR) {
+			cout << "alutInit error " << alutGetErrorString(error) << endl;
+			exit(0);
+		}
+	}
+}
+
+audSFX::~audSFX() {
+	alSourceStopv(files.size(),sfxSource);	//Stop playback of sources
+
+	alDeleteSources(files.size(), sfxSource);	//Delete sources
+	alDeleteBuffers(files.size(), sfxBuffer);	//Delete buffers
+
+	delete [] sfxSource;
+	delete [] sfxBuffer;
+}
+
+int audSFX::audGetFilesOfType (string folder, string type) {	
+	int typelength = type.length() + 1;
+	
+	if (type != "") {
+		type = "." + type;
+	}
+
+	DIR *dir = opendir(folder.c_str());
+
+	if(dir == NULL) {
+		cout << "Error opening SFX directory" << endl;
+		return -1;
+	}
+
+	struct dirent *cfile;
+
+	//Sift through files types
+	while((cfile = readdir(dir)) != NULL) {
+		files.push_back(cfile->d_name);
+		int n = (files.back()).length();
+		if (n < typelength && type != "") {
+			files.pop_back();
+		}
+		else if (files.back() == ".." || files.back() == ".") {
+			files.pop_back();
+		}
+		else if ((files.back()).substr(n-typelength) != type && type != "") {
+				files.pop_back();
+		}
+	}
+
+	return 0;
+}
+
+int audSFX::audLoadDir(string folder, string type) {
+	if (audGetFilesOfType(folder,type) == -1) {
+		return -1;
+	}
+
+	if (files.empty()) {
+		cout << "No audio files in target for SFX" << endl;
+		return -1;
+	}
+
+	sort(files.begin(),files.end());	//Sort files
+
+	ALenum error;
+
+	alutGetError();		//Clear alut error status
+	alGetError();		//Clear al error status
+
+	sfxSource = new ALuint [files.size()];
+
+	alGenSources(files.size(),sfxSource);	//Create SFX sources
+
+	//Check for more errors
+	error = alGetError();
+
+	if (error != AL_NO_ERROR) {
+		cout << "audSFX::alGenSources :" << error << endl;
+		exit(0);
+	}
+
+	sfxBuffer = new ALuint [files.size()];
+
+	for(int i = 0; i < files.size(); i++) {
+
+		*(sfxBuffer + i) = alutCreateBufferFromFile ((folder + "/" + files[i]).c_str());
+		//Check for buffer errors
+		if ((error = alutGetError()) != ALUT_ERROR_NO_ERROR) {
+			cout << "SFX create buffer error: " << alutGetErrorString(error) << " Removing " << files[i] << " from files" << endl;
+			files.erase(files.begin()+i);	//Remove problem file from queue
+			i--;
+		}
+
+		alSourcei(*(sfxSource + i),AL_BUFFER,*(sfxBuffer + i));
+		//Check for source queue errors
+		if ((error = alGetError()) != AL_NO_ERROR) {
+			cout << "SFX buffer to source error: " << error << " Removing " << files[i] << " from files" << endl;
+			alDeleteBuffers(1,sfxBuffer + i);		//Delete problem buffer to save memeory
+			files.erase(files.begin()+i);	//Remove problem file from queue
+			i--;
+		}
+
+	}
+
+	if (files.empty()) {
+		cout << "Loading failed for all files" << endl;
+		return -1;
+	}
+}
+
+int audSFX::audChangeDir(string folder, string type) {
+	alSourceStopv(files.size(),sfxSource);	//Stop playback of sources
+
+	alDeleteSources(files.size(), sfxSource);	//Delete sources
+	alDeleteBuffers(files.size(), sfxBuffer);	//Delete buffers
+
+	delete[] sfxSource;	//Delete dynamic memory
+	delete[] sfxBuffer;
+
+	audLoadDir(folder,type);	//Load new dir
+}
+
+int audSFX::audPlay(int index) {
+	alSourcePlayv(1,sfxSource + index);
+
+	return 0;
+}
+
+int audSFX::audPlay(string file) {
+	bool found = false;
+	for (int i = 0; i < files.size() && !found; i++) {
+		if(files[i] == file) {
+			found = true;
+			alSourcePlayv(1,sfxSource + i);
+			return 0;
+		}
+	}
+
+	return -1;
+}
+
+int audSFX::audStop() {	
+	alSourceStopv(files.size(),sfxSource);	//Stop all sources
+	
+	return 0;
+}
