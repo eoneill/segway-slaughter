@@ -1,0 +1,50 @@
+Indentation
+===========
+Code is indented 2 spaces, no tabs.
+
+Line Length
+===========
+Should not exceed 80 characters
+
+Control Constructs
+===================
+
+if (condition) {
+}
+else {
+}
+
+for (init; condition; step) {
+}
+
+while (condition) {
+}
+
+Functions
+=========
+
+///////////////////////////////////////////////////////////////////////////////
+// Function: audPlay
+//
+// Description:
+//   Play the sound stored in this object.
+//
+// Returns:
+//   True if played, false otherwise.
+bool audPlay();
+
+Classes
+=======
+
+class OgreEngine {
+public:
+private:
+};
+
+
+Naming
+======
+Classes: CapitalizedWords
+Methods: camelCase
+Members: camelCase_
+Constants: UPPERCASE_UNDERSCORES

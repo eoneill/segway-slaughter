@@ -41,7 +41,7 @@ bool OgreEngineManager::Startup(const std::string& pluginFileName,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
+xo
 void OgreEngineManager::Shutdown() {
   mRoot->removeFrameListener(this);
   WindowEventUtilities::removeWindowEventListener(mWindow, this);
