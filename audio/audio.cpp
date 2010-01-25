@@ -18,10 +18,10 @@ audBackground::audBackground(int buffersize) {
 		cout << "alut not initalized before class, initalizing alut to alutInit(NULL, NULL)\n";
 		cout << "\tplease initalize alut first by calling alutInit(int *argc, char **argv) in main" << endl;
 		alutInit(NULL,NULL);
-		if ((error = alutGetError()) != ALUT_ERROR_NO_ERROR) {
-			cout << "alutInit error " << alutGetErrorString(error) << endl;
-			exit(0);
-		}
+	}
+	if ((error = alutGetError()) != ALUT_ERROR_NO_ERROR) {
+		cout << "alutInit error " << alutGetErrorString(error) << endl;
+		exit(0);
 	}
 
 	alGenSources(1,&backgroundSource);	//Create background source
@@ -45,6 +45,7 @@ audBackground::audBackground(int buffersize) {
 }
 
 audBackground::~audBackground() {
+	alSourcei (backgroundSource, AL_LOOPING,	 AL_FALSE      );
 	alSourceStop(backgroundSource);		//Stop playback
 
 	ALint qcount;				
@@ -117,6 +118,7 @@ int audBackground::audLoadDir(string folder, string type) {
 			cout << "Background create buffer error: " << alutGetErrorString(error) << " Removing " << files[i] << " from files" << endl;
 			files.erase(files.begin()+i);	//Remove problem file from queue
 			i--;
+			continue;
 		}
 
 		alSourceQueueBuffers(backgroundSource,1,&backgroundBuffer);
@@ -137,9 +139,14 @@ int audBackground::audLoadDir(string folder, string type) {
 		cout << "Queueing failed for all files" << endl;
 		return -1;
 	}
+	
+	if (files.size() == 1) {
+	     alSourcei (backgroundSource, AL_LOOPING, AL_TRUE);
+	}
 }
 
 int audBackground::audChangeDir(string folder, string type) {
+	alSourcei (backgroundSource, AL_LOOPING,	 AL_FALSE      );
 	alSourceStop(backgroundSource);	//Stop playback
 
 	ALint qcount;
@@ -159,7 +166,17 @@ int audBackground::audUpdateQueue(int play) {
 
 	alGetSourcei(backgroundSource, AL_BUFFERS_PROCESSED, &processed);
 
+	if(files.size() == 1) {
+		cout << "Only one file loaded, there is no queue to update" << endl;
+		return -1;
+	}
+
 	for(int i = processed; i > 0; i--) {
+	     if(files.empty()) {
+	          cout << "Something happend to the files loaded from the dir" << endl;
+	          return -1;
+	     }
+	     
 		if(files.size() <= currentFile) {
 			currentFile = 0;
 		}
@@ -167,16 +184,19 @@ int audBackground::audUpdateQueue(int play) {
 		ALuint buffer;
 
 		alSourceUnqueueBuffers(backgroundSource,1,&buffer);
+		alDeleteBuffers(1,&buffer);	//Remove old buffer
 
 		alutGetError();		//Clear alut errors
 		alGetError();		//Clear al errors
 
-		alDeleteBuffers(1,&buffer);	//Remove old buffer and load new one
+		// and load new one
 		buffer = alutCreateBufferFromFile ((currentFolder + "/" + files[currentFile]).c_str());
 		//Check for buffer errors
 		if ((error = alutGetError()) != ALUT_ERROR_NO_ERROR) {
 			cout << "Background create buffer error: " << alutGetErrorString(error) << endl;
-			return -1;
+			files.erase(files.begin()+currentFile);	//Remove problem file from queue
+			i++;
+		     continue;
 		}
 
 		alSourceQueueBuffers(backgroundSource,1,&buffer); //Queue new buffer
@@ -187,8 +207,9 @@ int audBackground::audUpdateQueue(int play) {
 			files.erase(files.begin()+currentFile);
 			i++;
 		}
-
-		currentFile++;
+          else {
+		     currentFile++;
+		}
 	}
 
 	if(audCheck() != AL_PLAYING && play) { //Start playing if stoped
@@ -237,10 +258,10 @@ audSFX::audSFX() {
 		cout << "alut not initalized before class, initalizing alut to alutInit(NULL, NULL)\n";
 		cout << "\tplease initalize alut first by calling alutInit(int *argc, char **argv) in main" << endl;
 		alutInit(NULL,NULL);
-		if ((error = alutGetError()) != ALUT_ERROR_NO_ERROR) {
-			cout << "alutInit error " << alutGetErrorString(error) << endl;
-			exit(0);
-		}
+	}
+	if ((error = alutGetError()) != ALUT_ERROR_NO_ERROR) {
+		cout << "alutInit error " << alutGetErrorString(error) << endl;
+		exit(0);
 	}
 }
 
@@ -327,6 +348,7 @@ int audSFX::audLoadDir(string folder, string type) {
 			cout << "SFX create buffer error: " << alutGetErrorString(error) << " Removing " << files[i] << " from files" << endl;
 			files.erase(files.begin()+i);	//Remove problem file from queue
 			i--;
+			continue;
 		}
 
 		alSourcei(*(sfxSource + i),AL_BUFFER,*(sfxBuffer + i));
