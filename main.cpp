@@ -1,5 +1,5 @@
 #include <Ogre.h>
-#include "actor.h"
+#include "Actor.h"
 #include "InputSystem.h"
 #include "Locator.h"
 
