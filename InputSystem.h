@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-01-29 14:48:08 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-01-29 15:40:39 by Eric Scrivner>
 //
 // Description:
 //   A simple wrapper class for the OIS input system
@@ -22,6 +22,12 @@ public:
   ~InputSystem();
 
   //////////////////////////////////////////////////////////////////////////////
+  // Function: isKeyDown
+  //
+  // Returns true if the given key is pressed, false otherwise
+  bool isKeyDown(OIS::KeyCode key);
+
+  //////////////////////////////////////////////////////////////////////////////
   // Function: addKeyListener
   //
   // Registers an descendant of OIS::KeyListener with the input system
@@ -39,6 +45,12 @@ public:
   // Captures input from all systems with registered listeners
   void update();
 private:
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: createKeyboard
+  //
+  // Creates a keyboard input system if one does not already exist
+  void createKeyboard();
+
   //////////////////////////////////////////////////////////////////////////////
   // Function: createInputManager
   //

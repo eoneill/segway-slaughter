@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-01-29 14:28:38 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-01-29 15:41:42 by Eric Scrivner>
 //
 // Description:
 //   A simple wrapper class for the OIS input system
@@ -32,10 +32,19 @@ InputSystem::~InputSystem() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+bool InputSystem::isKeyDown(OIS::KeyCode key) {
+  if (!keyboard_) {
+    createKeyboard();
+  }
+
+  return keyboard_->isKeyDown(key);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 void InputSystem::addKeyListener(OIS::KeyListener* listener) {
   if (!keyboard_) {
-    keyboard_ = static_cast<OIS::Keyboard*>(inputManager_->createInputObject(
-                                            OIS::OISKeyboard, true));
+    createKeyboard();
   }
     
   keyboard_->setEventCallback(listener);
@@ -62,6 +71,13 @@ void InputSystem::update() {
   if (mouse_) {
     mouse_->capture();
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void InputSystem::createKeyboard() {
+  keyboard_ = static_cast<OIS::Keyboard*>(inputManager_->createInputObject(
+                                            OIS::OISKeyboard, true));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
