@@ -1,7 +1,7 @@
 LIBS = OGRE OIS
 CXX = g++
 CXXFLAGS = -Wall -Werror $(shell pkg-config --cflags $(LIBS))
-OBJS = OgreEngineManager.o main.o
+OBJS = InputSystem.o Locator.o main.o
 LDFLAGS = $(shell pkg-config --libs $(LIBS))
 
 all: $(OBJS)
@@ -10,8 +10,11 @@ all: $(OBJS)
 main.o: main.cpp
 	$(CXX) $(CXXFLAGS) -c main.cpp
 
-OgreEngineManager.o: OgreEngineManager.h OgreEngineManager.cpp
-	$(CXX) $(CXXFLAGS) -c OgreEngineManager.cpp
+InputSystem.o: InputSystem.h InputSystem.cpp
+	$(CXX) $(CXXFLAGS) -c InputSystem.cpp
+
+Locator.o: Locator.h Locator.cpp
+	$(CXX) $(CXXFLAGS) -c Locator.cpp
 
 clean:
-	rm -rf SegwaySlaughter *~
+	rm -rf SegwaySlaughter *~ *.o
