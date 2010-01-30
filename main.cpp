@@ -41,10 +41,6 @@ public:
   }
 
   bool frameStarted(const FrameEvent& ev) {
-    return true;
-  }
-
-  bool keyPressed(const OIS::KeyEvent& arg) {
     SceneNode* node = root_->getSceneManager("Default SceneManager")->getSceneNode(player.sceneNode);
     Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
 		InputSystem* is = Locator::getInput();
@@ -62,8 +58,8 @@ public:
       player.position[2] += 1;
 
       if(player.facingRight == true){
-	node->yaw(Ogre::Degree(180));
-	player.facingRight = false;
+        node->yaw(Ogre::Degree(180));
+        player.facingRight = false;
       }
     } else if (is->isKeyDown(OIS::KC_RIGHT)) {     				
       mCamera->move(Vector3(0,0,-1));
@@ -72,11 +68,17 @@ public:
       player.position[2] -= 1;
 				
       if(player.facingRight != true){
-	node->yaw(Ogre::Degree(180));
-	player.facingRight = true;
+        node->yaw(Ogre::Degree(180));
+        player.facingRight = true;
       }
+    } else if (is->keyDown(OIS::KC_ESCAPE)) {
+      return false;
     }
-    
+
+    return true;
+  }
+
+  bool keyPressed(const OIS::KeyEvent& arg) {    
     return true;
   }
 
