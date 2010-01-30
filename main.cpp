@@ -71,7 +71,7 @@ public:
         node->yaw(Ogre::Degree(180));
         player.facingRight = true;
       }
-    } else if (is->keyDown(OIS::KC_ESCAPE)) {
+    } else if (is->isKeyDown(OIS::KC_ESCAPE)) {
       return false;
     }
 
