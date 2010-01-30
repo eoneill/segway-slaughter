@@ -1,8 +1,10 @@
 #include <Ogre.h>
 #include "Actor.h"
-#include "InputSystem.h"
+#include "Application.h"
 #include "Locator.h"
 
+#include <iostream>
+using namespace std;
 using namespace Ogre;
 
 class ExitListener : public FrameListener, public OIS::KeyListener {
@@ -110,8 +112,8 @@ public:
     // TEST PLANE
     Plane plane(Vector3::UNIT_Y, 0);
     MeshManager::getSingleton().createPlane("ground",
-					    ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
-					    150000,150000,20,20,true,1,5,5,Vector3::UNIT_Z);
+                                            ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
+                                            150000,150000,20,20,true,1,5,5,Vector3::UNIT_Z);
     Entity* ent = mSceneMgr->createEntity("GroundEntity", "ground");
     ent->setMaterialName("Examples/Rockwall");
     ent->setCastShadows(false);
@@ -149,103 +151,26 @@ private:
   Actor player;
 };
 
-class Application : public FrameListener {
+class SegwaySlaughter : public Application {
 public:
-  Application(const std::string& appName)
-    : root_(0),
-      inputSystem_(0)
-  {
-    createRoot();
-    defineResources();
-    setupRenderSystem();
-    createRenderWindow(appName);
-    initializeResourceGroups();
-    setupScene();
-    setupInputSystem();
-    createFrameListener();
-    startRenderLoop();
-  }
+  SegwaySlaughter()
+    : Application::Application("Segway Slaughter"),
+      sideScroller_(0)
+  { }
 
-  ~Application() {
-    delete inputSystem_;
-    delete frameListener_;
-    delete sideScroller_;
-    delete root_;
-  }
-
-  bool frameStarted(const FrameEvent& ev) {
-    inputSystem_->update();
-    return true;
-  }
-private:
-  void createRoot() {
-    root_ = new Root();
-  }
-
-  void setupRenderSystem() {
-    if (!root_->restoreConfig() && !root_->showConfigDialog()) {
-      throw Exception(52,
-                      "User cancelled config dialog!",
-                      "Application::setupRenderSystem()");
+  ~SegwaySlaughter() {
+    if (sideScroller_) {
+      delete sideScroller_;
     }
   }
 
-  void defineResources() {
-    String secName, typeName, archName;
-    ConfigFile cf;
-    cf.load("resources.cfg");
-
-    ConfigFile::SectionIterator seci = cf.getSectionIterator();
-    while (seci.hasMoreElements())
-      {
-	secName = seci.peekNextKey();
-	ConfigFile::SettingsMultiMap *settings = seci.getNext();
-	ConfigFile::SettingsMultiMap::iterator i;
-	for (i = settings->begin(); i != settings->end(); ++i)
-	  {
-	    typeName = i->first;
-	    archName = i->second;
-	    ResourceGroupManager::getSingleton().addResourceLocation(archName, typeName, secName);
-	  }
-      }
-  }
-
-  void createRenderWindow(const std::string& appName) {
-    root_->initialise(true, appName);
-  }
-
-  void initializeResourceGroups() {
-    TextureManager::getSingleton().setDefaultNumMipmaps(5);
-    ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-  }
-
-  void setupScene() {
-    root_->createSceneManager(ST_GENERIC, "Default SceneManager");
-  }
-
-  void setupInputSystem() {
-    inputSystem_ = new InputSystem(root_);
-    Locator::registerInput(inputSystem_);
-  }
-
-  void createFrameListener() {
-    frameListener_ = new ExitListener();
-
-    sideScroller_ = new SideScroller(root_);
+  void initialize() {
+    sideScroller_  = new SideScroller(root_);
     sideScroller_->initialize();
 
-    root_->addFrameListener(this);
-    root_->addFrameListener(frameListener_);
     root_->addFrameListener(sideScroller_);
   }
-
-  void startRenderLoop() {
-    root_->startRendering();
-  }
-
-  Ogre::Root*  root_;
-  InputSystem* inputSystem_;
-  ExitListener* frameListener_;
+private:
   SideScroller* sideScroller_;
 };
 
@@ -255,22 +180,23 @@ private:
 
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 #else
-int main(int argc, char **argv)
+  int main(int argc, char **argv)
 #endif
 {
-    try
-    {
-      Application app("Segway Slaughter");
-    }
-    catch(Exception& e)
-    {
+  try
+  {
+    SegwaySlaughter app;
+    app.go();
+  }
+  catch(Exception& e)
+  {
 #if OGRE_PLATFORM == PLATFORM_WIN32 || OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-        MessageBoxA(NULL, e.getFullDescription().c_str(), "An exception has occurred!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+    MessageBoxA(NULL, e.getFullDescription().c_str(), "An exception has occurred!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 #else
-        fprintf(stderr, "An exception has occurred: %s\n",
+    fprintf(stderr, "An exception has occurred: %s\n",
             e.getFullDescription().c_str());
 #endif
-    }
+  }
 
-    return 0;
+  return 0;
 }
