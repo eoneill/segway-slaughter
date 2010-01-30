@@ -48,10 +48,12 @@ public:
     if (is->isKeyDown(OIS::KC_UP)) {
       node->translate(Vector3(-1,0,0));
       player.position[0]--;
-    } else if (is->isKeyDown(OIS::KC_DOWN)) {
+    }
+    if (is->isKeyDown(OIS::KC_DOWN)) {
       node->translate(Vector3(1,0,0));
       player.position[0]++;
-    } else if (is->isKeyDown(OIS::KC_LEFT)) {
+    }
+    if (is->isKeyDown(OIS::KC_LEFT)) {
       mCamera->move(Vector3(0,0,1));
 				
       node->translate(Vector3(0,0,1));
@@ -61,7 +63,8 @@ public:
         node->yaw(Ogre::Degree(180));
         player.facingRight = false;
       }
-    } else if (is->isKeyDown(OIS::KC_RIGHT)) {     				
+    }
+    if (is->isKeyDown(OIS::KC_RIGHT)) {     				
       mCamera->move(Vector3(0,0,-1));
 
       node->translate(Vector3(0,0,-1));
@@ -71,7 +74,8 @@ public:
         node->yaw(Ogre::Degree(180));
         player.facingRight = true;
       }
-    } else if (is->isKeyDown(OIS::KC_ESCAPE)) {
+    }
+    if (is->isKeyDown(OIS::KC_ESCAPE)) {
       return false;
     }
 
