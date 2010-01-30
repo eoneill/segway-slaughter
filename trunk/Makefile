@@ -1,7 +1,7 @@
 LIBS = OGRE OIS
 CXX = g++
 CXXFLAGS = -Wall -Werror $(shell pkg-config --cflags $(LIBS))
-OBJS = InputSystem.o Locator.o main.o
+OBJS = InputSystem.o Locator.o Application.o main.o
 LDFLAGS = $(shell pkg-config --libs $(LIBS))
 
 all: $(OBJS)
@@ -15,6 +15,9 @@ InputSystem.o: InputSystem.h InputSystem.cpp
 
 Locator.o: Locator.h Locator.cpp
 	$(CXX) $(CXXFLAGS) -c Locator.cpp
+
+Application.o: Application.h Application.cpp
+	$(CXX) $(CXXFLAGS) -c Application.cpp
 
 clean:
 	rm -rf SegwaySlaughter *~ *.o
