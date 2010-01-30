@@ -4,24 +4,24 @@
 #include "gamestate.h"
 
 class menuState : public gameState {
-	public:
-		void Init();
-		void Clean();
+     public:
+          void Init();
+          void Clean();
 
-		void Suspend();
-		void Resume();
+          void Suspend();
+          void Resume();
 
-		void HandleEvent(Game* game);
-		void Update(Game* game);
-		void Draw(Game* game);
+          void HandleEvent(Game* game);
+          void Update(Game* game);
+          void Draw(Game* game);
 
-		static menuState* Instance() {
-			return &MenuStateInst;
-		}
+          static menuState* Instance() {
+               return &MenuStateInst;
+          }
 
-	protected:
-		menuState() {}
-	
-	private:
-		static MenuStateInst;
+     protected:
+          menuState() {}
+     
+     private:
+          static MenuStateInst;
 };

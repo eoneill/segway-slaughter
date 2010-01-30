@@ -8,27 +8,27 @@ using namespace std;
 class gameState;
 
 class Game {
-	public:
-		Game();
+     public:
+          Game();
 
-		void Init();
-		void ChangeState(gameState* state);
-		void PushState(gameState* state);
-		void PopState();
+          void Init();
+          void ChangeState(gameState* state);
+          void PushState(gameState* state);
+          void PopState();
 
-		void HandleEvents();
+          void HandleEvents();
 
-		void Update();
+          void Update();
 
-		void Draw();
+          void Draw();
 
-		void Clean();
+          void Clean();
 
-		bool Running() { return isRunning; }
-		void Quit() { isRunning = false; }
+          bool Running() { return isRunning; }
+          void Quit() { isRunning = false; }
 
-	private:
-		vector<gameState*> states;
-		bool isRunning;
+     private:
+          vector<gameState*> states;
+          bool isRunning;
 };
 #endif
