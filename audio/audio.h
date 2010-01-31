@@ -1,12 +1,25 @@
-#ifndef AUDIO
-#define AUDIO
+////////////////////////////////////////////////////////////////////////////////
+// Segway Slaughter
+//
+// Time-stamp: <Last modified 2010-01-30 17:10:17 by Eric Scrivner>
+//
+// Description:
+//   OpenAL audio interfaces
+////////////////////////////////////////////////////////////////////////////////
+#ifndef AUDIO_H_
+#define AUDIO_H_
 
+// OpenAL includes
 #include <AL/alut.h>
+
+// C++ includes
 #include <vector>
 #include <iostream>
 
-using namespace std;
-
+////////////////////////////////////////////////////////////////////////////////
+// Class: audBackground
+//
+// Handles the loading and playing of background music
 class audBackground {
      private:
           ALuint backgroundSource;
@@ -26,6 +39,10 @@ class audBackground {
           int audStop();
 };
 
+////////////////////////////////////////////////////////////////////////////////
+// Class: audSFX
+//
+// Handles the loading and playing of sound effects
 class audSFX {
      private:
           ALuint *sfxSource;
