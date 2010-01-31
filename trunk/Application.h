@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-01-30 16:45:41 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-01-30 17:28:55 by Eric Scrivner>
 //
 // Description:
 //   Base class for all Ogre applications.
@@ -45,7 +45,7 @@ public:
   //
   // This method should only return false if an application quit has been
   // triggered, otherwise it should return true.
-  bool frameStarted(const Ogre::FrameEvent& ev);
+  virtual bool frameStarted(const Ogre::FrameEvent& ev);
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: update

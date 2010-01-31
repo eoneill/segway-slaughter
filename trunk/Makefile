@@ -1,4 +1,4 @@
-LIBS = OGRE OIS
+LIBS = OGRE OIS freealut openal
 CXX = g++
 CXXFLAGS = -Wall -Werror $(shell pkg-config --cflags $(LIBS))
 OBJS = InputSystem.o Locator.o Application.o main.o
