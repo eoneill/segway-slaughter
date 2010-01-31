@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-01-29 17:09:34 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-01-30 16:44:47 by Eric Scrivner>
 //
 // Description:
 //   Base class for all Ogre applications.
@@ -37,7 +37,13 @@ Application::~Application() {
 
 bool Application::frameStarted(const Ogre::FrameEvent& ev) {
   inputSystem_->update();
-  return true;
+  return this->update();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+bool Application::update() {
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

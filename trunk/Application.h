@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-01-29 17:08:45 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-01-30 16:45:41 by Eric Scrivner>
 //
 // Description:
 //   Base class for all Ogre applications.
@@ -34,9 +34,9 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   // Function: frameStarted
   //
-  // Updates necessary systems each frame, classes which override this method
-  // should have something like the following at the start of their own
-  // frameStarted method:
+  // Updates necessary systems each frame. This method should not normally be
+  // overriden, and classes  which override this method should have something
+  // like the following at the start of their own frameStarted method:
   //
   // bool DerivedClass:frameStarted(const FrameEvent& ev) {
   //   Application::frameStarted(ev);
@@ -45,7 +45,16 @@ public:
   //
   // This method should only return false if an application quit has been
   // triggered, otherwise it should return true.
-  virtual bool frameStarted(const Ogre::FrameEvent& ev);
+  bool frameStarted(const Ogre::FrameEvent& ev);
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: update
+  //
+  // Called before every frame, this is where your application can perform
+  // any pre-frame tasks.
+  //
+  // Returns true if the application should continue running, false otherwise.
+  virtual bool update();
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: initialize

@@ -34,18 +34,16 @@ private:
   bool isRunning;
 };
 
-class SideScroller : public FrameListener, public OIS::KeyListener {
+class SideScroller : public FrameListener {
 public:
   SideScroller(Root* root)
     : root_(root)
-  {
-    Locator::getInput()->addKeyListener(this);
-  }
+  { }
 
   bool frameStarted(const FrameEvent& ev) {
     SceneNode* node = root_->getSceneManager("Default SceneManager")->getSceneNode(player.sceneNode);
     Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
-		InputSystem* is = Locator::getInput();
+    InputSystem* is = Locator::getInput();
 		
     if (is->isKeyDown(OIS::KC_UP)) {
       node->translate(Vector3(-1,0,0));
@@ -62,8 +60,8 @@ public:
       player.position[2] += 1;
 
       if(player.facingRight == true){
-        node->yaw(Ogre::Degree(180));
-        player.facingRight = false;
+				node->yaw(Ogre::Degree(180));
+				player.facingRight = false;
       }
     }
     if (is->isKeyDown(OIS::KC_RIGHT)) {     				
@@ -73,7 +71,7 @@ public:
       player.position[2] -= 1;
 				
       if(player.facingRight != true){
-        node->yaw(Ogre::Degree(180));
+				node->yaw(Ogre::Degree(180));
         player.facingRight = true;
       }
     }
@@ -84,17 +82,10 @@ public:
     return true;
   }
 
-  bool keyPressed(const OIS::KeyEvent& arg) {    
-    return true;
-  }
-
-  bool keyReleased(const OIS::KeyEvent& arg) {
-    return true;
-  }
-
   void initialize() {
     SceneManager* mSceneMgr = root_->getSceneManager("Default SceneManager");
     assert(mSceneMgr != 0);
+
     mSceneMgr->setAmbientLight(ColourValue(0.5f, 0.5f, 0.5f));
     mSceneMgr->setShadowTechnique(SHADOWTYPE_STENCIL_MODULATIVE);
 
@@ -107,7 +98,6 @@ public:
     //Camera *mCamera = mRoot->getSceneManager("Default SceneManager")->getCamera("MyCamera");
     mCamera->setPosition(2000,1000,0);
     mCamera->setDirection(-1,-.3,0);
-
 
     // TEST PLANE
     Plane plane(Vector3::UNIT_Y, 0);
