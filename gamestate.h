@@ -1,24 +1,28 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
-#include "game.h"
+#include "Application.h"
+#include "SegwaySlaughter.h"
+
+using namespace std;
+using namespace Ogre;
 
 class gameState {
      public:
-          virtual void Init() = 0;
-          virtual void Clean() = 0;
+          virtual void initialize(Root* root) = 0;
+//          virtual void clean() = 0;
 
-          virtual void Suspend() = 0;
-          virtual void Resume() = 0;
+//          virtual void suspend() = 0;
+//          virtual void resume() = 0;
 
-          virtual void HandleEvent(Game* game) = 0;
-          virtual void Update(Game* game) = 0;
-          virtual void Draw(Game* game) = 0;
+//          virtual void handleEvent(Game* game) = 0;
+//          virtual void update(Game* game) = 0;
+//          virtual void draw(Game* game) = 0;
 
-          void ChangeState(Game* game, gameState* state) {
-               game ->ChangeState(state);
-          }
-     private:
+//          void changeState(SegwaySlaughter* game, gameState* state) {
+//               game->changeState(state);
+//          }
+     protected:
           gameState() {}
 };
 
