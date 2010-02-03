@@ -9,7 +9,7 @@
 #ifndef INPUT_SYSTEM_H_
 #define INPUT_SYSTEM_H_
 
-#include <Ogre.h>
+#include <OGRE/Ogre.h>
 #include <OIS/OIS.h>
 
 ////////////////////////////////////////////////////////////////////////////////

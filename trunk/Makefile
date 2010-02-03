@@ -1,7 +1,7 @@
-LIBS = OGRE OIS freealut openal
+LIBS = OGRE OIS openal #freealut
 CXX = g++
 CXXFLAGS = -Wall -Werror $(shell pkg-config --cflags $(LIBS))
-OBJS = InputSystem.o Locator.o Application.o main.o
+OBJS = InputSystem.o Locator.o Application.o main.o SegwaySlaughter.o SideScroller.o
 LDFLAGS = $(shell pkg-config --libs $(LIBS))
 
 all: $(OBJS)
@@ -19,5 +19,13 @@ Locator.o: Locator.h Locator.cpp
 Application.o: Application.h Application.cpp
 	$(CXX) $(CXXFLAGS) -c Application.cpp
 
+SegwaySlaughter.o: SegwaySlaughter.h SegwaySlaughter.cpp
+	$(CXX) $(CXXFLAGS) -c SegwaySlaughter.cpp
+
+SideScroller.o: SideScroller.h SideScroller.cpp
+	$(CXX) $(CXXFLAGS) -c SideScroller.cpp
+
 clean:
 	rm -rf SegwaySlaughter *~ *.o
+	
+remake: clean all
