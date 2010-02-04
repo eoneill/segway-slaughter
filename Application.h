@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-01-30 17:28:55 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-04 01:05:36 by Eric Scrivner>
 //
 // Description:
 //   Base class for all Ogre applications.
@@ -17,11 +17,6 @@
 
 // Other includes
 #include "InputSystem.h"
-#include "gamestate.h"
-
-using namespace std;
-
-class gameState;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class: Application
@@ -59,40 +54,13 @@ public:
   // any pre-frame tasks.
   //
   // Returns true if the application should continue running, false otherwise.
-  bool update();
-
-  //////////////////////////////////////////////////////////////////////////////
-  // Function: initialize  -  Depreciated (Done by constructor)
-  //
-  // This method is called after Ogre is completely initialized and before the
-  // game starts. This is where you should perform any application specific
-  // initialization tasks.
-  //
-  //  virtual void initialize() = 0;
+  virtual bool update();
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: go
   //
   // Runs the application
   void go();
-
-  ///////////////////////////////////////////////////////////////////////////////
-  // Function: changeState
-  //
-  // Destroys the current state (if any) and starts the new state passed to it
-  void changeState(gameState* state);
-
-  //////////////////////////////////////////////////////////////////////////////
-  //  Function: pushState
-  //
-  //  Suspends the current state (if any) and starts the new state passed to it
-  void pushState(gameState* state);
-
-  ///////////////////////////////////////////////////////////////////////////////
-  //  Function: popState
-  //
-  //  Destroys the current state and resumes the previously suspended state
-  void popState();
 protected:
   void setupRenderSystem();
 
@@ -112,7 +80,6 @@ protected:
 
   Ogre::Root*  root_; // The ogre application root object
   InputSystem* inputSystem_; // The input system for the application
-  vector<gameState*> states_;  //States for the application
 };
 
 #endif // APPLICATION_H_
