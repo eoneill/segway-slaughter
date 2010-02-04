@@ -2,7 +2,7 @@
 
 SideScroller SideScroller::SideScroller_;
 
-bool SideScroller::frameStarted(const FrameEvent& ev) {
+bool SideScroller::update() {
   SceneNode* node = root_->getSceneManager("Default SceneManager")->getSceneNode(player.sceneNode);
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
   InputSystem* is = Locator::getInput();
@@ -46,7 +46,6 @@ bool SideScroller::frameStarted(const FrameEvent& ev) {
 
 void SideScroller::initialize(Root* root) {
   root_ = root;
-
   SceneManager* mSceneMgr = root_->getSceneManager("Default SceneManager");
   assert(mSceneMgr != 0);
 
@@ -99,6 +98,10 @@ void SideScroller::initialize(Root* root) {
   //SKYBOX
   mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox", 5000, false);
   //////////////************
-  
-  root_ -> addFrameListener(SideScroller::instance());
 }
+
+void SideScroller::suspend() {}
+
+void SideScroller::resume() {}
+
+void SideScroller::clean() {}

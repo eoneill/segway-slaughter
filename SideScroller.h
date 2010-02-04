@@ -3,28 +3,23 @@
 
 #include "Actor.h"
 #include "gamestate.h"
-#include "SegwaySlaughter.h"
-#include "Application.h"
+//#include "Application.h"
 #include "Locator.h"
 
 using namespace std;
 using namespace Ogre;
 
-class SideScroller : public FrameListener, public gameState {
+class SideScroller : public gameState {
 public:
-//  SideScroller(Root* root)
-//    : root_(root)
-//  { }
-
-  bool frameStarted(const FrameEvent& ev);
+  bool update();
 
   void initialize(Root* root);
-//  void clean();
+  void clean();
 
-//  void suspend();
-//  void resume();
-//
+  void suspend();
+  void resume();
 
+  //  Singlton instance
   static SideScroller* instance() {
     return &SideScroller_;
   }
