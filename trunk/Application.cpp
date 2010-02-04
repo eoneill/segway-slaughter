@@ -29,6 +29,10 @@ Application::Application(const std::string& appName)
 ////////////////////////////////////////////////////////////////////////////////
 
 Application::~Application() {
+  while(!states_.empty()) {
+    states_.back()->clean();
+    states_.pop_back();
+  }
   delete inputSystem_;
   delete root_;
 }
@@ -37,20 +41,55 @@ Application::~Application() {
 
 bool Application::frameStarted(const Ogre::FrameEvent& ev) {
   inputSystem_->update();
-  return this->update();
+  return states_.back()->update();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 bool Application::update() {
-	return true;
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void Application::go() {
-  initialize();
   startRenderLoop();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Application::changeState(gameState* state) {
+  if(!states_.empty()) {
+    states_.back()->clean();
+    states_.pop_back();
+  }
+  
+  states_.push_back(state);
+  states_.back()->initialize(root_);
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+
+void Application::pushState(gameState* state) {
+  if(!states_.empty()) {
+    states_.back()->suspend();
+  }
+
+  states_.push_back(state);
+  states_.back()->initialize(root_);
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+
+void Application::popState() {
+  if(!states_.empty()) {
+    states_.back()->clean();
+    states_.pop_back();
+  }
+
+  if(!states_.empty()) {
+    states_.back()->resume();
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

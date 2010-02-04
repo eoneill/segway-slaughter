@@ -2,7 +2,6 @@
 #include "Actor.h"
 #include "Application.h"
 #include "Locator.h"
-#include "SegwaySlaughter.h"
 #include "SideScroller.h"
 
 #include <iostream>
@@ -47,7 +46,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 {
   try
   {
-    SegwaySlaughter app;
+    Application app("Segway Slaughter");
     app.changeState(SideScroller::instance());
     app.go();
   }

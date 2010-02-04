@@ -17,6 +17,11 @@
 
 // Other includes
 #include "InputSystem.h"
+#include "gamestate.h"
+
+using namespace std;
+
+class gameState;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class: Application
@@ -29,7 +34,7 @@ public:
   //
   // Initializes the application making the title on the window the appName.
   Application(const std::string& appName);
-  virtual ~Application();
+  ~Application();
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: frameStarted
@@ -45,7 +50,7 @@ public:
   //
   // This method should only return false if an application quit has been
   // triggered, otherwise it should return true.
-  virtual bool frameStarted(const Ogre::FrameEvent& ev);
+  bool frameStarted(const Ogre::FrameEvent& ev);
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: update
@@ -54,21 +59,40 @@ public:
   // any pre-frame tasks.
   //
   // Returns true if the application should continue running, false otherwise.
-  virtual bool update();
+  bool update();
 
   //////////////////////////////////////////////////////////////////////////////
-  // Function: initialize
+  // Function: initialize  -  Depreciated (Done by constructor)
   //
   // This method is called after Ogre is completely initialized and before the
   // game starts. This is where you should perform any application specific
   // initialization tasks.
-  virtual void initialize() = 0;
+  //
+  //  virtual void initialize() = 0;
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: go
   //
   // Runs the application
   void go();
+
+  ///////////////////////////////////////////////////////////////////////////////
+  // Function: changeState
+  //
+  // Destroys the current state (if any) and starts the new state passed to it
+  void changeState(gameState* state);
+
+  //////////////////////////////////////////////////////////////////////////////
+  //  Function: pushState
+  //
+  //  Suspends the current state (if any) and starts the new state passed to it
+  void pushState(gameState* state);
+
+  ///////////////////////////////////////////////////////////////////////////////
+  //  Function: popState
+  //
+  //  Destroys the current state and resumes the previously suspended state
+  void popState();
 protected:
   void setupRenderSystem();
 
@@ -88,6 +112,7 @@ protected:
 
   Ogre::Root*  root_; // The ogre application root object
   InputSystem* inputSystem_; // The input system for the application
+  vector<gameState*> states_;  //States for the application
 };
 
 #endif // APPLICATION_H_
