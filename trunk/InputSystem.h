@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-01-29 15:40:39 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-01-30 22:43:41 by Eric Scrivner>
 //
 // Description:
 //   A simple wrapper class for the OIS input system
@@ -16,7 +16,7 @@
 // Class: InputSystem
 //
 // Wrapper for the OIS input system
-class InputSystem {
+class InputSystem : public OIS::KeyListener, public OIS::MouseListener {
 public:
   InputSystem(Ogre::Root* root);
   ~InputSystem();
@@ -34,10 +34,22 @@ public:
   void addKeyListener(OIS::KeyListener* listener);
 
   //////////////////////////////////////////////////////////////////////////////
+  // Function: removeKeyListener
+  //
+  // Removes the indicated object as a keyboard listener
+  void removeKeyListener(OIS::KeyListener* listener);
+
+  //////////////////////////////////////////////////////////////////////////////
   // Function: addMouseListener
   //
   // Registers a descendant of OIS::MouseListener with the input system
   void addMouseListener(OIS::MouseListener* listener);
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: removeMouseListener
+  //
+  // Removes the indicated object as a mouse listener
+  void removeMouseListener(OIS::MouseListener* listener);
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: update
@@ -49,7 +61,13 @@ private:
   // Function: createKeyboard
   //
   // Creates a keyboard input system if one does not already exist
-  void createKeyboard();
+  OIS::Keyboard* createKeyboard();
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: createMouse
+  //
+  // Creates a mouse input system if one does not already exist
+  OIS::Mouse* createMouse();
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: createInputManager
@@ -57,9 +75,22 @@ private:
   // Creates a new OIS input manager given an instance of an Ogre::Root object
   OIS::InputManager* createInputManager(Ogre::Root* root);
 
-  OIS::InputManager* inputManager_; // The input system
-  OIS::Keyboard*     keyboard_; // The keyboard input system
-  OIS::Mouse*        mouse_; // The mouse input system
+  //////////////////////////////////////////////////////////////////////////////
+  // OIS::KeyListener overloads
+  bool keyPressed(const OIS::KeyEvent& event);
+  bool keyReleased(const OIS::KeyEvent& event);
+
+  //////////////////////////////////////////////////////////////////////////////
+  // OIS::MouseListener overloads
+  bool mouseMoved(const OIS::MouseEvent& event);
+  bool mousePressed(const OIS::MouseEvent& event, OIS::MouseButtonID id);
+  bool mouseReleased(const OIS::MouseEvent& event, OIS::MouseButtonID id);
+
+  OIS::InputManager*               inputManager_; // The input system
+  OIS::Keyboard*                   keyboard_; // The keyboard input system
+  OIS::Mouse*                      mouse_; // The mouse input system
+  std::vector<OIS::KeyListener*>   keyListeners_; // All key listeners
+  std::vector<OIS::MouseListener*> mouseListeners_; // All mouse listeners
 };
 
 #endif // INPUT_SYSTEM_H_
