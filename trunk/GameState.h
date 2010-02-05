@@ -8,6 +8,7 @@ using namespace Ogre;
 
 class GameState {
   public:
+    virtual ~GameState() {}
 
     /////////////////
     //
