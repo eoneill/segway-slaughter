@@ -1,40 +1,54 @@
-////////////////////////////////////////////////////////////////////////////////
-// Segway Slaughter
-//
-// Time-stamp: <Last modified 2010-02-04 00:51:17 by Eric Scrivner>
-//
-// Description:
-//   Game state class interface
-////////////////////////////////////////////////////////////////////////////////
-#ifndef GAMESTATE_H_
-#define GAMESTATE_H_
+#ifndef GAMESTATE_H
+#define GAMESTATE_H
 
-// Ogre includes
-#include <Ogre.h>
-
-// Other includes
 #include "Application.h"
 
-////////////////////////////////////////////////////////////////////////////////
-// Class: GameState
-//
-// Represents a state of the game and handles transitions to other states
+using namespace std;
+using namespace Ogre;
+
 class GameState {
-public:
-  GameState(Ogre::Root* root) 
-  { }
+  public:
 
-  virtual ~GameState()
-  { }
+    /////////////////
+    //
+    //  Use the initalize function to initialize what the
+    //  new state needs (Like cameras and players)
+    //
+    virtual void initialize(Root* root) = 0;
 
-  //////////////////////////////////////////////////////////////////////////////
-  // Function: update
-  //
-  // Updates the current game state and returns the next state to go to.
-  //
-  // Returns NULL if the game should remain in the current state or a valid
-  // pointer to the next state if the game should transition states.
-  virtual GameState* update() = 0;
+    ///////////////
+    //
+    //  Use the clean function to clean out what was initalized
+    //  from the initialize function
+    //
+    virtual void clean() = 0;
+
+    //////////////
+    //
+    //  Use the suspend function to specify what to do when this
+    //  states gets suspended
+    //
+    virtual void suspend() = 0;
+
+    //////////////
+    //
+    //  Opposite of suspend
+    //
+    virtual void resume() = 0;
+
+    //////////////
+    //
+    //  This gets called when ogre calls frameStarted
+    //
+    virtual bool update() = 0;
+
+//          Not quite yet
+//
+//          void changeState(Application* app, gameState* state) {
+//               app->changeState(state);
+//          }
+     protected:
+          GameState() {}
 };
 
-#endif // GAME_STATE_H_
+#endif

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-02-04 00:20:49 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-01-30 16:44:47 by Eric Scrivner>
 //
 // Description:
 //   Base class for all Ogre applications.
@@ -9,6 +9,9 @@
 #include "Application.h"
 #include "InputSystem.h"
 #include "Locator.h"
+
+#include <iostream>
+using namespace std;
 
 Application::Application(const std::string& appName)
   : root_(new Ogre::Root()),
@@ -26,6 +29,10 @@ Application::Application(const std::string& appName)
 ////////////////////////////////////////////////////////////////////////////////
 
 Application::~Application() {
+  while(!states_.empty()) {
+    states_.back()->clean();
+    states_.pop_back();
+  }
   delete inputSystem_;
   delete root_;
 }
@@ -33,8 +40,11 @@ Application::~Application() {
 ////////////////////////////////////////////////////////////////////////////////
 
 bool Application::frameStarted(const Ogre::FrameEvent& ev) {
+  if(states_.empty()) {
+    return false;
+  }
   inputSystem_->update();
-  return this->update();
+  return states_.back()->update();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,6 +57,42 @@ bool Application::update() {
 
 void Application::go() {
   startRenderLoop();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Application::changeState(GameState* state) {
+  if(!states_.empty()) {
+    states_.back()->clean();
+    states_.pop_back();
+  }
+  
+  states_.push_back(state);
+  states_.back()->initialize(root_);
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+
+void Application::pushState(GameState* state) {
+  if(!states_.empty()) {
+    states_.back()->suspend();
+  }
+
+  states_.push_back(state);
+  states_.back()->initialize(root_);
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+
+void Application::popState() {
+  if(!states_.empty()) {
+    states_.back()->clean();
+    states_.pop_back();
+  }
+
+  if(!states_.empty()) {
+    states_.back()->resume();
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
