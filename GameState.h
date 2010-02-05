@@ -40,13 +40,11 @@ class GameState {
     //
     //  This gets called when ogre calls frameStarted
     //
-    virtual bool update() = 0;
+    virtual bool update(Application* app) = 0;
 
-//          Not quite yet
-//
-//          void changeState(Application* app, gameState* state) {
-//               app->changeState(state);
-//          }
+    void changeState(Application* app, GameState* state) {
+      app->changeState(state);
+    }
      protected:
           GameState() {}
 };

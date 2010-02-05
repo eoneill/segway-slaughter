@@ -1,5 +1,5 @@
-#ifndef SIDESCROLLER_H
-#define SIDESCROLLER_H
+#ifndef CASINOLEVEL_H
+#define CASINOLEVEL_H
 
 #include "Actor.h"
 #include "Player.h"
@@ -12,7 +12,7 @@ using namespace Ogre;
 
 extern const int LEVEL_WIDTH;
 
-class SideScroller : public GameState {
+class CasinoLevel : public GameState {
 public:
   bool update(Application* app);
 
@@ -23,15 +23,15 @@ public:
   void resume();
 
   //  Singlton instance
-  static SideScroller* instance() {
-    return &SideScroller_;
+  static CasinoLevel* instance() {
+    return &CasinoLevel_;
   }
 
 protected:
-  SideScroller() {}
+  CasinoLevel() {}
 
 private:
-  static SideScroller SideScroller_;
+  static CasinoLevel CasinoLevel_;
   Root* root_;
   Actor player;
 };

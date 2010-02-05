@@ -18,9 +18,6 @@
 
 // Other includes
 #include "InputSystem.h"
-#include "GameState.h"
-
-using namespace std;
 
 class GameState;
 
@@ -104,7 +101,7 @@ protected:
 
   Ogre::Root*  root_; // The ogre application root object
   InputSystem* inputSystem_; // The input system for the application
-  vector<GameState*> states_;  //States for the application
+  std::vector<GameState*> states_;  //States for the application
 };
 
 #endif // APPLICATION_H_
