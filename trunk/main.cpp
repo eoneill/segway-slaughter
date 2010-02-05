@@ -1,13 +1,20 @@
 #include <iostream>
-
+#include <stdio.h>
+#include <stdlib.h>
 #include <Ogre.h>
 
 #include "Actor.h"
+#include "Player.h"
+#include "Enemy.h"
 #include "Application.h"
 #include "Locator.h"
 
 using namespace std;
 using namespace Ogre;
+
+//hopefully replace this with something in the level file itself, later
+//assuming it's not a standard size
+const int LEVEL_WIDTH = 1000;
 
 class ExitListener : public FrameListener, public OIS::KeyListener {
 public:
@@ -46,36 +53,43 @@ public:
     SceneNode* node = root_->getSceneManager("Default SceneManager")->getSceneNode(player.sceneNode);
     Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
     InputSystem* is = Locator::getInput();
-
-		
+    
+		//move player up, but with constraints
     if (is->isKeyDown(OIS::KC_UP)) {
-      node->translate(Vector3(-1,0,0));
-      player.position[0]--;
+    	if(player.position[0] > -LEVEL_WIDTH/2){
+	      node->translate(Vector3(-1,0,0));
+  	    player.position[0]-=player.speed;
+  	  }
     }
+    //move player down, but with constraints
     if (is->isKeyDown(OIS::KC_DOWN)) {
-      node->translate(Vector3(1,0,0));
-      player.position[0]++;
+    	if(player.position[0] < LEVEL_WIDTH/2){
+	      node->translate(Vector3(1,0,0));
+	      player.position[0]+=player.speed;
+			}
     }
+    //move player left
     if (is->isKeyDown(OIS::KC_LEFT)) {
       mCamera->move(Vector3(0,0,1));
 				
       node->translate(Vector3(0,0,1));
-      player.position[2] += 1;
+      player.position[2]+=player.speed;
 
-      if(player.facingRight == true){
+      if(player.FacingRight == true){
 				node->yaw(Ogre::Degree(180));
-				player.facingRight = false;
+				player.FacingRight = false;
       }
     }
+    //move player right
     if (is->isKeyDown(OIS::KC_RIGHT)) {     				
       mCamera->move(Vector3(0,0,-1));
 
       node->translate(Vector3(0,0,-1));
-      player.position[2] -= 1;
+      player.position[2]-=player.speed;
 				
-      if(player.facingRight != true){
+      if(player.FacingRight != true){
 				node->yaw(Ogre::Degree(180));
-        player.facingRight = true;
+        player.FacingRight = true;
       }
     }
 
@@ -116,11 +130,36 @@ public:
     player.position[0] = 0;
     player.position[1] = 0;
     player.position[2] = 0;
-    player.facingRight = true;
+    player.speed = 1;
+    player.FacingRight = true;
+    player.MaxHealth = 100;
+    player.CurrentHealth = 100;
     player.sceneNode = "NinjaNode2";
     Entity *ent2 = mSceneMgr->createEntity( "ninja", "ninja.mesh" );
     SceneNode *node2 = mSceneMgr->getRootSceneNode()->createChildSceneNode( player.sceneNode, Vector3( 0, 0, 0 ) );
     node2->attachObject( ent2 );
+    
+    //make some sample enemies
+    vector <Enemy> enemies;
+    srand ( time(NULL) );
+    for(int i = 0; i < 25; i++){
+    	Enemy temp;
+      temp.position[0] = rand() % LEVEL_WIDTH - LEVEL_WIDTH/2;
+  	  temp.position[1] = 0;
+	    temp.position[2] = rand() % 10000 - 5000;;
+	    temp.FacingRight = true;
+	    temp.MaxHealth = 100;
+	    temp.CurrentHealth = 100;
+	    char NodeNum[40] = "Enemy Node";
+	    sprintf(NodeNum,"EnemyNode%d",i);
+    	temp.sceneNode = NodeNum;
+    	char EntName[40] = "Robot";
+    	sprintf(EntName,"robot%d",i);
+		  Entity *ent3 = mSceneMgr->createEntity( EntName, "robot.mesh" );
+		  SceneNode *node3 = mSceneMgr->getRootSceneNode()->createChildSceneNode( temp.sceneNode, Vector3( temp.position[0], temp.position[1], temp.position[2] ) );
+		  node3->attachObject( ent3 );
+		  enemies.push_back(temp);
+    }
 
     // Light
     mSceneMgr->setAmbientLight(ColourValue(0.4, 0.4, 0.4));
@@ -138,7 +177,7 @@ public:
   }
 private:
   Root* root_;
-  Actor player;
+  Player player;
 };
 
 class SegwaySlaughter : public Application {
