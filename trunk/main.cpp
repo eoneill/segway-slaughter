@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Locator.h"
 #include "SideScroller.h"
+#include "CasinoLevel.h"
 
 #include <iostream>
 #include <stdio.h>

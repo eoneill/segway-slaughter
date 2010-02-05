@@ -1,9 +1,8 @@
-#include "SideScroller.h"
 #include "CasinoLevel.h"
 
-SideScroller SideScroller::SideScroller_;
+CasinoLevel CasinoLevel::CasinoLevel_;
 
-bool SideScroller::update(Application* app) {
+bool CasinoLevel::update(Application* app) {
   SceneNode* node = root_->getSceneManager("Default SceneManager")->getSceneNode(player.sceneNode);
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
   InputSystem* is = Locator::getInput();
@@ -46,10 +45,6 @@ bool SideScroller::update(Application* app) {
         player.FacingRight = true;
       }
     }
-  //State change test
-  if (is->isKeyDown(OIS::KC_1)) {
-    changeState(app,CasinoLevel::instance());
-  }
   if (is->isKeyDown(OIS::KC_ESCAPE)) {
     return false;
   }
@@ -57,7 +52,7 @@ bool SideScroller::update(Application* app) {
   return true;
 }
 
-void SideScroller::initialize(Root* root) {
+void CasinoLevel::initialize(Root* root) {
   root_ = root;
   
   SceneManager* mSceneMgr = root_->getSceneManager("Default SceneManager");
@@ -98,7 +93,7 @@ void SideScroller::initialize(Root* root) {
   player.MaxHealth = 100;
   player.CurrentHealth = 100;
   player.sceneNode = "NinjaNode2";
-  Entity *ent2 = mSceneMgr->createEntity( "ninja", "ninja.mesh" );
+  Entity *ent2 = mSceneMgr->createEntity( "ninja", "robot.mesh" );
   SceneNode *node2 = mSceneMgr->getRootSceneNode()->createChildSceneNode( player.sceneNode, Vector3( 0, 0, 0 ) );
   node2->attachObject( ent2 );
   
@@ -118,7 +113,7 @@ void SideScroller::initialize(Root* root) {
     temp.sceneNode = NodeNum;
     char EntName[40] = "Robot";
     sprintf(EntName,"robot%d",i);
-    Entity *ent3 = mSceneMgr->createEntity( EntName, "robot.mesh" );
+    Entity *ent3 = mSceneMgr->createEntity( EntName, "ninja.mesh" );
     SceneNode *node3 = mSceneMgr->getRootSceneNode()->createChildSceneNode( temp.sceneNode, Vector3( temp.position[0], temp.position[1], temp.position[2] ) );
     node3->attachObject( ent3 );
     enemies.push_back(temp);
@@ -139,16 +134,16 @@ void SideScroller::initialize(Root* root) {
   //////////////************
 }
 
-void SideScroller::suspend() {}
+void CasinoLevel::suspend() {}
 
-void SideScroller::resume() {}
+void CasinoLevel::resume() {}
 
-void SideScroller::clean() {
+void CasinoLevel::clean() {
   SceneManager* mSceneMgr = root_->getSceneManager("Default SceneManager");
   mSceneMgr->destroyAllCameras();
   mSceneMgr->destroyAllEntities();
   mSceneMgr->getRootSceneNode()->removeAndDestroyAllChildren();
   mSceneMgr->destroyAllLights();
   root_->getAutoCreatedWindow()->removeAllViewports();
-  cerr << "SideScroller Cleaned!\n";
+  cerr << "CasinoLevel cleaned" << endl;
   }

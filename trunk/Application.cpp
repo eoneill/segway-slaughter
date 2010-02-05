@@ -7,6 +7,7 @@
 //   Base class for all Ogre applications.
 ////////////////////////////////////////////////////////////////////////////////
 #include "Application.h"
+#include "GameState.h"
 #include "InputSystem.h"
 #include "Locator.h"
 
@@ -44,7 +45,7 @@ bool Application::frameStarted(const Ogre::FrameEvent& ev) {
     return false;
   }
   inputSystem_->update();
-  return states_.back()->update();
+  return states_.back()->update(this);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
