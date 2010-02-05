@@ -1,8 +1,16 @@
-#ifndef SIDE_SCROLLER_H_
-#define SIDE_SCROLLER_H_
+#ifndef SIDESCROLLER_H
+#define SIDESCROLLER_H
 
 #include "Actor.h"
+#include "Player.h"
+#include "Enemy.h"
 #include "GameState.h"
+#include "Locator.h"
+
+using namespace std;
+using namespace Ogre;
+
+extern const int LEVEL_WIDTH;
 
 class SideScroller : public GameState {
 public:
@@ -27,4 +35,4 @@ private:
   Root* root_;
   Actor player;
 };
-#endif // SIDE_SCROLLER_H_
+#endif
