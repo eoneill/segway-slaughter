@@ -3,7 +3,7 @@
 
 #include "Actor.h"
 #include "Player.h"
-#include "Enemy.h"
+//#include "Enemy.h"
 #include "GameState.h"
 #include "Locator.h"
 

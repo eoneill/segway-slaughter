@@ -11,7 +11,7 @@ class Actor {
 	  string sceneNode;
 		double position[3];
 		float speed;
-		bool FacingRight;
+		bool facingRight;
 		float MaxHealth;
 		float CurrentHealth;
 };

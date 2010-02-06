@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-01-29 14:55:32 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-05 16:36:08 by Eric Scrivner>
 //
 // Description:
 //   Implements to locator pattern for providing a central place for resource
@@ -34,7 +34,25 @@ public:
   static void registerInput(InputSystem* input) {
     inputSystem_ = input;
   }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: registerRoot
+  //
+  // Registers an Ogre root object
+  static void registerRoot(Ogre::Root* root) {
+    root_ = root;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: getRoot
+  //
+  // Returns the current instance of the Ogre root object
+  static Ogre::Root* getRoot() {
+    assert(root_ != 0);
+    return root_;
+  }
 private:
+  static Ogre::Root* root_; // The Ogre root object
   static InputSystem* inputSystem_; // The input system instance
 };
 
