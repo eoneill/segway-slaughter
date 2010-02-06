@@ -1,14 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-01-30 16:44:47 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-05 16:39:22 by Eric Scrivner>
 //
 // Description:
 //   Base class for all Ogre applications.
 ////////////////////////////////////////////////////////////////////////////////
 #include "Application.h"
-#include "GameState.h"
-#include "InputSystem.h"
 #include "Locator.h"
 
 #include <iostream>
@@ -18,6 +16,10 @@ Application::Application(const std::string& appName)
   : root_(new Ogre::Root()),
     inputSystem_(0)
 {
+  // Register the root object
+  Locator::registerRoot(root_);
+
+  // Initialize everything
   defineResources();
   setupRenderSystem();
   createRenderWindow(appName);
@@ -30,22 +32,43 @@ Application::Application(const std::string& appName)
 ////////////////////////////////////////////////////////////////////////////////
 
 Application::~Application() {
-  while(!states_.empty()) {
-    states_.back()->clean();
-    states_.pop_back();
-  }
+  assert(states_.empty());
+
   delete inputSystem_;
   delete root_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
+void Application::startState(GameState* state) {
+  pushState(state);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 bool Application::frameStarted(const Ogre::FrameEvent& ev) {
-  if(states_.empty()) {
+  assert(!states_.empty());
+
+  // Update the input system
+  inputSystem_->update();
+
+  // Handle state updates
+  GameState* nextState = states_.back()->update();
+
+  if (states_.back()->isDone()) {
+    popState();
+  }
+
+  if (nextState != NULL) {
+    pushState(nextState);
+  }
+
+  // If there are no states left, then quit the application
+  if (states_.empty()) {
     return false;
   }
-  inputSystem_->update();
-  return states_.back()->update(this);
+
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -60,40 +83,18 @@ void Application::go() {
   startRenderLoop();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
-void Application::changeState(GameState* state) {
-  if(!states_.empty()) {
-    states_.back()->clean();
-    states_.pop_back();
-  }
-  
-  states_.push_back(state);
-  states_.back()->initialize(root_);
-}
-
 /////////////////////////////////////////////////////////////////////////////////
 
 void Application::pushState(GameState* state) {
-  if(!states_.empty()) {
-    states_.back()->suspend();
-  }
-
   states_.push_back(state);
-  states_.back()->initialize(root_);
 }
 
 /////////////////////////////////////////////////////////////////////////////////
 
 void Application::popState() {
-  if(!states_.empty()) {
-    states_.back()->clean();
-    states_.pop_back();
-  }
-
-  if(!states_.empty()) {
-    states_.back()->resume();
-  }
+  assert(!states_.empty());
+  delete states_.back();
+  states_.pop_back();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

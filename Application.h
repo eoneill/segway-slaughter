@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-01-30 17:28:55 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-05 16:40:49 by Eric Scrivner>
 //
 // Description:
 //   Base class for all Ogre applications.
@@ -18,21 +18,30 @@
 
 // Other includes
 #include "InputSystem.h"
-
-class GameState;
+#include "GameState.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class: Application
 //
-// 
+// Represents a stateful game application
 class Application : public Ogre::FrameListener {
 public:
   //////////////////////////////////////////////////////////////////////////////
   // Function: Application
   //
+  // Parameters:
+  //   appName - The name of the application window
+  //   initialState - The initial state the application is in
+  //
   // Initializes the application making the title on the window the appName.
   Application(const std::string& appName);
   ~Application();
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: startState
+  //
+  // Sets the start state for the application
+  void startState(GameState* state);
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: frameStarted
@@ -64,13 +73,7 @@ public:
   //
   // Runs the application
   void go();
-
-  ///////////////////////////////////////////////////////////////////////////////
-  // Function: changeState
-  //
-  // Destroys the current state (if any) and starts the new state passed to it
-  void changeState(GameState* state);
-
+protected:
   //////////////////////////////////////////////////////////////////////////////
   //  Function: pushState
   //
@@ -82,7 +85,7 @@ public:
   //
   //  Destroys the current state and resumes the previously suspended state
   void popState();
-protected:
+
   void setupRenderSystem();
 
   void defineResources();
