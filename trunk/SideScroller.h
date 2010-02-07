@@ -15,6 +15,7 @@ public:
   ~SideScroller();
 
   GameState* update();
+  void initialize();
   bool isDone();
 private:
   Actor player;

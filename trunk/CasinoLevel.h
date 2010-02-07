@@ -3,36 +3,23 @@
 
 #include "Actor.h"
 #include "Player.h"
-//#include "Enemy.h"
+#include "Enemy.h"
 #include "GameState.h"
 #include "Locator.h"
-
-using namespace std;
-using namespace Ogre;
 
 extern const int LEVEL_WIDTH;
 
 class CasinoLevel : public GameState {
 public:
-  bool update(Application* app);
+  CasinoLevel();
+  ~CasinoLevel();
 
-  void initialize(Root* root);
-  void clean();
-
-  void suspend();
-  void resume();
-
-  //  Singlton instance
-  static CasinoLevel* instance() {
-    return &CasinoLevel_;
-  }
-
-protected:
-  CasinoLevel() {}
-
+  GameState* update();
+  void initialize();
+  bool isDone();
 private:
-  static CasinoLevel CasinoLevel_;
-  Root* root_;
   Actor player;
+  bool isDone_;
 };
+
 #endif

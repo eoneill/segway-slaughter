@@ -1,60 +1,28 @@
 #include "CasinoLevel.h"
 
-CasinoLevel CasinoLevel::CasinoLevel_;
+using namespace std;
+using namespace Ogre;
 
-bool CasinoLevel::update(Application* app) {
-  SceneNode* node = root_->getSceneManager("Default SceneManager")->getSceneNode(player.sceneNode);
-  Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
-  InputSystem* is = Locator::getInput();
-		
-  //Move player up, but with constraints
-  if (is->isKeyDown(OIS::KC_UP)) {
-    	if(player.position[0] > -LEVEL_WIDTH/2){
-	      node->translate(Vector3(-1,0,0));
-  	    player.position[0]-=player.speed;
-  	  }
-  }
-  //Move player down, but with constraints
-  if (is->isKeyDown(OIS::KC_DOWN)) {
-    if(player.position[0] < LEVEL_WIDTH/2){
-      node->translate(Vector3(1,0,0));
-      player.position[0]+=player.speed;
-    }
-  }
-  //move player left
-    if (is->isKeyDown(OIS::KC_LEFT)) {
-      mCamera->move(Vector3(0,0,1));
-				
-      node->translate(Vector3(0,0,1));
-      player.position[2]+=player.speed;
 
-      if(player.FacingRight == true){
-				node->yaw(Ogre::Degree(180));
-				player.FacingRight = false;
-      }
-    }
-    //move player right
-    if (is->isKeyDown(OIS::KC_RIGHT)) {     				
-      mCamera->move(Vector3(0,0,-1));
+CasinoLevel::CasinoLevel()
+  : isDone_(false)
+{ }
 
-      node->translate(Vector3(0,0,-1));
-      player.position[2]-=player.speed;
-				
-      if(player.FacingRight != true){
-				node->yaw(Ogre::Degree(180));
-        player.FacingRight = true;
-      }
-    }
-  if (is->isKeyDown(OIS::KC_ESCAPE)) {
-    return false;
-  }
+////////////////////////////////////////////////////////////////////////////////
 
-  return true;
+CasinoLevel::~CasinoLevel() {
+  SceneManager* mSceneMgr = getRoot()->getSceneManager("Default SceneManager");
+  mSceneMgr->destroyAllCameras();
+  mSceneMgr->destroyAllEntities();
+  mSceneMgr->getRootSceneNode()->removeAndDestroyAllChildren();
+  mSceneMgr->destroyAllLights();
+  getRoot()->getAutoCreatedWindow()->removeAllViewports();
 }
 
-void CasinoLevel::initialize(Root* root) {
-  root_ = root;
-  
+///////////////////////////////////////////////////////////////////////////////
+
+void CasinoLevel::initialize() {
+  Ogre::Root* root_ = getRoot();
   SceneManager* mSceneMgr = root_->getSceneManager("Default SceneManager");
   assert(mSceneMgr != 0);
 
@@ -89,7 +57,7 @@ void CasinoLevel::initialize(Root* root) {
   player.position[1] = 0;
   player.position[2] = 0;
   player.speed = 1;
-  player.FacingRight = true;
+  player.facingRight = true;
   player.MaxHealth = 100;
   player.CurrentHealth = 100;
   player.sceneNode = "NinjaNode2";
@@ -98,26 +66,26 @@ void CasinoLevel::initialize(Root* root) {
   node2->attachObject( ent2 );
   
   //make some sample enemies
-  vector <Enemy> enemies;
-  srand ( time(NULL) );
-  for(int i = 0; i < 25; i++){
-    Enemy temp;
-    temp.position[0] = rand() % LEVEL_WIDTH - LEVEL_WIDTH/2;
-    temp.position[1] = 0;
-    temp.position[2] = rand() % 10000 - 5000;;
-    temp.FacingRight = true;
-    temp.MaxHealth = 100;
-    temp.CurrentHealth = 100;
-    char NodeNum[40] = "Enemy Node";
-    sprintf(NodeNum,"EnemyNode%d",i);
-    temp.sceneNode = NodeNum;
-    char EntName[40] = "Robot";
-    sprintf(EntName,"robot%d",i);
-    Entity *ent3 = mSceneMgr->createEntity( EntName, "ninja.mesh" );
-    SceneNode *node3 = mSceneMgr->getRootSceneNode()->createChildSceneNode( temp.sceneNode, Vector3( temp.position[0], temp.position[1], temp.position[2] ) );
-    node3->attachObject( ent3 );
-    enemies.push_back(temp);
-  }
+   vector <Enemy> enemies;  
+   srand ( time(NULL) );
+   for(int i = 0; i < 25; i++){
+     Enemy temp;
+     temp.position[0] = rand() % LEVEL_WIDTH - LEVEL_WIDTH/2;
+     temp.position[1] = 0;
+     temp.position[2] = rand() % 10000 - 5000;;
+     temp.facingRight = true;
+     temp.MaxHealth = 100;
+     temp.CurrentHealth = 100;
+     char NodeNum[40] = "Enemy Node";
+     sprintf(NodeNum,"EnemyNode%d",i);
+     temp.sceneNode = NodeNum;
+     char EntName[40] = "Robot";
+     sprintf(EntName,"robot%d",i);
+     Entity *ent3 = mSceneMgr->createEntity( EntName, "ninja.mesh" );
+     SceneNode *node3 = mSceneMgr->getRootSceneNode()->createChildSceneNode( temp.sceneNode, Vector3( temp.position[0], temp.position[1], temp.position[2] ) );
+     node3->attachObject( ent3 );
+     enemies.push_back(temp);
+   }
 
   // Light
   mSceneMgr->setAmbientLight(ColourValue(0.4, 0.4, 0.4));
@@ -134,16 +102,55 @@ void CasinoLevel::initialize(Root* root) {
   //////////////************
 }
 
-void CasinoLevel::suspend() {}
+////////////////////////////////////////////////////////////////////////////////
 
-void CasinoLevel::resume() {}
+bool CasinoLevel::isDone() {
+  return isDone_;
+}
 
-void CasinoLevel::clean() {
-  SceneManager* mSceneMgr = root_->getSceneManager("Default SceneManager");
-  mSceneMgr->destroyAllCameras();
-  mSceneMgr->destroyAllEntities();
-  mSceneMgr->getRootSceneNode()->removeAndDestroyAllChildren();
-  mSceneMgr->destroyAllLights();
-  root_->getAutoCreatedWindow()->removeAllViewports();
-  cerr << "CasinoLevel cleaned" << endl;
+////////////////////////////////////////////////////////////////////////////////
+
+GameState* CasinoLevel::update() {
+  Ogre::Root* root_ = getRoot();
+  SceneNode* node = root_->getSceneManager("Default SceneManager")->getSceneNode(player.sceneNode);
+  Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
+  InputSystem* is = Locator::getInput();
+		
+  if (is->isKeyDown(OIS::KC_UP)) {
+    node->translate(Vector3(-1,0,0));
+    player.position[0]--;
   }
+  if (is->isKeyDown(OIS::KC_DOWN)) {
+    node->translate(Vector3(1,0,0));
+    player.position[0]++;
+  }
+  if (is->isKeyDown(OIS::KC_LEFT)) {
+    mCamera->move(Vector3(0,0,1));
+				
+    node->translate(Vector3(0,0,1));
+    player.position[2] += 1;
+
+    if(player.facingRight == true){
+			node->yaw(Ogre::Degree(180));
+			player.facingRight = false;
+    }
+  }
+  if (is->isKeyDown(OIS::KC_RIGHT)) {     				
+    mCamera->move(Vector3(0,0,-1));
+
+    node->translate(Vector3(0,0,-1));
+    player.position[2] -= 1;
+				
+    if(player.facingRight != true){
+			node->yaw(Ogre::Degree(180));
+      player.facingRight = true;
+    }
+  }
+
+  if (is->isKeyDown(OIS::KC_ESCAPE)) {
+    isDone_ = true;
+  }
+
+  return NULL;
+}
+
