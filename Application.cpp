@@ -81,6 +81,7 @@ void Application::go() {
 
 void Application::pushState(GameState* state) {
   states_.push_back(state);
+  states_.back()->initialize();
 }
 
 /////////////////////////////////////////////////////////////////////////////////

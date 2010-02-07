@@ -1,5 +1,5 @@
 #include "SideScroller.h"
-//#include "CasinoLevel.h"
+#include "CasinoLevel.h"
 
 using namespace std;
 using namespace Ogre;
@@ -7,7 +7,22 @@ using namespace Ogre;
 
 SideScroller::SideScroller()
   : isDone_(false)
-{
+{}
+
+////////////////////////////////////////////////////////////////////////////////
+
+SideScroller::~SideScroller() {
+  SceneManager* mSceneMgr = getRoot()->getSceneManager("Default SceneManager");
+  mSceneMgr->destroyAllCameras();
+  mSceneMgr->destroyAllEntities();
+  mSceneMgr->getRootSceneNode()->removeAndDestroyAllChildren();
+  mSceneMgr->destroyAllLights();
+  getRoot()->getAutoCreatedWindow()->removeAllViewports();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void SideScroller::initialize() {
   Ogre::Root* root_ = getRoot();
   SceneManager* mSceneMgr = root_->getSceneManager("Default SceneManager");
   assert(mSceneMgr != 0);
@@ -52,26 +67,26 @@ SideScroller::SideScroller()
   node2->attachObject( ent2 );
   
   //make some sample enemies
-//   vector <Enemy> enemies;  
-//   srand ( time(NULL) );
-//   for(int i = 0; i < 25; i++){
-//     Enemy temp;
-//     temp.position[0] = rand() % LEVEL_WIDTH - LEVEL_WIDTH/2;
-//     temp.position[1] = 0;
-//     temp.position[2] = rand() % 10000 - 5000;;
-//     temp.FacingRight = true;
-//     temp.MaxHealth = 100;
-//     temp.CurrentHealth = 100;
-//     char NodeNum[40] = "Enemy Node";
-//     sprintf(NodeNum,"EnemyNode%d",i);
-//     temp.sceneNode = NodeNum;
-//     char EntName[40] = "Robot";
-//     sprintf(EntName,"robot%d",i);
-//     Entity *ent3 = mSceneMgr->createEntity( EntName, "robot.mesh" );
-//     SceneNode *node3 = mSceneMgr->getRootSceneNode()->createChildSceneNode( temp.sceneNode, Vector3( temp.position[0], temp.position[1], temp.position[2] ) );
-//     node3->attachObject( ent3 );
-//     enemies.push_back(temp);
-//   }
+   vector <Enemy> enemies;  
+   srand ( time(NULL) );
+   for(int i = 0; i < 25; i++){
+     Enemy temp;
+     temp.position[0] = rand() % LEVEL_WIDTH - LEVEL_WIDTH/2;
+     temp.position[1] = 0;
+     temp.position[2] = rand() % 10000 - 5000;;
+     temp.facingRight = true;
+     temp.MaxHealth = 100;
+     temp.CurrentHealth = 100;
+     char NodeNum[40] = "Enemy Node";
+     sprintf(NodeNum,"EnemyNode%d",i);
+     temp.sceneNode = NodeNum;
+     char EntName[40] = "Robot";
+     sprintf(EntName,"robot%d",i);
+     Entity *ent3 = mSceneMgr->createEntity( EntName, "robot.mesh" );
+     SceneNode *node3 = mSceneMgr->getRootSceneNode()->createChildSceneNode( temp.sceneNode, Vector3( temp.position[0], temp.position[1], temp.position[2] ) );
+     node3->attachObject( ent3 );
+     enemies.push_back(temp);
+   }
 
   // Light
   mSceneMgr->setAmbientLight(ColourValue(0.4, 0.4, 0.4));
@@ -86,19 +101,8 @@ SideScroller::SideScroller()
   //SKYBOX
   mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox", 5000, false);
   //////////////************
- 
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
-SideScroller::~SideScroller() {
-  SceneManager* mSceneMgr = getRoot()->getSceneManager("Default SceneManager");
-  mSceneMgr->destroyAllCameras();
-  mSceneMgr->destroyAllEntities();
-  mSceneMgr->getRootSceneNode()->removeAndDestroyAllChildren();
-  mSceneMgr->destroyAllLights();
-  getRoot()->getAutoCreatedWindow()->removeAllViewports();
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -145,6 +149,10 @@ GameState* SideScroller::update() {
     }
   }
 
+  if (is->isKeyDown(OIS::KC_1)) {
+    isDone_ = true;
+    return new CasinoLevel;
+  }
   if (is->isKeyDown(OIS::KC_ESCAPE)) {
     isDone_ = true;
   }
