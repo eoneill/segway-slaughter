@@ -18,6 +18,9 @@ SideScroller::~SideScroller() {
   mSceneMgr->getRootSceneNode()->removeAndDestroyAllChildren();
   mSceneMgr->destroyAllLights();
   getRoot()->getAutoCreatedWindow()->removeAllViewports();
+  for(unsigned int i = 0; i < enemies.size(); i++) {
+  	delete enemies[i];
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -61,32 +64,33 @@ void SideScroller::initialize() {
   player.facingRight = true;
   player.MaxHealth = 100;
   player.CurrentHealth = 100;
+  player.CollisionSideLength = 50;
   player.sceneNode = "NinjaNode2";
   Entity *ent2 = mSceneMgr->createEntity( "ninja", "ninja.mesh" );
   SceneNode *node2 = mSceneMgr->getRootSceneNode()->createChildSceneNode( player.sceneNode, Vector3( 0, 0, 0 ) );
   node2->attachObject( ent2 );
   
   //make some sample enemies
-   vector <Enemy> enemies;  
    srand ( time(NULL) );
-   for(int i = 0; i < 25; i++){
-     Enemy temp;
-     temp.position[0] = rand() % LEVEL_WIDTH - LEVEL_WIDTH/2;
-     temp.position[1] = 0;
-     temp.position[2] = rand() % 10000 - 5000;;
-     temp.facingRight = true;
-     temp.MaxHealth = 100;
-     temp.CurrentHealth = 100;
-     char NodeNum[40] = "Enemy Node";
-     sprintf(NodeNum,"EnemyNode%d",i);
-     temp.sceneNode = NodeNum;
-     char EntName[40] = "Robot";
-     sprintf(EntName,"robot%d",i);
-     Entity *ent3 = mSceneMgr->createEntity( EntName, "robot.mesh" );
-     SceneNode *node3 = mSceneMgr->getRootSceneNode()->createChildSceneNode( temp.sceneNode, Vector3( temp.position[0], temp.position[1], temp.position[2] ) );
-     node3->attachObject( ent3 );
-     enemies.push_back(temp);
-   }
+   for(int i = 0; i < 100; i++){
+    Enemy* temp = new Enemy;
+    temp->position[0] = rand() % LEVEL_WIDTH - LEVEL_WIDTH/2;
+    temp->position[1] = 0;
+    temp->position[2] = -(rand() % 30000+2000);
+    temp->facingRight = true;
+    temp->MaxHealth = 100;
+    temp->CurrentHealth = 100;
+    temp->CollisionSideLength = 50;
+    char NodeNum[40] = "Enemy Node";
+    sprintf(NodeNum,"EnemyNode%d",i);
+    temp->sceneNode = NodeNum;
+    char EntName[40] = "Robot";
+    sprintf(EntName,"robot%d",i);
+    Entity *ent3 = mSceneMgr->createEntity( EntName, "robot.mesh" );
+    SceneNode *node3 = mSceneMgr->getRootSceneNode()->createChildSceneNode( temp->sceneNode, Vector3( temp->position[0], temp->position[1], temp->position[2] ) );
+    node3->attachObject( ent3 );
+    enemies.push_back(temp);
+  }
 
   // Light
   mSceneMgr->setAmbientLight(ColourValue(0.4, 0.4, 0.4));
@@ -118,36 +122,60 @@ GameState* SideScroller::update() {
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
   InputSystem* is = Locator::getInput();
 		
+  //Move player up, but with constraints
   if (is->isKeyDown(OIS::KC_UP)) {
-    node->translate(Vector3(-1,0,0));
-    player.position[0]--;
+ 		if(player.move(DI_UP, enemies))
+    	{
+	    	if(player.position[0] > -LEVEL_WIDTH/2){
+		      node->translate(Vector3(-1,0,0));
+	  	    player.position[0]-=player.speed;
+	  	  }
+			}
   }
+  //Move player down, but with constraints
   if (is->isKeyDown(OIS::KC_DOWN)) {
-    node->translate(Vector3(1,0,0));
-    player.position[0]++;
+  	if(player.move(DI_DOWN, enemies))
+    	{
+		    if(player.position[0] < LEVEL_WIDTH/2){
+		      node->translate(Vector3(1,0,0));
+		      player.position[0]+=player.speed;
+		    }
+		  }
   }
-  if (is->isKeyDown(OIS::KC_LEFT)) {
-    mCamera->move(Vector3(0,0,1));
-				
-    node->translate(Vector3(0,0,1));
-    player.position[2] += 1;
+  //move player left
+    if (is->isKeyDown(OIS::KC_LEFT)) {
+	    if(player.move(DI_LEFT, enemies))
+	    	{
+		      mCamera->move(Vector3(0,0,1));
+						
+		      node->translate(Vector3(0,0,1));
+		      player.position[2]+=player.speed;
 
-    if(player.facingRight == true){
-			node->yaw(Ogre::Degree(180));
-			player.facingRight = false;
+		      if(player.facingRight == true){
+						node->yaw(Ogre::Degree(180));
+						player.facingRight = false;
+		      }
+		    }
     }
-  }
-  if (is->isKeyDown(OIS::KC_RIGHT)) {     				
-    mCamera->move(Vector3(0,0,-1));
+    //move player right
+    if (is->isKeyDown(OIS::KC_RIGHT)) {
+    	if(player.move(DI_RIGHT, enemies))
+    	{
+	      mCamera->move(Vector3(0,0,-1));
 
-    node->translate(Vector3(0,0,-1));
-    player.position[2] -= 1;
-				
-    if(player.facingRight != true){
-			node->yaw(Ogre::Degree(180));
-      player.facingRight = true;
+	      node->translate(Vector3(0,0,-1));
+	      player.position[2]-=player.speed;
+					
+	      if(player.facingRight != true){
+					node->yaw(Ogre::Degree(180));
+	        player.facingRight = true;
+	      }
+      }
     }
-  }
+	  if (player.position[2] <= -33000) {
+	    isDone_ = true;
+	    return new CasinoLevel;
+	  }
 
   if (is->isKeyDown(OIS::KC_1)) {
     isDone_ = true;
