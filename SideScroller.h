@@ -20,6 +20,7 @@ public:
 private:
   Actor player;
   bool isDone_;
+  vector <Actor*> enemies;
 };
 
 #endif
