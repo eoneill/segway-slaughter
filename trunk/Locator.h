@@ -1,8 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-02-05 16:36:08 by Eric Scrivner>
-//
 // Description:
 //   Implements to locator pattern for providing a central place for resource
 // access.

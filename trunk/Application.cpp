@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-02-05 17:01:51 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-08 18:05:28 by Eric Scrivner>
 //
 // Description:
 //   Base class for all Ogre applications.
@@ -14,7 +14,9 @@ using namespace std;
 
 Application::Application(const std::string& appName)
   : root_(new Ogre::Root()),
-    inputSystem_(0)
+    inputSystem_(0),
+    ceguiRenderer_(0),
+    ceguiSystem_(0)
 {
   // Register the root object
   Locator::registerRoot(root_);
@@ -52,7 +54,7 @@ bool Application::frameStarted(const Ogre::FrameEvent& ev) {
   // Update the input system
   inputSystem_->update();
 
-  // Handle state updates
+  // Update the current state and update the state stack as needed
   GameState* nextState = states_.back()->update();
 
   if (states_.back()->isDone()) {
@@ -150,6 +152,21 @@ void Application::setupScene() {
 void Application::setupInputSystem() {
   inputSystem_ = new InputSystem(root_);
   Locator::registerInput(inputSystem_);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Application::setupCEGUI() {
+  // Initialize CEGUI
+  Ogre::SceneManager* sceneMgr = root_->getSceneManager("Default SceneManager");
+  Ogre::RenderWindow* window   = root_->getAutoCreatedWindow();
+
+  ceguiRenderer_ = new CEGUI::OgreCEGUIRenderer(window,
+                                                Ogre::RENDER_QUEUE_OVERLAY,
+                                                false,
+                                                3000,
+                                                sceneMgr);
+  ceguiSystem_ = new CEGUI::System(ceguiRenderer_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
