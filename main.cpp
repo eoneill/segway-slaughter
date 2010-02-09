@@ -1,6 +1,6 @@
 #include <Ogre.h>
 #include "Application.h"
-#include "Locator.h"
+#include "MainMenu.h"
 #include "SideScroller.h"
 //#include "CasinoLevel.h"
 
@@ -25,7 +25,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
   try
   {
     Application app("Segway Slaughter");
-    app.startState(new SideScroller());
+    app.startState(new MainMenu());
     app.go();
   }
   catch(Exception& e)

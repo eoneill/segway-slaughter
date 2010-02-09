@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-02-05 17:01:17 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-08 18:03:39 by Eric Scrivner>
 //
 // Description:
 //   Base class for all Ogre applications.
@@ -11,6 +11,10 @@
 
 // Ogre includes
 #include <Ogre.h>
+
+// CEGUI includes
+#include <CEGUI/CEGUI.h>
+#include <OgreCEGUIRenderer.h>
 
 // C++ includes
 #include <string>
@@ -78,24 +82,20 @@ protected:
   void popState();
 
   void setupRenderSystem();
-
   void defineResources();
-
   void createRenderWindow(const std::string& appName);
-
   void initializeResourceGroups();
-
   void setupScene();
-
   void setupInputSystem();
-
+  void setupCEGUI();
   void createFrameListener();
-
   void startRenderLoop();
 
-  Ogre::Root*  root_; // The ogre application root object
-  InputSystem* inputSystem_; // The input system for the application
-  std::vector<GameState*> states_;  //States for the application
+  Ogre::Root*               root_; // The ogre application root object
+  InputSystem*              inputSystem_; // The application input system
+  CEGUI::OgreCEGUIRenderer* ceguiRenderer_; // The CEGUI renderer object
+  CEGUI::System*            ceguiSystem_; // The CEGUI system object
+  std::vector<GameState*>   states_; //States for the application
 };
 
 #endif // APPLICATION_H_

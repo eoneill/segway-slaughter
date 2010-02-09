@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-02-05 16:35:44 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-08 17:46:21 by Eric Scrivner>
 //
 // Description:
 //   Describes an object for defining and managing the state of the game as well
@@ -41,13 +41,6 @@ public:
   virtual GameState* update() = 0;
 
   //////////////////////////////////////////////////////////////////////////////
-  // Function: getRoot
-  //
-  // Returns the root pointer
-  Ogre::Root* getRoot()
-  { return root_; }
-
-  //////////////////////////////////////////////////////////////////////////////
   // Function: isDone
   //
   // Returns true if this state is done executing, false otherwise.
@@ -65,6 +58,13 @@ public:
   //
   // Called when a state returns to the top of the stack
   // virtual void resume() = 0;
+protected:
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: getRoot
+  //
+  // Returns the root pointer
+  Ogre::Root* getRoot()
+  { return root_; }
 private:
   Ogre::Root* root_;
 };
