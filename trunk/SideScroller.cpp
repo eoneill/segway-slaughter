@@ -60,11 +60,13 @@ void SideScroller::initialize() {
   player.position[0] = 0;
   player.position[1] = 0;
   player.position[2] = 0;
-  player.speed = 1;
+  player.speed = 1.33;
   player.facingRight = true;
   player.MaxHealth = 100;
   player.CurrentHealth = 100;
   player.CollisionSideLength = 50;
+  player.attacking = false;
+  player.damage = 0.33;
   player.sceneNode = "NinjaNode2";
   Entity *ent2 = mSceneMgr->createEntity( "ninja", "ninja.mesh" );
   SceneNode *node2 = mSceneMgr->getRootSceneNode()->createChildSceneNode( player.sceneNode, Vector3( 0, 0, 0 ) );
@@ -127,7 +129,7 @@ GameState* SideScroller::update() {
  		if(player.move(DI_UP, enemies))
     	{
 	    	if(player.position[0] > -LEVEL_WIDTH/2){
-		      node->translate(Vector3(-1,0,0));
+		      node->translate(Vector3(-player.speed,0,0));
 	  	    player.position[0]-=player.speed;
 	  	  }
 			}
@@ -137,7 +139,7 @@ GameState* SideScroller::update() {
   	if(player.move(DI_DOWN, enemies))
     	{
 		    if(player.position[0] < LEVEL_WIDTH/2){
-		      node->translate(Vector3(1,0,0));
+		      node->translate(Vector3(player.speed,0,0));
 		      player.position[0]+=player.speed;
 		    }
 		  }
@@ -146,9 +148,9 @@ GameState* SideScroller::update() {
     if (is->isKeyDown(OIS::KC_LEFT)) {
 	    if(player.move(DI_LEFT, enemies))
 	    	{
-		      mCamera->move(Vector3(0,0,1));
+		      mCamera->move(Vector3(0,0,player.speed));
 						
-		      node->translate(Vector3(0,0,1));
+		      node->translate(Vector3(0,0,player.speed));
 		      player.position[2]+=player.speed;
 
 		      if(player.facingRight == true){
@@ -161,9 +163,9 @@ GameState* SideScroller::update() {
     if (is->isKeyDown(OIS::KC_RIGHT)) {
     	if(player.move(DI_RIGHT, enemies))
     	{
-	      mCamera->move(Vector3(0,0,-1));
+	      mCamera->move(Vector3(0,0,-player.speed));
 
-	      node->translate(Vector3(0,0,-1));
+	      node->translate(Vector3(0,0,-player.speed));
 	      player.position[2]-=player.speed;
 					
 	      if(player.facingRight != true){
@@ -172,6 +174,13 @@ GameState* SideScroller::update() {
 	      }
       }
     }
+    if (is->isKeyDown(OIS::KC_A)) {
+      player.attacking = true;
+    }
+    else{
+    	player.attacking = false;
+    }
+    
 	  if (player.position[2] <= -33000) {
 	    isDone_ = true;
 	    return new CasinoLevel;
@@ -184,7 +193,11 @@ GameState* SideScroller::update() {
   if (is->isKeyDown(OIS::KC_ESCAPE)) {
     isDone_ = true;
   }
-
+	
+	if(player.attacking){
+		player.attack(enemies, root_, player.damage);
+	}	
+	
   return NULL;
 }
 
