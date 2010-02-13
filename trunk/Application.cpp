@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-02-08 18:05:28 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-12 16:35:58 by Eric Scrivner>
 //
 // Description:
 //   Base class for all Ogre applications.
@@ -28,7 +28,9 @@ Application::Application(const std::string& appName)
   initializeResourceGroups();
   setupScene();
   setupInputSystem();
+  setupCEGUI();
   createFrameListener();
+  root_->getAutoCreatedWindow();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -82,8 +84,8 @@ void Application::go() {
 /////////////////////////////////////////////////////////////////////////////////
 
 void Application::pushState(GameState* state) {
+  state->initialize();
   states_.push_back(state);
-  states_.back()->initialize();
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -157,16 +159,24 @@ void Application::setupInputSystem() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Application::setupCEGUI() {
-  // Initialize CEGUI
-  Ogre::SceneManager* sceneMgr = root_->getSceneManager("Default SceneManager");
-  Ogre::RenderWindow* window   = root_->getAutoCreatedWindow();
+  Ogre::SceneManager *mgr = root_->getSceneManager("Default SceneManager");
+  Ogre::RenderWindow *win = root_->getAutoCreatedWindow();
 
-  ceguiRenderer_ = new CEGUI::OgreCEGUIRenderer(window,
-                                                Ogre::RENDER_QUEUE_OVERLAY,
-                                                false,
-                                                3000,
-                                                sceneMgr);
+  // CEGUI setup
+  ceguiRenderer_ = new CEGUI::OgreCEGUIRenderer(win, Ogre::RENDER_QUEUE_OVERLAY,
+                                                false, 3000, mgr);
   ceguiSystem_ = new CEGUI::System(ceguiRenderer_);
+
+  Locator::registerGuiSystem(ceguiSystem_);
+	
+  CEGUI::SchemeManager::getSingleton().loadScheme((CEGUI::utf8*)"TaharezLookSkin.scheme");
+  ceguiSystem_->setDefaultFont((CEGUI::utf8*)"BlueHighway-12");
+  ceguiSystem_->setDefaultMouseCursor("TaharezLook", "MouseArrow");
+  CEGUI::MouseCursor::getSingleton().setImage("TaharezLook", "MouseMoveCursor");
+  
+  //CEGUI
+  CEGUI::Window* mEditorGuiSheet = CEGUI::WindowManager::getSingleton().createWindow((CEGUI::utf8*)"DefaultGUISheet", "root"); 
+  ceguiSystem_->setGUISheet(mEditorGuiSheet);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
