@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-01-30 22:43:41 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-12 15:31:40 by Eric Scrivner>
 //
 // Description:
 //   A simple wrapper class for the OIS input system
@@ -67,7 +67,7 @@ private:
   // Function: createMouse
   //
   // Creates a mouse input system if one does not already exist
-  OIS::Mouse* createMouse();
+  OIS::Mouse* createMouse(); 
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: createInputManager

@@ -8,6 +8,7 @@
 #ifndef LOCATOR_H_
 #define LOCATOR_H_
 
+#include <CEGUI/CEGUI.h>
 #include "InputSystem.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -49,9 +50,27 @@ public:
     assert(root_ != 0);
     return root_;
   }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: registerGuiSystem
+  //
+  // Registers a CEGUI::System object
+  static void registerGuiSystem(CEGUI::System* system) {
+    ceguiSystem_ = system;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: getGuiSystem
+  //
+  // Returns the current instance of the CEGUI::System object
+  static CEGUI::System* getGuiSystem() {
+    assert(ceguiSystem_ != 0);
+    return ceguiSystem_;
+  }
 private:
-  static Ogre::Root* root_; // The Ogre root object
-  static InputSystem* inputSystem_; // The input system instance
+  static InputSystem*   inputSystem_; // The input system instance
+  static Ogre::Root*    root_;  // The Ogre root object
+  static CEGUI::System* ceguiSystem_; // The CEGUI system object
 };
 
 #endif // LOCATOR_H_

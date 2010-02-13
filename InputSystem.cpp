@@ -1,13 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-02-04 00:47:40 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-12 15:53:01 by Eric Scrivner>
 //
 // Description:
 //   A simple wrapper class for the OIS input system
 ////////////////////////////////////////////////////////////////////////////////
 #include "InputSystem.h"
 
+#include <algorithm>
+#include <functional>
+
+#include <iostream>
+using namespace std;
 using namespace Ogre;
 
 InputSystem::InputSystem(Ogre::Root* root)
@@ -52,6 +57,20 @@ void InputSystem::addKeyListener(OIS::KeyListener* listener) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+void InputSystem::removeKeyListener(OIS::KeyListener* listener) {
+  if (keyboard_) {
+    std::vector<OIS::KeyListener*>::iterator it;
+    it = std::find(keyListeners_.begin(),
+                   keyListeners_.end(),
+                   listener);
+    if (it != keyListeners_.end()) {
+      keyListeners_.erase(it);
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 void InputSystem::addMouseListener(OIS::MouseListener* listener) {
 	if (mouse_) {
 		if (std::find(mouseListeners_.begin(),
@@ -60,6 +79,20 @@ void InputSystem::addMouseListener(OIS::MouseListener* listener) {
 			mouseListeners_.push_back(listener);
 		}
 	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void InputSystem::removeMouseListener(OIS::MouseListener* listener) {
+  if (mouse_) {
+    std::vector<OIS::MouseListener*>::iterator it;
+    it = std::find(mouseListeners_.begin(),
+                   mouseListeners_.end(),
+                   listener);
+    if (it != mouseListeners_.end()) {
+      mouseListeners_.erase(it);
+    }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -118,7 +151,6 @@ OIS::InputManager* InputSystem::createInputManager(Ogre::Root* root) {
 ////////////////////////////////////////////////////////////////////////////////
 
 bool InputSystem::keyPressed(const OIS::KeyEvent& event) {
-	// Dispatch the event
 	for (std::vector<OIS::KeyListener*>::iterator it = keyListeners_.begin();
 			 it != keyListeners_.end(); it++) {
 		// Any method which returns false halts event propogation
@@ -146,6 +178,13 @@ bool InputSystem::keyReleased(const OIS::KeyEvent& event) {
 ////////////////////////////////////////////////////////////////////////////////
 
 bool InputSystem::mouseMoved(const OIS::MouseEvent& event) {
+  for (std::vector<OIS::MouseListener*>::iterator it = mouseListeners_.begin();
+       it != mouseListeners_.end(); it++) {
+    if (!(*it)->mouseMoved(event)) {
+      break;
+    }
+  }
+
 	return true;
 }
 
@@ -153,6 +192,13 @@ bool InputSystem::mouseMoved(const OIS::MouseEvent& event) {
 
 bool InputSystem::mousePressed(const OIS::MouseEvent& event,
                                const OIS::MouseButtonID id) {
+  for (std::vector<OIS::MouseListener*>::iterator it = mouseListeners_.begin();
+       it != mouseListeners_.end(); it++) {
+    if (!(*it)->mousePressed(event, id)) {
+      break;
+    }
+  }
+
 	return true;
 }
 
@@ -160,5 +206,12 @@ bool InputSystem::mousePressed(const OIS::MouseEvent& event,
 
 bool InputSystem::mouseReleased(const OIS::MouseEvent& event,
                                 const OIS::MouseButtonID id) {
+  for (std::vector<OIS::MouseListener*>::iterator it = mouseListeners_.begin();
+       it != mouseListeners_.end(); it++) {
+    if (!(*it)->mouseReleased(event, id)) {
+      break;
+    }
+  }
+  
 	return true;
 }

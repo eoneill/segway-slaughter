@@ -1,5 +1,6 @@
 #include "SideScroller.h"
 #include "CasinoLevel.h"
+#include "MainMenu.h"
 
 using namespace std;
 using namespace Ogre;
@@ -192,6 +193,7 @@ GameState* SideScroller::update() {
   }
   if (is->isKeyDown(OIS::KC_ESCAPE)) {
     isDone_ = true;
+    //return new MainMenu;
   }
 	
 	if(player.attacking){
