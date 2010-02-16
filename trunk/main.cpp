@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "MainMenu.h"
 #include "SideScroller.h"
-//#include "CasinoLevel.h"
+#include "CasinoLevel.h"
 
 #include <iostream>
 #include <stdio.h>
