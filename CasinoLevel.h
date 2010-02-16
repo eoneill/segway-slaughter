@@ -3,11 +3,11 @@
 
 #include "Actor.h"
 #include "Player.h"
-#include "Enemy.h"
+//#include "Enemy.h"
 #include "GameState.h"
 #include "Locator.h"
 
-extern const int LEVEL_WIDTH;
+//extern const int LEVEL_WIDTH;
 
 class CasinoLevel : public GameState {
 public:
@@ -18,8 +18,9 @@ public:
   void initialize();
   bool isDone();
 private:
-  Actor player;
+  Actor* player;
   bool isDone_;
+  vector <Actor*> enemies;
 };
 
 #endif

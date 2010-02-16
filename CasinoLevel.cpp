@@ -1,4 +1,5 @@
 #include "CasinoLevel.h"
+#include "MainMenu.h"
 
 using namespace std;
 using namespace Ogre;
@@ -6,11 +7,15 @@ using namespace Ogre;
 
 CasinoLevel::CasinoLevel()
   : isDone_(false)
-{ }
+{}
 
 ////////////////////////////////////////////////////////////////////////////////
 
 CasinoLevel::~CasinoLevel() {
+  delete player;
+  for(unsigned int i = 0; i < enemies.size(); i++) {
+  	delete enemies[i];
+  }
   SceneManager* mSceneMgr = getRoot()->getSceneManager("Default SceneManager");
   mSceneMgr->destroyAllCameras();
   mSceneMgr->destroyAllEntities();
@@ -53,39 +58,16 @@ void CasinoLevel::initialize() {
   node->translate(0,0,0);
 
   //Player
-  player.position[0] = 0;
-  player.position[1] = 0;
-  player.position[2] = 0;
-  player.speed = 1;
-  player.facingRight = true;
-  player.MaxHealth = 100;
-  player.CurrentHealth = 100;
-  player.sceneNode = "NinjaNode2";
-  Entity *ent2 = mSceneMgr->createEntity( "ninja", "robot.mesh" );
-  SceneNode *node2 = mSceneMgr->getRootSceneNode()->createChildSceneNode( player.sceneNode, Vector3( 0, 0, 0 ) );
-  node2->attachObject( ent2 );
+  player = new Actor(root_,"ninja","robot.mesh");
   
   //make some sample enemies
-   vector <Enemy> enemies;  
    srand ( time(NULL) );
-   for(int i = 0; i < 25; i++){
-     Enemy temp;
-     temp.position[0] = rand() % LEVEL_WIDTH - LEVEL_WIDTH/2;
-     temp.position[1] = 0;
-     temp.position[2] = rand() % 10000 - 5000;;
-     temp.facingRight = true;
-     temp.MaxHealth = 100;
-     temp.CurrentHealth = 100;
-     char NodeNum[40] = "Enemy Node";
-     sprintf(NodeNum,"EnemyNode%d",i);
-     temp.sceneNode = NodeNum;
-     char EntName[40] = "Robot";
-     sprintf(EntName,"robot%d",i);
-     Entity *ent3 = mSceneMgr->createEntity( EntName, "ninja.mesh" );
-     SceneNode *node3 = mSceneMgr->getRootSceneNode()->createChildSceneNode( temp.sceneNode, Vector3( temp.position[0], temp.position[1], temp.position[2] ) );
-     node3->attachObject( ent3 );
-     enemies.push_back(temp);
-   }
+   for(int i = 0; i < 100; i++){
+    char EntName[40] = "Robot";
+    sprintf(EntName,"robot%d",i);
+    Actor* temp = new Actor(root_,EntName,"ninja.mesh",rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0,-(rand() % 30000+2000));
+    enemies.push_back(temp);
+  }
 
   // Light
   mSceneMgr->setAmbientLight(ColourValue(0.4, 0.4, 0.4));
@@ -102,6 +84,7 @@ void CasinoLevel::initialize() {
   //////////////************
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 
 bool CasinoLevel::isDone() {
@@ -112,45 +95,46 @@ bool CasinoLevel::isDone() {
 
 GameState* CasinoLevel::update() {
   Ogre::Root* root_ = getRoot();
-  SceneNode* node = root_->getSceneManager("Default SceneManager")->getSceneNode(player.sceneNode);
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
   InputSystem* is = Locator::getInput();
 		
+  //Move player up, but with constraints
   if (is->isKeyDown(OIS::KC_UP)) {
-    node->translate(Vector3(-1,0,0));
-    player.position[0]--;
+ 		player->move(DI_UP, enemies);
   }
+  //Move player down, but with constraints
   if (is->isKeyDown(OIS::KC_DOWN)) {
-    node->translate(Vector3(1,0,0));
-    player.position[0]++;
+  	player->move(DI_DOWN, enemies);
   }
-  if (is->isKeyDown(OIS::KC_LEFT)) {
-    mCamera->move(Vector3(0,0,1));
-				
-    node->translate(Vector3(0,0,1));
-    player.position[2] += 1;
-
-    if(player.facingRight == true){
-			node->yaw(Ogre::Degree(180));
-			player.facingRight = false;
+  //move player left
+    if (is->isKeyDown(OIS::KC_LEFT)) {
+	    if(player->move(DI_LEFT, enemies))
+	    	{
+		      mCamera->move(Vector3(0,0,1.33));
+		    }
     }
-  }
-  if (is->isKeyDown(OIS::KC_RIGHT)) {     				
-    mCamera->move(Vector3(0,0,-1));
-
-    node->translate(Vector3(0,0,-1));
-    player.position[2] -= 1;
-				
-    if(player.facingRight != true){
-			node->yaw(Ogre::Degree(180));
-      player.facingRight = true;
+    //move player right
+    if (is->isKeyDown(OIS::KC_RIGHT)) {
+    	if(player->move(DI_RIGHT, enemies))
+    	{
+	      mCamera->move(Vector3(0,0,-1.33));
+      }
     }
-  }
+
+    if (is->isKeyDown(OIS::KC_A)) {
+      player->attack(enemies, root_);
+    }
+    else{
+      player->stopBlood();
+      for(unsigned int i = 0; i < enemies.size(); i++)
+        enemies[i]->stopBlood();
+    }
 
   if (is->isKeyDown(OIS::KC_ESCAPE)) {
     isDone_ = true;
+    //return new MainMenu;
   }
-
+	
   return NULL;
 }
 
