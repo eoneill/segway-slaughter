@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-02-08 17:46:21 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-19 18:38:38 by Eric Scrivner>
 //
 // Description:
 //   Describes an object for defining and managing the state of the game as well
@@ -38,7 +38,7 @@ public:
   //
   // Updates the current state and returns the next state (which may be this
   // state).
-  virtual GameState* update() = 0;
+  virtual GameState* update(const Ogre::Real& timeSinceLastFrame) = 0;
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: isDone

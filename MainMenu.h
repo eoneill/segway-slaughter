@@ -17,7 +17,7 @@ public:
   MainMenu();
   ~MainMenu();
   void initialize();
-  GameState* update();
+  GameState* update(const Ogre::Real& timeSinceLastFrame);
   bool isDone();
 
   bool onQuit(const CEGUI::EventArgs& e) {

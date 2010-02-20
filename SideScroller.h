@@ -14,7 +14,7 @@ public:
   SideScroller();
   ~SideScroller();
 
-  GameState* update();
+  GameState* update(const Ogre::Real& timeSinceLastFrame);
   void initialize();
   bool isDone();
 private:

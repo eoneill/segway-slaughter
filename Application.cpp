@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-02-19 17:47:40 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-19 18:42:45 by Eric Scrivner>
 //
 // Description:
 //   Base class for all Ogre applications.
@@ -57,7 +57,7 @@ bool Application::frameStarted(const Ogre::FrameEvent& ev) {
   inputSystem_->update();
 
   // Update the current state and update the state stack as needed
-  GameState* nextState = states_.back()->update();
+  GameState* nextState = states_.back()->update(ev.timeSinceLastFrame);
 
   if (states_.back()->isDone()) {
     popState();
