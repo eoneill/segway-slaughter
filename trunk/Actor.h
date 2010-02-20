@@ -60,7 +60,7 @@ public:
       sNode_->attachObject( pSystem_ );
     }
 
-  ~Actor(){
+  virtual ~Actor(){
     Ogre::SceneManager* mSceneMgr = root_->getSceneManager("Default SceneManager");
     sNode_->detachObject(ent1_);
     //mSceneMgr->destroyParticleSystem(pSystem_);
