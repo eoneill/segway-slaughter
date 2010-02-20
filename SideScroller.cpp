@@ -10,14 +10,11 @@ using namespace Ogre;
 
 SideScroller::SideScroller()
   : isDone_(false)
-{ std::cout << "******* SideScroller" << std::endl; }
+{ }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 SideScroller::~SideScroller() {
-  std::cout << "******* ~SideScroller" << std::endl;
-  std::cout.flush();
-
   delete player;
   for(unsigned int i = 0; i < enemies.size(); i++) {
   	delete enemies[i];
@@ -30,6 +27,9 @@ SideScroller::~SideScroller() {
   mSceneMgr->destroyAllLights();
   mSceneMgr->clearScene();
   getRoot()->getAutoCreatedWindow()->removeAllViewports();
+
+  CEGUI::WindowManager::getSingleton().destroyWindow("HealthBar");
+  CEGUI::WindowManager::getSingleton().destroyWindow("HealthText");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -90,6 +90,18 @@ void SideScroller::initialize() {
   //SKYBOX
   mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox", 5000, false);
   //////////////************
+  CEGUI::Window* guiSheet = Locator::getGuiSystem()->getGUISheet();
+  CEGUI::Window* text_ = CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticText", "HealthText");
+  text_->setPosition(CEGUI::UVector2(cegui_reldim(0.01f), cegui_reldim(0.02f)));
+  text_->setSize(CEGUI::UVector2(cegui_reldim(0.10f), cegui_reldim(0.04f)));
+  text_->setText("Health");
+  guiSheet->addChildWindow(text_);
+
+  CEGUI::ProgressBar* bar_ = (CEGUI::ProgressBar*)CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/ProgressBar",
+                                                                                "HealthBar");
+  bar_->setPosition(CEGUI::UVector2(cegui_reldim(0.01f), cegui_reldim(0.01f)));
+  bar_->setSize(CEGUI::UVector2(cegui_reldim(0.107f), cegui_reldim(0.02f)));
+  guiSheet->addChildWindow(bar_);
 }
 
 
@@ -151,6 +163,9 @@ GameState* SideScroller::update() {
     isDone_ = true;
     return new MainMenu;
   }
+
+  CEGUI::ProgressBar* bar_ = (CEGUI::ProgressBar*)CEGUI::WindowManager::getSingleton().getWindow("HealthBar");
+  bar_->setProgress(player->getHealth() / player->maxHealth());
 	
   return NULL;
 }

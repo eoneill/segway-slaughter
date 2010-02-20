@@ -246,6 +246,14 @@ public:
     sNode_->translate(Vector3(0,10000,10000));
     
   }
+  
+  float getHealth() {
+    return CurrentHealth_;
+  }
+
+  float maxHealth() {
+    return  MaxHealth_;
+  }
 };
 
 

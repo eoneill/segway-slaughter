@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-02-19 16:53:12 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-19 17:47:40 by Eric Scrivner>
 //
 // Description:
 //   Base class for all Ogre applications.
@@ -91,7 +91,6 @@ void Application::pushState(GameState* state) {
 /////////////////////////////////////////////////////////////////////////////////
 
 void Application::popState() {
-  std::cout << "Popstate" << std::endl;
   assert(!states_.empty());
   delete states_.back();
   states_.pop_back();
