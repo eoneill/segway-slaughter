@@ -1,0 +1,32 @@
+// Example particle systems
+
+// smoke
+particle_system Blood
+{
+    	material        	Examples/Smoke
+    	particle_width  	55
+    	particle_height 	55
+    	cull_each       	true
+    	quota           	20
+    	billboard_type  	point
+    
+    	// Area emitter
+    	emitter Point
+    	{
+		angle               		11
+        	emission_rate       		2
+        	time_to_live        		4
+        	direction           		0 1 -1
+        	velocity_min        		150
+        	velocity_max        		240    	
+	}
+
+   	affector Rotator
+   	{
+        	rotation_range_start  		0
+        	rotation_range_end   	 	360
+        	rotation_speed_range_start  	-60
+        	rotation_speed_range_end    	200
+   	}
+
+}
