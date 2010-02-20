@@ -42,8 +42,6 @@ public:
   }
 
   bool mousePressed(const OIS::MouseEvent& event, OIS::MouseButtonID id) {
-    std::cout << "Mouse press\n";
-    std::cout.flush();
     CEGUI::MouseButton button = CEGUI::NoButton;
     switch(id) {
     case OIS::MB_Left:

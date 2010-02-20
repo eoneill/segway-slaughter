@@ -24,10 +24,11 @@ MainMenu::~MainMenu() {
   mSceneMgr->destroyAllLights();
   getRoot()->getAutoCreatedWindow()->removeAllViewports();
 
-  CEGUI::Window* guiSheet = Locator::getGuiSystem()->getGUISheet();
-  guiSheet->removeChildWindow("Start");
-  guiSheet->removeChildWindow("Options");
-  guiSheet->removeChildWindow("Quit");
+  //  CEGUI::Window* guiSheet = Locator::getGuiSystem()->getGUISheet();
+  CEGUI::WindowManager& wm = CEGUI::WindowManager::getSingleton();
+  wm.destroyWindow("Start");
+  wm.destroyWindow("Options");
+  wm.destroyWindow("Quit");
 
   Locator::getInput()->removeMouseListener(this);
 }
