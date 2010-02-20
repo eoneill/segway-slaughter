@@ -114,7 +114,7 @@ bool SideScroller::isDone() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-GameState* SideScroller::update() {
+GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   Ogre::Root* root_ = getRoot();
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
   InputSystem* is = Locator::getInput();

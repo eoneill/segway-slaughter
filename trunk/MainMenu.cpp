@@ -129,7 +129,7 @@ void MainMenu::initialize() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-GameState* MainMenu::update() {
+GameState* MainMenu::update(const Ogre::Real& timeSinceLastFrame) {
   return next_;
 }
 

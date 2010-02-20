@@ -14,7 +14,7 @@ public:
   CasinoLevel();
   ~CasinoLevel();
 
-  GameState* update();
+  GameState* update(const Ogre::Real& timeSinceLastFrame);
   void initialize();
   bool isDone();
 private:
