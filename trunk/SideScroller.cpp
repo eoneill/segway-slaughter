@@ -91,10 +91,11 @@ void SideScroller::initialize() {
   mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox", 5000, false);
   //////////////************
   CEGUI::Window* guiSheet = Locator::getGuiSystem()->getGUISheet();
+
   CEGUI::Window* text_ = CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticText", "HealthText");
   text_->setPosition(CEGUI::UVector2(cegui_reldim(0.01f), cegui_reldim(0.02f)));
   text_->setSize(CEGUI::UVector2(cegui_reldim(0.10f), cegui_reldim(0.04f)));
-  text_->setText("Health");
+  text_->setText("Score: 0");
   guiSheet->addChildWindow(text_);
 
   CEGUI::ProgressBar* bar_ = (CEGUI::ProgressBar*)CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/ProgressBar",
@@ -143,6 +144,10 @@ GameState* SideScroller::update() {
 
     if (is->isKeyDown(OIS::KC_A)) {
       player->attack(enemies, root_);
+      CEGUI::Window* text_ = CEGUI::WindowManager::getSingleton().getWindow("HealthText");
+      static char buf[255];
+      sprintf(buf, "Score: %d", player->getScore());
+      text_->setText(buf);
     }
     else{
       player->stopBlood();
