@@ -2,17 +2,22 @@
 #include "CasinoLevel.h"
 #include "MainMenu.h"
 
+#include <iostream>
+
 using namespace std;
 using namespace Ogre;
 
 
 SideScroller::SideScroller()
   : isDone_(false)
-{}
+{ std::cout << "******* SideScroller" << std::endl; }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 SideScroller::~SideScroller() {
+  std::cout << "******* ~SideScroller" << std::endl;
+  std::cout.flush();
+
   delete player;
   for(unsigned int i = 0; i < enemies.size(); i++) {
   	delete enemies[i];
@@ -21,7 +26,9 @@ SideScroller::~SideScroller() {
   mSceneMgr->destroyAllCameras();
   mSceneMgr->destroyAllEntities();
   mSceneMgr->getRootSceneNode()->removeAndDestroyAllChildren();
+  mSceneMgr->destroyAllParticleSystems();
   mSceneMgr->destroyAllLights();
+  mSceneMgr->clearScene();
   getRoot()->getAutoCreatedWindow()->removeAllViewports();
 }
 
@@ -142,7 +149,7 @@ GameState* SideScroller::update() {
   }
   if (is->isKeyDown(OIS::KC_ESCAPE)) {
     isDone_ = true;
-    //return new MainMenu;
+    return new MainMenu;
   }
 	
   return NULL;
