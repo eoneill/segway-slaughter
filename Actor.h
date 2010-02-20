@@ -15,11 +15,14 @@ const int DI_LEFT = 2;
 const int DI_RIGHT = 3;
 extern const int LEVEL_WIDTH;
 
+const int ENEMY_POINTS = 10;
+
 class Actor {
 private:
   double position_[3];
   float speed_, MaxHealth_, CurrentHealth_, CollisionSideLength_, damage_;
   bool facingRight_, attacking_;
+  int score_;
   Ogre::ParticleSystem *pSystem_;
   Ogre::SceneNode *sNode_;
   Ogre::Entity *ent1_;
@@ -46,6 +49,7 @@ public:
     damage_(damage),
     facingRight_(facingRight),
     attacking_(attacking),
+    score_(0),
     root_(root)
     {
       position_[0] = position0;
@@ -214,6 +218,7 @@ public:
         {
           //if we get here, the actor is hit by the attack
           if(actors[i]->onDamage(damage, root_)) {
+            score_ += ENEMY_POINTS;
             delete actors[i];
             actors.erase (actors.begin()+i);
           }
@@ -246,12 +251,16 @@ public:
     sNode_->translate(Vector3(0,10000,10000));
     
   }
+
+  int getScore() const {
+    return score_;
+  }
   
-  float getHealth() {
+  float getHealth() const {
     return CurrentHealth_;
   }
 
-  float maxHealth() {
+  float maxHealth() const {
     return  MaxHealth_;
   }
 };
