@@ -8,11 +8,12 @@
 #define MAIN_MENU_H_
 
 #include "GameState.h"
+#include "GuiListener.h"
 #include "SideScroller.h"
 #include <iostream>
 #include <CEGUI/elements/CEGUIPushButton.h>
 
-class MainMenu : public GameState, public OIS::MouseListener {
+class MainMenu : public GameState, public GuiListener {
 public:
   MainMenu();
   ~MainMenu();
@@ -32,50 +33,6 @@ public:
   }
 
   bool onOptions(const CEGUI::EventArgs& e) {
-    return true;
-  }
-
-  bool mouseMoved(const OIS::MouseEvent& event) {
-    Locator::getGuiSystem()->injectMouseMove(event.state.X.rel,
-                                             event.state.Y.rel);
-    return true;
-  }
-
-  bool mousePressed(const OIS::MouseEvent& event, OIS::MouseButtonID id) {
-    CEGUI::MouseButton button = CEGUI::NoButton;
-    switch(id) {
-    case OIS::MB_Left:
-      button = CEGUI::LeftButton;
-      break;
-    case OIS::MB_Middle:
-      button = CEGUI::MiddleButton;
-      break;
-    case OIS::MB_Right:
-      button = CEGUI::RightButton;
-      break;
-    default: break;
-    }
-
-    Locator::getGuiSystem()->injectMouseButtonDown(button);
-    return true;
-  }
-
-  bool mouseReleased(const OIS::MouseEvent& event, OIS::MouseButtonID id) {
-    CEGUI::MouseButton button = CEGUI::NoButton;
-    switch(id) {
-    case OIS::MB_Left:
-      button = CEGUI::LeftButton;
-      break;
-    case OIS::MB_Middle:
-      button = CEGUI::MiddleButton;
-      break;
-    case OIS::MB_Right:
-      button = CEGUI::RightButton;
-      break;
-    default: break;
-    }
-
-    Locator::getGuiSystem()->injectMouseButtonUp(button);
     return true;
   }
 private:
