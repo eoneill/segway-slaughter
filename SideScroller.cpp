@@ -119,6 +119,9 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
   InputSystem* is = Locator::getInput();
 		
+	//update AI
+	AIManager(enemies, root_);
+
   //Move player up, but with constraints
   if (is->isKeyDown(OIS::KC_UP)) {
  		player->move(DI_UP, enemies);
