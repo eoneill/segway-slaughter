@@ -9,6 +9,7 @@ OBJS = audio.o \
        Application.o \
 	     CasinoLevel.o \
        MainMenu.o \
+       AIManager.o \
        main.o
 LDFLAGS = $(shell pkg-config --libs $(LIBS))
 
@@ -35,6 +36,9 @@ CasinoLevel.o: CasinoLevel.h CasinoLevel.cpp
 
 audio.o: audio/audio.h audio/audio.cpp
 	$(CXX) $(CXXFLAGS) -c audio/audio.cpp -o audio.o
+
+AIManager.o: AIManager.h AIManager.cpp
+	$(CXX) $(CXXFLAGS) -c AIManager.cpp
 
 MainMenu.o: MainMenu.h MainMenu.cpp
 	$(CXX) $(CXXFLAGS) -c MainMenu.cpp
