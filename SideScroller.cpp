@@ -16,8 +16,8 @@ SideScroller::SideScroller()
 
 SideScroller::~SideScroller() {
   delete player;
-  for(unsigned int i = 0; i < enemies.size(); i++) {
-  	delete enemies[i];
+  for(unsigned int i = 0; i < actors.size(); i++) {
+  	delete actors[i];
   }
   SceneManager* mSceneMgr = getRoot()->getSceneManager("Default SceneManager");
   mSceneMgr->destroyAllCameras();
@@ -67,6 +67,7 @@ void SideScroller::initialize() {
 
   //Player
   player = new Actor(root_,"ninja","ninja.mesh");
+  actors.push_back(player);
   
   //make some sample enemies
    srand ( time(NULL) );
@@ -74,7 +75,7 @@ void SideScroller::initialize() {
     char EntName[40] = "Robot";
     sprintf(EntName,"robot%d",i);
     Actor* temp = new Actor(root_,EntName,"robot.mesh",rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0,-(rand() % 30000+2000));
-    enemies.push_back(temp);
+    actors.push_back(temp);
   }
 
   // Light
@@ -120,33 +121,33 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   InputSystem* is = Locator::getInput();
 		
 	//update AI
-	AIManager(enemies, root_);
+	AIManager(actors, root_);
 
   //Move player up, but with constraints
   if (is->isKeyDown(OIS::KC_UP)) {
- 		player->move(DI_UP, enemies);
+ 		player->move(DI_UP, actors);
   }
   //Move player down, but with constraints
   if (is->isKeyDown(OIS::KC_DOWN)) {
-  	player->move(DI_DOWN, enemies);
+  	player->move(DI_DOWN, actors);
   }
   //move player left
     if (is->isKeyDown(OIS::KC_LEFT)) {
-	    if(player->move(DI_LEFT, enemies))
+	    if(player->move(DI_LEFT, actors))
 	    	{
 		      mCamera->move(Vector3(0,0,1.33));
 		    }
     }
     //move player right
     if (is->isKeyDown(OIS::KC_RIGHT)) {
-    	if(player->move(DI_RIGHT, enemies))
+    	if(player->move(DI_RIGHT, actors))
     	{
 	      mCamera->move(Vector3(0,0,-1.33));
       }
     }
 
     if (is->isKeyDown(OIS::KC_A)) {
-      player->attack(enemies, root_);
+      player->attack(actors, root_);
       CEGUI::Window* text_ = CEGUI::WindowManager::getSingleton().getWindow("HealthText");
       static char buf[255];
       sprintf(buf, "Score: %d", player->getScore());
@@ -154,8 +155,8 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     }
     else{
       player->stopBlood();
-      for(unsigned int i = 0; i < enemies.size(); i++)
-        enemies[i]->stopBlood();
+      for(unsigned int i = 0; i < actors.size(); i++)
+        actors[i]->stopBlood();
     }
 /*
 	  if (player.position[2] <= -33000) {

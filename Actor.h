@@ -9,10 +9,10 @@
 using namespace std;
 using namespace Ogre;
 
-const int DI_UP = 0;
-const int DI_DOWN = 1;
-const int DI_LEFT = 2;
-const int DI_RIGHT = 3;
+const int DI_DOWN = 0;
+const int DI_RIGHT = 1;
+const int DI_UP = 2;
+const int DI_LEFT = 3;
 extern const int LEVEL_WIDTH;
 
 const int ENEMY_POINTS = 10;
