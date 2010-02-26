@@ -40,13 +40,13 @@ public:
         double position1 = 0,
         double position2 = 0,
         float speed = 1.33,
-        int direction = 1,
-        int state = 1,
+        int direction = DI_RIGHT,
+        int state = STATE_IDLE,
         float MaxHealth = 100,
         float CurrentHealth = 100,
         float CollisionSideLength = 50,
         bool attacking = false,
-        float damage = 0.33
+        float damage = 1
         ) :
     speed_(speed),
     MaxHealth_(MaxHealth),
@@ -81,19 +81,19 @@ public:
   };
     
   //change this to take in the player and enemies by reference later
-  virtual bool move(int direction, vector<Actor*> actors){
+  virtual bool move(int newDirection, vector<Actor*> actors){
     //find out where we would move if we moved
     double TempPos[3];
     TempPos[0] = position_[0];
     TempPos[1] = position_[1];
     TempPos[2] = position_[2];
-    if(direction == DI_UP){
+    if(newDirection == DI_UP){
       TempPos[0] -= speed_;
-    } else if(direction == DI_DOWN){
+    } else if(newDirection == DI_DOWN){
       TempPos[0] += speed_;
-    } else if(direction == DI_LEFT){
+    } else if(newDirection == DI_LEFT){
       TempPos[2] += speed_;
-    } else if(direction == DI_RIGHT){
+    } else if(newDirection == DI_RIGHT){
       TempPos[2] -= speed_;
     }
     
@@ -154,7 +154,7 @@ public:
 				}
     }
 
-    if(direction == DI_UP){
+    if(newDirection == DI_UP){
    		if(valid)
       {
 	     	if(position_[0] > -LEVEL_WIDTH/2){
@@ -162,10 +162,8 @@ public:
   	      position_[0]-=speed_;
   	    }
   		}
-	  	sNode_->yaw(Ogre::Degree(90*(DI_UP-direction_)));
-      direction_ = DI_UP;
     }
-    if(direction == DI_DOWN){
+    if(newDirection == DI_DOWN){
       if(valid)
   	  {
 	      if(position_[0] < LEVEL_WIDTH/2){
@@ -173,36 +171,30 @@ public:
 	        position_[0]+=speed_;
 	      }
 	    }
-		
-	  	sNode_->yaw(Ogre::Degree(90*(DI_DOWN-direction_)));
-      direction_ = DI_DOWN;
     }
-    if(direction == DI_LEFT){
+    if(newDirection == DI_LEFT){
       if(valid)
     	{
 	      sNode_->translate(Vector3(0,0,speed_));
 	      position_[2]+=speed_;
 	    }
-			sNode_->yaw(Ogre::Degree(90*(DI_LEFT-direction_)));
-      direction_ = DI_LEFT;
     }
-    if(direction == DI_RIGHT){
+    if(newDirection == DI_RIGHT){
       if(valid)
     	{
 	      sNode_->translate(Vector3(0,0,-speed_));
 	      position_[2]-=speed_;
       }
-			sNode_->yaw(Ogre::Degree(90*(DI_RIGHT-direction_)));
-      direction_ = DI_RIGHT;
     }
+
+		//rotate regardless of collision
+		sNode_->yaw(Ogre::Degree(90*(newDirection-direction_)));
+    direction_ = newDirection;
 
     return valid;
   }
     
-  void attack(vector<Actor*> &actors, Ogre::Root* root_, float damage = -1){
-    if(damage == -1) {
-      damage = damage_;
-    }
+  void attack(vector<Actor*> &actors, Ogre::Root* root_){
     //find out where the damage box is, based on direction facing
 			double damagePos[3];
 			int vert = 0;
@@ -219,7 +211,7 @@ public:
 			
 			damagePos[0] = position_[0] + ( 2*CollisionSideLength_*vert );
 			damagePos[1] = position_[1];
-			damagePos[2] = position_[2] + ( 2*CollisionSideLength_*horiz );//+ CollisionSideLength - ((direction-2)*2*CollisionSideLength);
+			damagePos[2] = position_[2] + ( 2*CollisionSideLength_*horiz );
 			
 			//x and z value for each point of the damage box
 			float damage_box[4][2];
@@ -237,7 +229,7 @@ public:
 			
 			for(unsigned int i = 0; i < actors.size(); i++)
 			{
-				//don't collide with itself
+				//don't collide with itself and do a quick check
 				if(sNode_ != actors[i]->sNode_ && fabs(actors[i]->position_[0] - position_[0])
 				< actors[i]->CollisionSideLength_ + CollisionSideLength_)
 				{
@@ -264,7 +256,7 @@ public:
 							 )
 						{
 							//if we get here, the actor is hit by the attack
-						if(actors[i]->onDamage(damage, root_)) {
+						if(actors[i]->onDamage(damage_, root_)) {
   	          score_ += ENEMY_POINTS;
     	        delete actors[i];
       	      actors.erase (actors.begin()+i);
@@ -301,7 +293,7 @@ public:
     position_[1]+= 10000;
     position_[2]+= 10000;
     sNode_->translate(Vector3(0,10000,10000));
-    
+    state_ = STATE_DEAD;
   }
 
   int getScore() const {
