@@ -15,7 +15,6 @@ SideScroller::SideScroller()
 ////////////////////////////////////////////////////////////////////////////////
 
 SideScroller::~SideScroller() {
-  delete player;
   for(unsigned int i = 0; i < actors.size(); i++) {
   	delete actors[i];
   }
@@ -75,6 +74,13 @@ void SideScroller::initialize() {
     char EntName[40] = "Robot";
     sprintf(EntName,"robot%d",i);
     Actor* temp = new Actor(root_,EntName,"robot.mesh",rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0,-(rand() % 30000+2000));
+
+    //stats need to be less for the enemies
+    temp->speed_ = 1;
+    temp->MaxHealth_ = 25;
+    temp->CurrentHealth_ = 25;
+    temp->damage_ = 0.01;
+    
     actors.push_back(temp);
   }
 
@@ -135,14 +141,14 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     if (is->isKeyDown(OIS::KC_LEFT)) {
 	    if(player->move(DI_LEFT, actors))
 	    	{
-		      mCamera->move(Vector3(0,0,1.33));
+		      mCamera->move(Vector3(0,0,player->speed_));
 		    }
     }
     //move player right
     if (is->isKeyDown(OIS::KC_RIGHT)) {
     	if(player->move(DI_RIGHT, actors))
     	{
-	      mCamera->move(Vector3(0,0,-1.33));
+	      mCamera->move(Vector3(0,0,-player->speed_));
       }
     }
 
