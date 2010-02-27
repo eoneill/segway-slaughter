@@ -58,14 +58,14 @@ void CasinoLevel::initialize() {
   node->translate(0,0,0);
 
   //Player
-  player = new Actor(root_,"ninja","robot.mesh");
+  player = new Actor("ninja","robot.mesh", Ogre::Vector3(0,0,0));
   
   //make some sample enemies
    srand ( time(NULL) );
    for(int i = 0; i < 100; i++){
     char EntName[40] = "Robot";
     sprintf(EntName,"robot%d",i);
-    Actor* temp = new Actor(root_,EntName,"ninja.mesh",rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0,-(rand() % 30000+2000));
+    Actor* temp = new Actor(EntName,"ninja.mesh", Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0,-(rand() % 30000+2000)));
     enemies.push_back(temp);
   }
 
@@ -100,29 +100,29 @@ GameState* CasinoLevel::update(const Ogre::Real& timeSinceLastFrame) {
 		
   //Move player up, but with constraints
   if (is->isKeyDown(OIS::KC_UP)) {
- 		player->move(DI_UP, enemies);
+ 		player->move(kUp, enemies);
   }
   //Move player down, but with constraints
   if (is->isKeyDown(OIS::KC_DOWN)) {
-  	player->move(DI_DOWN, enemies);
+  	player->move(kDown, enemies);
   }
   //move player left
     if (is->isKeyDown(OIS::KC_LEFT)) {
-	    if(player->move(DI_LEFT, enemies))
+	    if(player->move(kLeft, enemies))
 	    	{
 		      mCamera->move(Vector3(0,0,1.33));
 		    }
     }
     //move player right
     if (is->isKeyDown(OIS::KC_RIGHT)) {
-    	if(player->move(DI_RIGHT, enemies))
+    	if(player->move(kRight, enemies))
     	{
 	      mCamera->move(Vector3(0,0,-1.33));
       }
     }
 
     if (is->isKeyDown(OIS::KC_A)) {
-      player->attack(enemies, root_);
+      player->attack(enemies);
     }
     else{
       player->stopBlood();

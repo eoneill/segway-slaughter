@@ -67,10 +67,28 @@ public:
     assert(ceguiSystem_ != 0);
     return ceguiSystem_;
   }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  // Function: registerSceneManager
+  //
+  // Registers an Ogre scene manager.
+  static void registerSceneManager(Ogre::SceneManager* sceneMgr) {
+    sceneMgr_ = sceneMgr;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  // Function: getSceneManager
+  //
+  // Returns the registered Ogre scene manager.
+  static Ogre::SceneManager* getSceneManager() {
+    assert(sceneMgr_ != 0);
+    return sceneMgr_;
+  }
 private:
-  static InputSystem*   inputSystem_; // The input system instance
-  static Ogre::Root*    root_;  // The Ogre root object
-  static CEGUI::System* ceguiSystem_; // The CEGUI system object
+  static InputSystem*        inputSystem_; // The input system instance
+  static Ogre::Root*         root_;  // The Ogre root object
+  static CEGUI::System*      ceguiSystem_; // The CEGUI system object
+  static Ogre::SceneManager* sceneMgr_; // Ogre scene manager
 };
 
 #endif // LOCATOR_H_
