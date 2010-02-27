@@ -6,7 +6,7 @@
 //#include "Enemy.h"
 #include "GameState.h"
 #include "Locator.h"
-#include "AIManager.h"
+//#include "AIManager.h"
 
 //extern const int LEVEL_WIDTH;
 

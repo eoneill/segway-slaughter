@@ -14,7 +14,7 @@ double getDist(double pos1[3], double pos2[3]){
 	return sqrt(pow((pos1[0] - pos2[0]), 2) + pow((pos1[2] - pos2[2]), 2));
 }
 
-void AIManager(vector<Actor*> actors, Ogre::Root* root_){
+void AIManager(vector<Actor*> actors){
 	//only do AI once every tick
 	if(AICount != AITick){
 		//cout << "AI count" << endl;
@@ -93,7 +93,7 @@ void AIManager(vector<Actor*> actors, Ogre::Root* root_){
 	    	
 	    	//if we're close enough, attack
 	    	//if(getDist(actors[i]->position, actors[0]->position) <  actors[i]->CollisionSideLength){
-	    		actors[i]->attack(actors, root_);
+	    		actors[i]->attack(actors);
 	    		//cerr << "ATTACK!!" << endl;
 	    	//}
 	    	

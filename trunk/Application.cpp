@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-02-19 18:42:45 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-02-24 19:44:01 by Eric Scrivner>
 //
 // Description:
 //   Base class for all Ogre applications.
@@ -11,6 +11,13 @@
 
 #include <iostream>
 using namespace std;
+
+////////////////////////////////////////////////////////////////////////////////
+// Constants
+
+const char* DEFAULT_SCENE_MGR = "Default SceneManager";
+
+////////////////////////////////////////////////////////////////////////////////
 
 Application::Application(const std::string& appName)
   : root_(new Ogre::Root()),
@@ -146,7 +153,8 @@ void Application::initializeResourceGroups() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Application::setupScene() {
-  root_->createSceneManager(Ogre::ST_GENERIC, "Default SceneManager");
+  root_->createSceneManager(Ogre::ST_GENERIC, DEFAULT_SCENE_MGR);
+  Locator::registerSceneManager(root_->getSceneManager(DEFAULT_SCENE_MGR));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -159,7 +167,7 @@ void Application::setupInputSystem() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void Application::setupCEGUI() {
-  Ogre::SceneManager *mgr = root_->getSceneManager("Default SceneManager");
+  Ogre::SceneManager *mgr = Locator::getSceneManager();
   Ogre::RenderWindow *win = root_->getAutoCreatedWindow();
 
   // CEGUI setup
