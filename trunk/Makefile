@@ -1,4 +1,4 @@
-LIBS = OGRE OIS CEGUI CEGUI-OGRE openal
+LIBS = OGRE OIS CEGUI CEGUI-OGRE openal freealut
 CXX = g++
 CXXFLAGS = -Wall -Werror -ansi $(shell pkg-config --cflags $(LIBS))
 OBJS = audio.o \
@@ -9,7 +9,7 @@ OBJS = audio.o \
        SideScroller.o \
        Application.o \
 	     CasinoLevel.o \
-       MainMenu.o \
+	       MainMenu.o \
 	     main.o
 
 LDFLAGS = $(shell pkg-config --libs $(LIBS))
