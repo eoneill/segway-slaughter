@@ -17,3 +17,20 @@ material Examples/Smoke
 		}
 	}
 }
+material Suburb/Road
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.75 0.75 0.75
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture road_street_texture.jpg
+			}
+		}
+	}
+}

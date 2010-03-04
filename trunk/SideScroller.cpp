@@ -53,16 +53,16 @@ void SideScroller::initialize() {
 
   // TEST PLANE
   Plane plane(Vector3::UNIT_Y, 0);
-  MeshManager::getSingleton().createPlane("ground",
+  MeshManager::getSingleton().createPlane("SSground",
                                           ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
-                                          150000,150000,20,20,true,1,5,5,Vector3::UNIT_Z);
-  Entity* ent = mSceneMgr->createEntity("GroundEntity", "ground");
-  ent->setMaterialName("Examples/Rockwall");
+                                          1550,151800,1,1,true,1,1,60,Vector3::UNIT_Z);
+  Entity* ent = mSceneMgr->createEntity("SSGroundEntity", "SSground");
+  ent->setMaterialName("Suburb/Road");
   ent->setCastShadows(false);
 
   SceneNode* node = mSceneMgr->getRootSceneNode()->createChildSceneNode();
   node->attachObject(ent);
-  node->translate(0,0,0);
+  node->translate(0,0,1000);
 
   //Player
   player = new Actor("ninja","ninja.mesh", Ogre::Vector3(0,0,0));
@@ -94,8 +94,9 @@ void SideScroller::initialize() {
   light->setSpecularColour(0.3, 0.3, 0.3);
     
 
-  //SKYBOX
-  mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox", 5000, false);
+  //SKYPLANE
+  Plane skyplane(Vector3::UNIT_X, -1550);
+  mSceneMgr->setSkyPlane(true, skyplane, "Examples/CloudySky");
   //////////////************
   CEGUI::Window* guiSheet = Locator::getGuiSystem()->getGUISheet();
 
