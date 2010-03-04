@@ -64,6 +64,16 @@ void SideScroller::initialize() {
   node->attachObject(ent);
   node->translate(0,0,1000);
 
+  Plane backplane(Vector3::UNIT_X, 0);
+  MeshManager::getSingleton().createPlane("SSBack",
+                                          ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, backplane,
+                                          1550,151800,1,1,true,1,1,60,Vector3::UNIT_Z);
+  ent = mSceneMgr->createEntity("SSBuilding1", "SSBack");
+  ent->setMaterialName("Urban/Building");
+  node = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(-750,775,0));
+//  node->scale(75,75,75);
+  node->attachObject(ent);
+
   //Player
   player = new Actor("ninja","ninja.mesh", Ogre::Vector3(0,0,0));
   actors.push_back(player);
@@ -84,6 +94,19 @@ void SideScroller::initialize() {
     actors.push_back(temp);
   }
 
+  //Static Objects
+  ent = mSceneMgr->createEntity("SSPole1", "tel_pole_basic.mesh");
+  node = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(0,0,0));
+  node->scale(70,70,70);
+  node->translate(-550,0,0);
+  node->attachObject(ent);
+
+  ent = mSceneMgr->createEntity("SSPole2", "tel_pole_basic.mesh");
+  node = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(0,0,0));
+  node->scale(70,70,70);
+  node->translate(-550,0,-6300);
+  node->attachObject(ent);
+
   // Light
   mSceneMgr->setAmbientLight(ColourValue(0.4, 0.4, 0.4));
   Light *light = mSceneMgr->createLight("Light1");
@@ -95,8 +118,8 @@ void SideScroller::initialize() {
     
 
   //SKYPLANE
-  Plane skyplane(Vector3::UNIT_X, -1550);
-  mSceneMgr->setSkyPlane(true, skyplane, "Examples/CloudySky");
+//  Plane skyplane(Vector3::UNIT_X, -1550);
+//  mSceneMgr->setSkyPlane(true, skyplane, "Examples/CloudySky");
   //////////////************
   CEGUI::Window* guiSheet = Locator::getGuiSystem()->getGUISheet();
 
