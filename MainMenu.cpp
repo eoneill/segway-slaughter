@@ -18,6 +18,7 @@ MainMenu::MainMenu()
 
 MainMenu::~MainMenu() {
   SceneManager* mSceneMgr = getRoot()->getSceneManager("Default SceneManager");
+  mSceneMgr->setSkyBox(false, "Examples/SpaceSkyBox");
   mSceneMgr->destroyAllCameras();
   mSceneMgr->destroyAllEntities();
   mSceneMgr->getRootSceneNode()->removeAndDestroyAllChildren();
@@ -124,7 +125,7 @@ void MainMenu::initialize() {
   
   
   //SKYBOX
-  mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox", 5000, false);
+  mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
