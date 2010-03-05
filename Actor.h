@@ -80,6 +80,7 @@ class Actor {
 public:
   Actor(const std::string& entityName,
         const std::string& entityMesh,
+        const Status& stats,
         const Ogre::Vector3& position = Ogre::Vector3::ZERO);
 
   virtual ~Actor();
@@ -108,13 +109,13 @@ public:
   // Function: onDamage
   //
   // Handles an attack on this actor
-  bool onDamage(float damage) { return false; }
+  bool onDamage(float damage);
   
   //////////////////////////////////////////////////////////////////////////////
   // Function: onDeath
   //
   // Handles the death of this actor
-  void onDeath() {}
+  void onDeath();
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: getScore
@@ -144,6 +145,7 @@ private:
   Ogre::SceneNode*  sceneNode_;
   Ogre::Entity*     entity_;
   MovementDirection direction_;
+  Status            stats_;
 };
 
 #endif // ACTOR_H_
