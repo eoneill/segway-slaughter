@@ -15,10 +15,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Constants
 enum MovementDirection {
-  kUp,
   kDown,
-  kLeft,
-  kRight
+  kRight,
+  kUp,
+  kLeft
 };
 
 const int LEVEL_WIDTH = 1000;
@@ -140,10 +140,10 @@ public:
     return DEFAULT_MAX_HEALTH;
   }
 private:
-  Ogre::Vector3    position_;
-  Ogre::SceneNode* sceneNode_;
-  Ogre::Entity*    entity_;
-  bool             isFacingRight_;
+  Ogre::Vector3     position_;
+  Ogre::SceneNode*  sceneNode_;
+  Ogre::Entity*     entity_;
+  MovementDirection direction_;
 };
 
 #endif // ACTOR_H_
