@@ -7,7 +7,7 @@
 #include "GameState.h"
 #include "Locator.h"
 //#include "AIManager.h"
-
+#include "HUD.h"
 //extern const int LEVEL_WIDTH;
 
 class SideScroller : public GameState {
@@ -20,7 +20,8 @@ public:
   bool isDone();
 private:
   Actor* player;
-  bool isDone_;
+  HUD*   hud_;
+  bool   isDone_;
   vector <Actor*> actors;
 };
 
