@@ -6,6 +6,7 @@
 //#include "Enemy.h"
 #include "GameState.h"
 #include "Locator.h"
+//#include "AIManager.h"
 
 //extern const int LEVEL_WIDTH;
 
@@ -20,7 +21,7 @@ public:
 private:
   Actor* player;
   bool isDone_;
-  vector <Actor*> enemies;
+  vector <Actor*> actors;
 };
 
 #endif
