@@ -25,7 +25,7 @@ Actor::Actor(const std::string& entityName,
              const std::string& entityMesh,
              const Ogre::Vector3& position)
   : position_(position),
-    isFacingRight_(true)
+    direction_(kRight)
 {
   Ogre::SceneManager* sceneMgr = Locator::getSceneManager();
   entity_ = sceneMgr->createEntity(entityName, entityMesh);
@@ -45,11 +45,11 @@ Actor::~Actor() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool Actor::move(const MovementDirection& direction,
+bool Actor::move(const MovementDirection& newDirection,
                  const vector<Actor*>& actors) {
   // Compute new position
   Ogre::Vector3 tmp = position_;
-  switch(direction) {
+  switch(newDirection) {
   case kUp: tmp.x -= DEFAULT_MOVE_SPEED; break;
   case kDown: tmp.x += DEFAULT_MOVE_SPEED; break;
   case kLeft: tmp.z += DEFAULT_MOVE_SPEED; break;
@@ -71,7 +71,7 @@ bool Actor::move(const MovementDirection& direction,
   if (validMove) {
     bool wasTranslated = false;
 
-    switch(direction) {
+    switch(newDirection) {
     case kUp:
       {
         if (tmp.x > -LEVEL_WIDTH / 2) {
@@ -92,10 +92,10 @@ bool Actor::move(const MovementDirection& direction,
       {
         sceneNode_->translate(Vector3(0, 0, DEFAULT_MOVE_SPEED));
         
-        if (isFacingRight_) {
+        /*if (isFacingRight_) {
           sceneNode_->yaw(Ogre::Degree(180));
           isFacingRight_ = false;
-        }
+        }*/
         wasTranslated = true;
       }
       break;
@@ -103,15 +103,19 @@ bool Actor::move(const MovementDirection& direction,
       {
         sceneNode_->translate(Vector3(0, 0, -DEFAULT_MOVE_SPEED));
 
-        if (!isFacingRight_) {
+/*        if (!isFacingRight_) {
           sceneNode_->yaw(Ogre::Degree(180));
           isFacingRight_ = true;
-        }
+        }*/
         wasTranslated = true;
       }
       break;
     default: break;
     }
+		
+ 		sceneNode_->yaw(Ogre::Degree(90*(newDirection-direction_)));
+    direction_ = newDirection;
+
 
     if (wasTranslated) {
       position_ = tmp;
