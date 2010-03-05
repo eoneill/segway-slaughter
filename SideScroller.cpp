@@ -1,7 +1,6 @@
 #include "SideScroller.h"
 #include "CasinoLevel.h"
 #include "MainMenu.h"
-
 #include <iostream>
 
 using namespace std;
@@ -9,7 +8,8 @@ using namespace Ogre;
 
 
 SideScroller::SideScroller()
-  : isDone_(false)
+  : hud_(0),
+    isDone_(false)
 { }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -27,8 +27,8 @@ SideScroller::~SideScroller() {
   mSceneMgr->clearScene();
   getRoot()->getAutoCreatedWindow()->removeAllViewports();
 
-  CEGUI::WindowManager::getSingleton().destroyWindow("HealthBar");
-  CEGUI::WindowManager::getSingleton().destroyWindow("HealthText");
+  assert(hud_ != 0);
+  delete hud_;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -121,19 +121,7 @@ void SideScroller::initialize() {
 //  Plane skyplane(Vector3::UNIT_X, -1550);
 //  mSceneMgr->setSkyPlane(true, skyplane, "Examples/CloudySky");
   //////////////************
-  CEGUI::Window* guiSheet = Locator::getGuiSystem()->getGUISheet();
-
-  CEGUI::Window* text_ = CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticText", "HealthText");
-  text_->setPosition(CEGUI::UVector2(cegui_reldim(0.01f), cegui_reldim(0.02f)));
-  text_->setSize(CEGUI::UVector2(cegui_reldim(0.10f), cegui_reldim(0.04f)));
-  text_->setText("Score: 0");
-  guiSheet->addChildWindow(text_);
-
-  CEGUI::ProgressBar* bar_ = (CEGUI::ProgressBar*)CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/ProgressBar",
-                                                                                "HealthBar");
-  bar_->setPosition(CEGUI::UVector2(cegui_reldim(0.01f), cegui_reldim(0.01f)));
-  bar_->setSize(CEGUI::UVector2(cegui_reldim(0.107f), cegui_reldim(0.02f)));
-  guiSheet->addChildWindow(bar_);
+  hud_ = new HUD();
 }
 
 
@@ -178,10 +166,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 
     if (is->isKeyDown(OIS::KC_A)) {
       player->attack(actors);
-      CEGUI::Window* text_ = CEGUI::WindowManager::getSingleton().getWindow("HealthText");
-      static char buf[255];
-      sprintf(buf, "Score: %d", player->getScore());
-      text_->setText(buf);
+      hud_->updateScore(player->getScore());
     }
     else{
       player->stopBlood();
@@ -203,8 +188,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     return new MainMenu;
   }
 
-  CEGUI::ProgressBar* bar_ = (CEGUI::ProgressBar*)CEGUI::WindowManager::getSingleton().getWindow("HealthBar");
-  bar_->setProgress(player->getHealth() / player->getMaxHealth());
+  hud_->updateHealth(player->getHealth() / player->getMaxHealth());
 	
   return NULL;
 }
