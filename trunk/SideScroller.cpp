@@ -75,7 +75,7 @@ void SideScroller::initialize() {
   node->attachObject(ent);
 
   //Player
-  player = new Actor("ninja","ninja.mesh", Ogre::Vector3(0,0,0));
+  player = new Actor("ninja","ninja.mesh", Status(100), Ogre::Vector3(0,0,0));
   actors.push_back(player);
   
   //make some sample enemies
@@ -83,8 +83,9 @@ void SideScroller::initialize() {
    for(int i = 0; i < 100; i++){
     char EntName[40] = "Robot";
     sprintf(EntName,"robot%d",i);
-    Actor* temp = new Actor(EntName,"robot.mesh", Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0,-(rand() % 30000+2000)));
-
+    Actor* temp = new Actor(EntName,"robot.mesh", Status(25),
+    	                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0,-(rand() % 30000+2000)));
+		
     //stats need to be less for the enemies
     //temp->speed_ = 1;
     //temp->MaxHealth_ = 25;
