@@ -100,7 +100,7 @@ void SideScroller::initialize() {
 
   //Static Objects
   ent = mSceneMgr->createEntity("SSPole1", "tel_pole_basic.mesh");
-  ent->setMaterialName("tel_pole_basic_tex");
+  ent->setMaterialName("tel_pole_basic");
   StaticGeometry *sg = mSceneMgr->createStaticGeometry("SSPole1");
 	for(int i = 0; i < 20; i++)
     sg->addEntity(ent, Ogre::Vector3(-550,0,-6300*i), Quaternion::IDENTITY, Ogre::Vector3(70,70,70));
