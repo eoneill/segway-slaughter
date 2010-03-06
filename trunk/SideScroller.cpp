@@ -78,7 +78,8 @@ void SideScroller::initialize() {
   node->attachObject(ent);
 
   //Player
-  player = new Actor("ninja","ninja.mesh", Status(100), Ogre::Vector3(0,0,0));
+  player = new Charlie("ninja", "ninja.mesh", Ogre::Vector3(0,0,0));
+
   actors.push_back(player);
   
   //make some sample enemies

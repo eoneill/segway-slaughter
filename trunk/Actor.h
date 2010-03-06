@@ -149,12 +149,23 @@ public:
   float getMaxHealth() const {
     return DEFAULT_MAX_HEALTH;
   }
-private:
+protected:
   Ogre::Vector3     position_;
   Ogre::SceneNode*  sceneNode_;
   Ogre::Entity*     entity_;
   MovementDirection direction_;
   Status            stats_;
+};
+
+class Charlie : public Actor {
+public:
+  Charlie(const std::string& entityName,
+          const std::string& entityMesh,
+          const Ogre::Vector3& position = Ogre::Vector3::ZERO)
+  : Actor(entityName, entityMesh, Status(100), position)
+  {
+    direction_ = kLeft;
+  }
 };
 
 #endif // ACTOR_H_

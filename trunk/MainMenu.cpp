@@ -105,9 +105,10 @@ void MainMenu::initialize() {
   node->translate(0,0,0);
 	
   //Robot
-  Entity *ent2 = mSceneMgr->createEntity( "Robot2", "robot.mesh" );
-  SceneNode *node2 = mSceneMgr->getRootSceneNode()->createChildSceneNode( "RobotNode2", Vector3( 50, 0, 0 ) );
+  Entity *ent2 = mSceneMgr->createEntity( "mobster", "mobster.mesh" );
+  SceneNode *node2 = mSceneMgr->getRootSceneNode()->createChildSceneNode( "mobster", Vector3( 50, 0, 0 ) );
   node2->attachObject( ent2 );
+  node2->setScale(12,12,12);
   
   // Light
   mSceneMgr->setAmbientLight(ColourValue(0.4, 0.4, 0.4));
