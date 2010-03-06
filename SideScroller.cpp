@@ -20,6 +20,7 @@ SideScroller::~SideScroller() {
   }
   SceneManager* mSceneMgr = getRoot()->getSceneManager("Default SceneManager");
   mSceneMgr->destroyAllCameras();
+  mSceneMgr->destroyAllStaticGeometry();
   mSceneMgr->destroyAllEntities();
   mSceneMgr->getRootSceneNode()->removeAndDestroyAllChildren();
   mSceneMgr->destroyAllParticleSystems();
@@ -97,16 +98,12 @@ void SideScroller::initialize() {
 
   //Static Objects
   ent = mSceneMgr->createEntity("SSPole1", "tel_pole_basic.mesh");
-  node = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(0,0,0));
-  node->scale(70,70,70);
-  node->translate(-550,0,0);
-  node->attachObject(ent);
-
-  ent = mSceneMgr->createEntity("SSPole2", "tel_pole_basic.mesh");
-  node = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(0,0,0));
-  node->scale(70,70,70);
-  node->translate(-550,0,-6300);
-  node->attachObject(ent);
+  ent->setMaterialName("tel_pole_basic_tex");
+  StaticGeometry *sg = mSceneMgr->createStaticGeometry("SSPole1");
+	for(int i = 0; i < 20; i++)
+    sg->addEntity(ent, Ogre::Vector3(-550,0,-6300*i), Quaternion::IDENTITY, Ogre::Vector3(70,70,70));
+  sg->setCastShadows(true);
+  sg->build();
 
   // Light
   mSceneMgr->setAmbientLight(ColourValue(0.4, 0.4, 0.4));
