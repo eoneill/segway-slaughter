@@ -9,7 +9,9 @@ using namespace Ogre;
 
 SideScroller::SideScroller()
   : hud_(0),
-    isDone_(false)
+    isDone_(false),
+    timeLeft_(TIME_PER_LEVEL)
+    //timer_(new Ogre::Timer())
 { }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -120,6 +122,7 @@ void SideScroller::initialize() {
 //  mSceneMgr->setSkyPlane(true, skyplane, "Examples/CloudySky");
   //////////////************
   hud_ = new HUD();
+  hud_->updateTimeLeft(timeLeft_ / 60, timeLeft_ % 60);
 }
 
 
@@ -188,6 +191,14 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   }
 
   hud_->updateHealth(player->getHealth() / player->getMaxHealth());
+
+  unsigned int millis = timer_.getMilliseconds() / 1000;
+
+  if (millis >= 1) {
+    timeLeft_ -= millis;
+    hud_->updateTimeLeft(timeLeft_ / 60, timeLeft_ % 60);
+    timer_.reset();
+  }
 	
   return NULL;
 }
