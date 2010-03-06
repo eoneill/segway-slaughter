@@ -35,6 +35,9 @@ const float DEFAULT_MOVE_SPEED = 1.33;
 // The default bounding box side length
 const float DEFAULT_COLLISION_RAD = 50;
 
+// The default attack box size
+const float DEFAULT_ATTACK_BOX = 50;
+
 ////////////////////////////////////////////////////////////////////////////////
 // Class: Status
 //
@@ -97,13 +100,19 @@ public:
   // Function: attack
   //
   // Attempt to perform an attack on nearby entities
-  void attack(std::vector<Actor*>& actors, float damage = -1) {}
+  void attack(std::vector<Actor*>& actors);
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: stopBlood
   //
   // Stops the blood from spraying from an attacked enemy
   void stopBlood() {} 
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: attack
+  //
+  // When the character attacks
+  bool attack();
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: onDamage
