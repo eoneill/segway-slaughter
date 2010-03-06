@@ -9,7 +9,8 @@ OBJS = audio.o \
        SideScroller.o \
        Application.o \
 	     CasinoLevel.o \
-	       MainMenu.o \
+	     MainMenu.o \
+       HUD.o \
 	     main.o
 
 LDFLAGS = $(shell pkg-config --libs $(LIBS))
@@ -50,6 +51,9 @@ GuiListener.o: GuiListener.h GuiListener.cpp
 
 Actor.o: Actor.h Actor.cpp
 	$(CXX) $(CXXFLAGS) -c Actor.cpp
+
+HUD.o: HUD.h HUD.cpp
+	$(CXX) $(CXXFLAGS) -c HUD.cpp
 
 clean:
 	rm -rf SegwaySlaughter *~ *.o
