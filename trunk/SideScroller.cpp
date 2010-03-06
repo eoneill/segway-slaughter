@@ -171,6 +171,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
       for(unsigned int i = 0; i < actors.size(); i++)
         actors[i]->stopBlood();
     }
+    
 /*
 	  if (player.position[2] <= -33000) {
 	    isDone_ = true;

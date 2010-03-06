@@ -144,3 +144,74 @@ void Actor::onDeath()
   position_[2]+= 10000;
   sceneNode_->translate(Vector3(0,10000,10000));
 }
+
+void Actor::attack(std::vector<Actor*> &actors){
+  //find out where the damage box is, based on direction facing
+  //Ogre::Vector3 damPos = position_;
+	int vert = 0;
+	int horiz = 0;
+	
+	switch(direction_) {
+  case kUp: vert = -1; break;
+  case kDown: vert = 1; break;
+  case kLeft: horiz = 1; break;
+  case kRight: horiz = -1; break;
+  default: break;
+  }
+	
+	
+	Ogre::Vector3 damagePos = Ogre::Vector3(position_[0] + ( 2*DEFAULT_ATTACK_BOX*vert ),
+								                       position_[1], position_[2] + ( 2*DEFAULT_ATTACK_BOX*horiz ));
+	/*damagePos[0] = position[0] + ( 2*CollisionSideLength*vert );
+	damagePos[1] = position[1];
+	damagePos[2] = position[2] + ( 2*CollisionSideLength*horiz );*/
+    
+  //x and z value for each point of the damage box
+  float damage_box[4][2];
+  damage_box[0][0] = damagePos[0] - DEFAULT_ATTACK_BOX/2;
+  damage_box[0][1] = damagePos[2] + DEFAULT_ATTACK_BOX/2;
+
+  damage_box[1][0] = damagePos[0] - DEFAULT_ATTACK_BOX/2;
+  damage_box[1][1] = damagePos[2] - DEFAULT_ATTACK_BOX/2;
+    
+  damage_box[2][0] = damagePos[0] + DEFAULT_ATTACK_BOX/2;
+  damage_box[2][1] = damagePos[2] + DEFAULT_ATTACK_BOX/2;
+    
+  damage_box[3][0] = damagePos[0] + DEFAULT_ATTACK_BOX/2;
+  damage_box[3][1] = damagePos[2] - DEFAULT_ATTACK_BOX/2;
+    
+  for(unsigned int i = 0; i < actors.size(); i++)
+  {
+  	if (sceneNode_ != actors[i]->sceneNode_ && fabs(position_.z - actors[i]->position_.z) < DEFAULT_COLLISION_RAD*5){
+	    //get actor's hit box
+	    float actor_box[4][2];
+	    actor_box[0][0] = actors[i]->position_[0] - DEFAULT_COLLISION_RAD/2;
+	    actor_box[0][1] = actors[i]->position_[2] + DEFAULT_COLLISION_RAD/2;
+
+	    actor_box[1][0] = actors[i]->position_[0] - DEFAULT_COLLISION_RAD/2;
+	    actor_box[1][1] = actors[i]->position_[2] - DEFAULT_COLLISION_RAD/2;
+	      
+	    actor_box[2][0] = actors[i]->position_[0] + DEFAULT_COLLISION_RAD/2;
+	    actor_box[2][1] = actors[i]->position_[2] + DEFAULT_COLLISION_RAD/2;
+	      
+	    actor_box[3][0] = actors[i]->position_[0] + DEFAULT_COLLISION_RAD/2;
+	    actor_box[3][1] = actors[i]->position_[2] - DEFAULT_COLLISION_RAD/2;
+	      
+	    for(int j = 0; j < 4; j++)          
+	    {
+	      if(damage_box[j][1] <= actor_box[0][1] &&
+	          damage_box[j][1] >= actor_box[1][1] &&
+	          damage_box[j][0] >= actor_box[0][0] &&
+	          damage_box[j][0] <= actor_box[2][0]
+	          )
+	      {
+	        //if we get here, the actor is hit by the attack
+	        if(actors[i]->onDamage(5)) {//////////////////////////////////////////////////////////////////////////////////////////////
+	          delete actors[i];
+	          actors.erase (actors.begin()+i);
+	        }
+	      }
+	    }
+	  }
+  }
+}
