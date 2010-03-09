@@ -6,9 +6,30 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "Actor.h"
 #include "Locator.h"
-
+#include <iostream>
 using namespace std;
 using namespace Ogre;
+
+const double PI = 3.14159265358979;
+const double PI_OVER_4 = PI / 4;
+
+bool SquareHit(const Ogre::Vector3& pos1,
+               const Ogre::Vector3& pos2,
+               const double width = DEFAULT_BBOX_WIDTH / 2) {
+  double left1 = pos1.x - width, left2 = pos2.x - width;
+  double right1 = pos1.x + width, right2 = pos2.x + width;
+  double top1 = pos1.z - width, top2 = pos2.z - width;
+  double bottom1 = pos1.z + width, bottom2 = pos2.z + width;
+
+  if (bottom1 < top2 || top1 > bottom2 ||
+      right1 < left2 || left1 > right2) {
+    return false;
+  }
+
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 bool CylinderHit(const Ogre::Vector3& pos1,
                  const Ogre::Vector3& pos2) {
@@ -16,6 +37,32 @@ bool CylinderHit(const Ogre::Vector3& pos1,
            pow(pos1.z - pos2.z, 2)) < DEFAULT_COLLISION_RAD) {
     return true;
   }
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+bool CylinderAttack(const Ogre::Vector3& pos1,
+                    const Ogre::Vector3& pos2,
+                    const double& attackRadDelta) {
+  double rad = DEFAULT_COLLISION_RAD + attackRadDelta;
+  
+  if (pos2.z + DEFAULT_COLLISION_RAD < pos1.z + rad) {
+    Ogre::Vector3 top(pos1.x + rad * cos(PI / 4),
+                      0,
+                      pos1.z + rad * sin(PI / 4));
+    Ogre::Vector3 bot(pos1.x + rad * cos(-PI / 4),
+                      0,
+                      pos1.z + rad * sin(-PI / 4));
+    Ogre::Vector3 pos2r = pos2;
+    pos2r.x += DEFAULT_COLLISION_RAD;
+    pos2r.y = 0;
+    pos2r.z += DEFAULT_COLLISION_RAD;
+    if (pos2r > top && pos2r > bot) {
+      return true;
+    }
+  }
+
   return false;
 }
 
@@ -63,11 +110,12 @@ bool Actor::move(const MovementDirection& newDirection,
   // Collision detection
   bool validMove = true;
   for (size_t i = 0; i < actors.size(); i++) {
-    if (sceneNode_ != actors[i]->sceneNode_ && fabs(tmp.z - actors[i]->position_.z) < DEFAULT_COLLISION_RAD*2){
-      if(CylinderHit(tmp, actors[i]->position_)) {
+    if (sceneNode_ != actors[i]->sceneNode_){
+      if(SquareHit(tmp, actors[i]->position_)) {
         validMove = false;
       }
-    }
+    }//Acute (a), obtuse (b), and straight (c) angles. Here, a and b are supplementary angles.
+
   }
 
   // If no collisions actually move
@@ -98,7 +146,7 @@ bool Actor::move(const MovementDirection& newDirection,
         /*if (isFacingRight_) {
           sceneNode_->yaw(Ogre::Degree(180));
           isFacingRight_ = false;
-        }*/
+          }*/
         wasTranslated = true;
       }
       break;
@@ -106,17 +154,17 @@ bool Actor::move(const MovementDirection& newDirection,
       {
         sceneNode_->translate(Vector3(0, 0, -DEFAULT_MOVE_SPEED));
 
-/*        if (!isFacingRight_) {
-          sceneNode_->yaw(Ogre::Degree(180));
-          isFacingRight_ = true;
-        }*/
+        /*        if (!isFacingRight_) {
+                  sceneNode_->yaw(Ogre::Degree(180));
+                  isFacingRight_ = true;
+                  }*/
         wasTranslated = true;
       }
       break;
     default: break;
     }
                 
-                sceneNode_->yaw(Ogre::Degree(90*(newDirection-direction_)));
+    sceneNode_->yaw(Ogre::Degree(90*(newDirection-direction_)));
     direction_ = newDirection;
 
 
@@ -149,10 +197,10 @@ void Actor::onDeath()
 void Actor::attack(std::vector<Actor*> &actors){
   //find out where the damage box is, based on direction facing
   //Ogre::Vector3 damPos = position_;
-        int vert = 0;
-        int horiz = 0;
+  int vert = 0;
+  int horiz = 0;
         
-        switch(direction_) {
+  switch(direction_) {
   case kUp: vert = -1; break;
   case kDown: vert = 1; break;
   case kLeft: horiz = 1; break;
@@ -161,58 +209,19 @@ void Actor::attack(std::vector<Actor*> &actors){
   }
         
         
-        Ogre::Vector3 damagePos = Ogre::Vector3(position_[0] + ( 2*DEFAULT_ATTACK_BOX*vert ),
-                                                                                       position_[1], position_[2] + ( 2*DEFAULT_ATTACK_BOX*horiz ));
-        /*damagePos[0] = position[0] + ( 2*CollisionSideLength*vert );
-        damagePos[1] = position[1];
-        damagePos[2] = position[2] + ( 2*CollisionSideLength*horiz );*/
-    
-  //x and z value for each point of the damage box
-  float damage_box[4][2];
-  damage_box[0][0] = damagePos[0] - DEFAULT_ATTACK_BOX/2;
-  damage_box[0][1] = damagePos[2] + DEFAULT_ATTACK_BOX/2;
+  Ogre::Vector3 damagePos = Ogre::Vector3(position_[0] + ( 2*DEFAULT_ATTACK_BOX*vert ),
+                                          position_[1], position_[2] + ( 2*DEFAULT_ATTACK_BOX*horiz ));
 
-  damage_box[1][0] = damagePos[0] - DEFAULT_ATTACK_BOX/2;
-  damage_box[1][1] = damagePos[2] - DEFAULT_ATTACK_BOX/2;
-    
-  damage_box[2][0] = damagePos[0] + DEFAULT_ATTACK_BOX/2;
-  damage_box[2][1] = damagePos[2] + DEFAULT_ATTACK_BOX/2;
-    
-  damage_box[3][0] = damagePos[0] + DEFAULT_ATTACK_BOX/2;
-  damage_box[3][1] = damagePos[2] - DEFAULT_ATTACK_BOX/2;
-    
-  for(unsigned int i = 0; i < actors.size(); i++)
-  {
-        if (sceneNode_ != actors[i]->sceneNode_ && fabs(position_.z - actors[i]->position_.z) < DEFAULT_COLLISION_RAD*5){
-            //get actor's hit box
-            float actor_box[4][2];
-            actor_box[0][0] = actors[i]->position_[0] - DEFAULT_COLLISION_RAD/2;
-            actor_box[0][1] = actors[i]->position_[2] + DEFAULT_COLLISION_RAD/2;
-
-            actor_box[1][0] = actors[i]->position_[0] - DEFAULT_COLLISION_RAD/2;
-            actor_box[1][1] = actors[i]->position_[2] - DEFAULT_COLLISION_RAD/2;
-              
-            actor_box[2][0] = actors[i]->position_[0] + DEFAULT_COLLISION_RAD/2;
-            actor_box[2][1] = actors[i]->position_[2] + DEFAULT_COLLISION_RAD/2;
-              
-            actor_box[3][0] = actors[i]->position_[0] + DEFAULT_COLLISION_RAD/2;
-            actor_box[3][1] = actors[i]->position_[2] - DEFAULT_COLLISION_RAD/2;
-              
-            for(int j = 0; j < 4; j++)          
-            {
-              if(damage_box[j][1] <= actor_box[0][1] &&
-                  damage_box[j][1] >= actor_box[1][1] &&
-                  damage_box[j][0] >= actor_box[0][0] &&
-                  damage_box[j][0] <= actor_box[2][0]
-                  )
-              {
-                //if we get here, the actor is hit by the attack
-                if(actors[i]->onDamage(5)) {//////////////////////////////////////////////////////////////////////////////////////////////
-                  delete actors[i];
-                  actors.erase (actors.begin()+i);
-                }
-              }
-            }
-          }
+  for (size_t i = 0; i < actors.size(); i++) {
+    if (sceneNode_ != actors[i]->sceneNode_) {
+      if (SquareHit(position_, actors[i]->position_, DEFAULT_BBOX_WIDTH / 2 + 5)) {
+        if (actors[i]->onDamage(5)) {
+          delete actors[i];
+          std::vector<Actor*>::iterator it = actors.begin();
+          std::advance(it, i); 
+          actors.erase(it);
+        }
+      }
+    }
   }
 }

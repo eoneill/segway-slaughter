@@ -190,6 +190,10 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     isDone_ = true;
     return new MainMenu;
   }
+  if (timeLeft_ <= 0) {
+    isDone_ = true;
+    return new MainMenu;
+  }
 
   hud_->updateHealth(player->getHealth() / player->getMaxHealth());
 
