@@ -10,9 +10,6 @@
 using namespace std;
 using namespace Ogre;
 
-const double PI = 3.14159265358979;
-const double PI_OVER_4 = PI / 4;
-
 bool SquareHit(const Ogre::Vector3& pos1,
                const Ogre::Vector3& pos2,
                const double width = DEFAULT_BBOX_WIDTH / 2) {
@@ -31,50 +28,14 @@ bool SquareHit(const Ogre::Vector3& pos1,
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool CylinderHit(const Ogre::Vector3& pos1,
-                 const Ogre::Vector3& pos2) {
-  if (sqrt(pow(pos1.x - pos2.x, 2) + 
-           pow(pos1.z - pos2.z, 2)) < DEFAULT_COLLISION_RAD) {
-    return true;
-  }
-  return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-bool CylinderAttack(const Ogre::Vector3& pos1,
-                    const Ogre::Vector3& pos2,
-                    const double& attackRadDelta) {
-  double rad = DEFAULT_COLLISION_RAD + attackRadDelta;
-  
-  if (pos2.z + DEFAULT_COLLISION_RAD < pos1.z + rad) {
-    Ogre::Vector3 top(pos1.x + rad * cos(PI / 4),
-                      0,
-                      pos1.z + rad * sin(PI / 4));
-    Ogre::Vector3 bot(pos1.x + rad * cos(-PI / 4),
-                      0,
-                      pos1.z + rad * sin(-PI / 4));
-    Ogre::Vector3 pos2r = pos2;
-    pos2r.x += DEFAULT_COLLISION_RAD;
-    pos2r.y = 0;
-    pos2r.z += DEFAULT_COLLISION_RAD;
-    if (pos2r > top && pos2r > bot) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
 Actor::Actor(const std::string& entityName,
              const std::string& entityMesh,
              const Status& stats,
              const Ogre::Vector3& position)
   : position_(position),
     direction_(kRight),
-    stats_(stats)
+    stats_(stats),
+    speed_(DEFAULT_MOVE_SPEED)
 {
   Ogre::SceneManager* sceneMgr = Locator::getSceneManager();
   entity_ = sceneMgr->createEntity(entityName, entityMesh);
@@ -100,10 +61,10 @@ bool Actor::move(const MovementDirection& newDirection,
   // Compute new position
   Ogre::Vector3 tmp = position_;
   switch(newDirection) {
-  case kUp: tmp.x -= DEFAULT_MOVE_SPEED; break;
-  case kDown: tmp.x += DEFAULT_MOVE_SPEED; break;
-  case kLeft: tmp.z += DEFAULT_MOVE_SPEED; break;
-  case kRight: tmp.z -= DEFAULT_MOVE_SPEED; break;
+  case kUp: tmp.x -= speed_; break;
+  case kDown: tmp.x += speed_; break;
+  case kLeft: tmp.z += speed_; break;
+  case kRight: tmp.z -= speed_; break;
   default: break;
   }
 
@@ -126,7 +87,7 @@ bool Actor::move(const MovementDirection& newDirection,
     case kUp:
       {
         if (tmp.x > -LEVEL_WIDTH / 2) {
-          sceneNode_->translate(Vector3(-DEFAULT_MOVE_SPEED, 0, 0));
+          sceneNode_->translate(Vector3(-speed_, 0, 0));
           wasTranslated = true;
         }
       }
@@ -134,14 +95,14 @@ bool Actor::move(const MovementDirection& newDirection,
     case kDown:
       {
         if (tmp.x < LEVEL_WIDTH / 2) {
-          sceneNode_->translate(Vector3(DEFAULT_MOVE_SPEED, 0, 0));
+          sceneNode_->translate(Vector3(speed_, 0, 0));
           wasTranslated = true;
         }
       }
       break;
     case kLeft:
       {
-        sceneNode_->translate(Vector3(0, 0, DEFAULT_MOVE_SPEED));
+        sceneNode_->translate(Vector3(0, 0, speed_));
         
         /*if (isFacingRight_) {
           sceneNode_->yaw(Ogre::Degree(180));
@@ -152,7 +113,7 @@ bool Actor::move(const MovementDirection& newDirection,
       break;
     case kRight:
       {
-        sceneNode_->translate(Vector3(0, 0, -DEFAULT_MOVE_SPEED));
+        sceneNode_->translate(Vector3(0, 0, -speed_));
 
         /*        if (!isFacingRight_) {
                   sceneNode_->yaw(Ogre::Degree(180));

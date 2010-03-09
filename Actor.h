@@ -71,14 +71,6 @@ private:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-// Function: CylinderHit
-//
-// Returns true if the cylinders around the two points intersect, false
-// otherwise.
-bool CylinderHit(const Ogre::Vector3& pos1,
-                 const Ogre::Vector3& pos2);
-
-////////////////////////////////////////////////////////////////////////////////
 // Class: Actor
 //
 // Movable meshes
@@ -142,7 +134,7 @@ public:
   //
   // Returns the current health of the character
   float getHealth() const {
-    return DEFAULT_MAX_HEALTH;
+    return stats_.getHealth();
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -152,12 +144,21 @@ public:
   float getMaxHealth() const {
     return DEFAULT_MAX_HEALTH;
   }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: setSpeed
+  //
+  // Sets the movement speed of this actor
+  void setSpeed(const double& speed) {
+    speed_ = speed;
+  }
 protected:
   Ogre::Vector3     position_;
   Ogre::SceneNode*  sceneNode_;
   Ogre::Entity*     entity_;
   MovementDirection direction_;
   Status            stats_;
+  double            speed_;
 };
 
 class Charlie : public Actor {
