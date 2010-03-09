@@ -1,7 +1,7 @@
 LIBS = OGRE OIS CEGUI CEGUI-OGRE openal freealut
 CXX = g++
-CXXFLAGS = -Wall -Werror $(shell pkg-config --cflags $(LIBS))
-OBJS = Locator.o Application.o main.o SegwaySlaughter.o SideScroller.o
+#CXXFLAGS = -Wall -Werror $(shell pkg-config --cflags $(LIBS))
+#OBJS = Locator.o Application.o main.o SegwaySlaughter.o SideScroller.o
 
 CXXFLAGS = -Wall -Werror -ansi $(shell pkg-config --cflags $(LIBS))
 OBJS = audio.o \
@@ -14,6 +14,7 @@ OBJS = audio.o \
 	     CasinoLevel.o \
 	     MainMenu.o \
        HUD.o \
+			 Item.o \
 	     main.o
 
 
@@ -55,6 +56,9 @@ Actor.o: Actor.h Actor.cpp
 
 HUD.o: HUD.h HUD.cpp
 	$(CXX) $(CXXFLAGS) -c HUD.cpp
+
+Item.o: Item.h Item.cpp
+	$(CXX) $(CXXFLAGS) -c Item.cpp
 
 clean:
 	rm -rf SegwaySlaughter *~ *.o
