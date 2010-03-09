@@ -68,7 +68,7 @@ public:
   void  addHealth(float a) { health_ += a; }
   void  subHealth(float a) { health_ -= a; }
 
-  int getScore() { return score_; }
+  int getScore() const { return score_; }
   void addScore(int a) { score_ += a; }
   void subScore(int a) { score_ -= a; }
   
@@ -138,7 +138,7 @@ public:
   //
   // Returns the current score for this actor
   int getScore() const {
-    return 0;
+    return stats_.getScore();
   }
   
   //////////////////////////////////////////////////////////////////////////////
