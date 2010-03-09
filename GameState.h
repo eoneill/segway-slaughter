@@ -11,6 +11,8 @@
 #define GAME_STATE_H_
 
 #include "Locator.h"
+#include "Actor.h"
+#include <vector>
 
 #include <Ogre.h>
 
@@ -58,6 +60,22 @@ public:
   //
   // Called when a state returns to the top of the stack
   // virtual void resume() = 0;
+  
+  std::vector <Actor*> actors; //All the actors in the application
+  
+	void removeDead()
+	{
+	  for(unsigned int i = 0; i < actors.size(); i++)
+	  {
+	  	if(actors[i]->getState() == dead)
+	  	{
+		 		delete actors[i];
+			  std::vector<Actor*>::iterator it = actors.begin();
+			  std::advance(it, i);
+			  actors.erase(it); 
+			}
+	  }
+  }
 protected:
   //////////////////////////////////////////////////////////////////////////////
   // Function: getRoot

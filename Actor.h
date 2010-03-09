@@ -21,6 +21,12 @@ enum MovementDirection {
   kLeft
 };
 
+enum actorState {
+  dead,
+  idle,
+  attack
+};
+
 const int LEVEL_WIDTH = 1000;
 
 // The number of points a player receives for each enemy kill
@@ -33,13 +39,13 @@ const float DEFAULT_MAX_HEALTH = 100;
 const float DEFAULT_MOVE_SPEED = 1.33;
 
 // The default bounding box side length
-const float DEFAULT_COLLISION_RAD = 250;
+const float DEFAULT_COLLISION_RAD = 100;
 
 // The default attack box size
-const float DEFAULT_ATTACK_BOX = 250;
+const float DEFAULT_ATTACK_BOX = 100;
 
 // The default bounding box width
-const double DEFAULT_BBOX_WIDTH = 250;
+const double DEFAULT_BBOX_WIDTH = 100;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class: Status
@@ -50,7 +56,8 @@ public:
   Status(const float& initialHealth)
   : health_(initialHealth),
     maxHealth_(initialHealth),
-    score_(0)
+    score_(0),
+    state_(idle)
   { }
 
   bool isDead() { return (health_ <= 0); }
@@ -64,10 +71,15 @@ public:
   int getScore() { return score_; }
   void addScore(int a) { score_ += a; }
   void subScore(int a) { score_ -= a; }
+  
+  actorState getState() { return state_; }
+  void setState(actorState state) { state_ = state; }
+  
 private:
   float health_;
   float maxHealth_;
   int   score_;
+  actorState state_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -130,13 +142,29 @@ public:
   }
   
   //////////////////////////////////////////////////////////////////////////////
+  // Function: getState
+  //
+  // Returns the current state for this actor
+  actorState getState() {
+    return stats_.getState();
+  }
+  
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: setState
+  //
+  // sets the current state for this actor
+  void setState(actorState s) {
+    stats_.setState(s);
+  }
+  
+  //////////////////////////////////////////////////////////////////////////////
   // Function: getHealth
   //
   // Returns the current health of the character
   float getHealth() const {
     return stats_.getHealth();
   }
-
+  
   //////////////////////////////////////////////////////////////////////////////
   // Function: getMaxHealth
   //
@@ -144,6 +172,30 @@ public:
   float getMaxHealth() const {
     return DEFAULT_MAX_HEALTH;
   }
+  
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: getPosition
+  //
+  // Returns the current position of the character
+  Ogre::Vector3 getPosition(){return position_;}
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: getDirection
+  //
+  // Returns the current direction of the character
+  MovementDirection getDirection(){return direction_;}
+  
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: setDirection
+  //
+  // Sets the current direction of the character
+  void setDirection(MovementDirection d){direction_ = d;}
+  
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: getSceneNode
+  //
+  // Returns the sceneNode_ of the character
+  Ogre::SceneNode* getSceneNode(){return sceneNode_;}
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: setSpeed

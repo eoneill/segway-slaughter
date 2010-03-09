@@ -42,7 +42,7 @@ Actor::Actor(const std::string& entityName,
 
   sceneNode_ = sceneMgr->getRootSceneNode()->createChildSceneNode(position_);
   sceneNode_->attachObject(entity_);
-  sceneNode_->setScale(50,50,50);
+  sceneNode_->setScale(40,40,40);
   //sceneNode_->showBoundingBox(true);
 }
 
@@ -153,36 +153,39 @@ void Actor::onDeath()
   position_[1]+= 10000;
   position_[2]+= 10000;
   sceneNode_->translate(Vector3(0,10000,10000));
+  stats_.setState(dead);
 }
 
 void Actor::attack(std::vector<Actor*> &actors){
   //find out where the damage box is, based on direction facing
-  //Ogre::Vector3 damPos = position_;
   int vert = 0;
   int horiz = 0;
         
   switch(direction_) {
-  case kUp: vert = -1; break;
-  case kDown: vert = 1; break;
-  case kLeft: horiz = 1; break;
-  case kRight: horiz = -1; break;
-  default: break;
+		case kUp: vert = -1; break;
+		case kDown: vert = 1; break;
+		case kLeft: horiz = 1; break;
+		case kRight: horiz = -1; break;
+		default: break;
   }
         
         
   Ogre::Vector3 damagePos = Ogre::Vector3(position_[0] + ( 2*DEFAULT_ATTACK_BOX*vert ),
                                           position_[1], position_[2] + ( 2*DEFAULT_ATTACK_BOX*horiz ));
 
-  for (size_t i = 0; i < actors.size(); i++) {
-    if (sceneNode_ != actors[i]->sceneNode_) {
-      if (SquareHit(position_, actors[i]->position_, DEFAULT_BBOX_WIDTH / 2 + 5)) {
-        if (actors[i]->onDamage(5)) {
-          delete actors[i];
-          std::vector<Actor*>::iterator it = actors.begin();
-          std::advance(it, i); 
-          actors.erase(it);
-        }
-      }
-    }
+
+	for (size_t i = 0; i < actors.size(); i++) {
+	  if (sceneNode_ != actors[i]->sceneNode_) {
+	    if (SquareHit(damagePos, actors[i]->position_, DEFAULT_BBOX_WIDTH / 2 + 5)) {
+	      if (actors[i]->onDamage(5)) {
+	        /*delete actors[i];
+	        std::vector<Actor*>::iterator it = actors.begin();
+	        std::advance(it, i);
+	        actors.erase(it);*/
+	      }
+	    }
+	  }
   }
 }
+
+

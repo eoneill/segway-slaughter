@@ -6,7 +6,7 @@
 //#include "Enemy.h"
 #include "GameState.h"
 #include "Locator.h"
-//#include "AIManager.h"
+#include "AIManager.h"
 #include "HUD.h"
 //extern const int LEVEL_WIDTH;
 const int TIME_PER_LEVEL = (60 * 5); // 5 minutes = 60 * 5 seconds
@@ -23,7 +23,6 @@ private:
   Actor* player;
   HUD*   hud_;
   bool   isDone_;
-  vector <Actor*> actors;
   int timeLeft_;
   Ogre::Timer timer_;
 };

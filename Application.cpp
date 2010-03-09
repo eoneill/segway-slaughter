@@ -198,3 +198,5 @@ void Application::createFrameListener() {
 void Application::startRenderLoop() {
   root_->startRendering();
 }
+
+////////////////////////////////////////////////////////////////////////////////
