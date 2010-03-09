@@ -33,10 +33,13 @@ const float DEFAULT_MAX_HEALTH = 100;
 const float DEFAULT_MOVE_SPEED = 1.33;
 
 // The default bounding box side length
-const float DEFAULT_COLLISION_RAD = 50;
+const float DEFAULT_COLLISION_RAD = 250;
 
 // The default attack box size
-const float DEFAULT_ATTACK_BOX = 50;
+const float DEFAULT_ATTACK_BOX = 250;
+
+// The default bounding box width
+const double DEFAULT_BBOX_WIDTH = 250;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class: Status
@@ -164,7 +167,8 @@ public:
           const Ogre::Vector3& position = Ogre::Vector3::ZERO)
   : Actor(entityName, entityMesh, Status(100), position)
   {
-    direction_ = kLeft;
+    direction_ = kRight;
+    sceneNode_->yaw(Ogre::Degree(-180));
   }
 };
 
