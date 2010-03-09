@@ -178,6 +178,7 @@ void Actor::attack(std::vector<Actor*> &actors){
 	  if (sceneNode_ != actors[i]->sceneNode_) {
 	    if (SquareHit(damagePos, actors[i]->position_, DEFAULT_BBOX_WIDTH / 2 + 5)) {
 	      if (actors[i]->onDamage(5)) {
+          stats_.addScore(10);
 	        /*delete actors[i];
 	        std::vector<Actor*>::iterator it = actors.begin();
 	        std::advance(it, i);
