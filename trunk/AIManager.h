@@ -9,6 +9,6 @@ using namespace std;
 using namespace Ogre;
 
 double getDist(double pos1[3], double pos2[3]);
-void AIManager(vector<Actor*> actors, Ogre::Root* root_);
+void AIManager(vector<Actor*> actors);
 
 #endif

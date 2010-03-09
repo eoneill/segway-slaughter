@@ -84,7 +84,7 @@ void SideScroller::initialize() {
   
   //make some sample enemies
    srand ( time(NULL) );
-   for(int i = 0; i < 100; i++){
+   for(int i = 0; i < 35; i++){
     char EntName[40] = "Mobster";
     sprintf(EntName,"mobster%d",i);
     Actor* temp = new Actor(EntName,"mobster.mesh", Status(25),
@@ -141,7 +141,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   InputSystem* is = Locator::getInput();
 		
 	//update AI
-	//AIManager(actors, root_);
+	AIManager(actors);
 
   //Move player up, but with constraints
   if (is->isKeyDown(OIS::KC_UP)) {
