@@ -208,6 +208,7 @@ protected:
   Ogre::Vector3     position_;
   Ogre::SceneNode*  sceneNode_;
   Ogre::Entity*     entity_;
+  Ogre::ParticleSystem* pSystem_;
   MovementDirection direction_;
   Status            stats_;
   double            speed_;
@@ -218,7 +219,7 @@ public:
   Charlie(const std::string& entityName,
           const std::string& entityMesh,
           const Ogre::Vector3& position = Ogre::Vector3::ZERO)
-  : Actor(entityName, entityMesh, Status(100), position)
+  : Actor(entityName, entityMesh, Status(200), position)
   {
     direction_ = kRight;
     sceneNode_->yaw(Ogre::Degree(-180));

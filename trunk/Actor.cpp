@@ -39,9 +39,13 @@ Actor::Actor(const std::string& entityName,
 {
   Ogre::SceneManager* sceneMgr = Locator::getSceneManager();
   entity_ = sceneMgr->createEntity(entityName, entityMesh);
+  pSystem_ = sceneMgr->createParticleSystem( entityName+" particle","Blood");
+  pSystem_->getEmitter(0)->setEnabled(false);
+  pSystem_->getEmitter(0)->setDuration(5);
 
   sceneNode_ = sceneMgr->getRootSceneNode()->createChildSceneNode(position_);
   sceneNode_->attachObject(entity_);
+  sceneNode_->attachObject(pSystem_);
   sceneNode_->setScale(40,40,40);
   //sceneNode_->showBoundingBox(true);
 }
@@ -51,7 +55,10 @@ Actor::Actor(const std::string& entityName,
 Actor::~Actor() {
   Ogre::SceneManager* sceneMgr = Locator::getSceneManager();
   sceneNode_->detachObject(entity_);
+  sceneNode_->detachObject(pSystem_);
   sceneMgr->destroyEntity(entity_);
+  sceneMgr->destroyParticleSystem(pSystem_);
+  sceneMgr->destroySceneNode(sceneNode_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -139,6 +146,7 @@ bool Actor::move(const MovementDirection& newDirection,
 
 
 bool Actor::onDamage(float damage){
+  pSystem_->getEmitter(0)->setEnabled(true);
   stats_.subHealth(damage);
   if(stats_.getHealth() <= 0){
     onDeath();
@@ -180,9 +188,7 @@ void Actor::attack(std::vector<Actor*> &actors){
 	      if (actors[i]->onDamage(5)) {
           stats_.addScore(10);
 	        /*delete actors[i];
-	        std::vector<Actor*>::iterator it = actors.begin();
-	        std::advance(it, i);
-	        actors.erase(it);*/
+	        actors.erase(actors.begin()+i);*/
 	      }
 	    }
 	  }
