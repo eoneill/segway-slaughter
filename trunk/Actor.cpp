@@ -110,22 +110,12 @@ bool Actor::move(const MovementDirection& newDirection,
     case kLeft:
       {
         sceneNode_->translate(Vector3(0, 0, speed_));
-        
-        /*if (isFacingRight_) {
-          sceneNode_->yaw(Ogre::Degree(180));
-          isFacingRight_ = false;
-          }*/
         wasTranslated = true;
       }
       break;
     case kRight:
       {
         sceneNode_->translate(Vector3(0, 0, -speed_));
-
-        /*        if (!isFacingRight_) {
-                  sceneNode_->yaw(Ogre::Degree(180));
-                  isFacingRight_ = true;
-                  }*/
         wasTranslated = true;
       }
       break;
@@ -185,10 +175,8 @@ void Actor::attack(std::vector<Actor*> &actors){
 	for (size_t i = 0; i < actors.size(); i++) {
 	  if (sceneNode_ != actors[i]->sceneNode_) {
 	    if (SquareHit(damagePos, actors[i]->position_, DEFAULT_BBOX_WIDTH / 2 + 5)) {
-	      if (actors[i]->onDamage(5)) {
+	      if (actors[i]->onDamage(damage_)) {
           stats_.addScore(10);
-	        /*delete actors[i];
-	        actors.erase(actors.begin()+i);*/
 	      }
 	    }
 	  }
