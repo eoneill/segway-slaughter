@@ -65,10 +65,11 @@ public:
   
 	void removeDead()
 	{
-	  for(unsigned int i = 0; i < actors.size(); i++)
+	  for(unsigned int i = 1; i < actors.size(); i++)
 	  {
 	  	if(actors[i]->getState() == dead)
 	  	{
+	  		std::cerr << "Murderfied" << std::endl;
 		 		delete actors[i];
 			  std::vector<Actor*>::iterator it = actors.begin();
 			  std::advance(it, i);
