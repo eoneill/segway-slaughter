@@ -79,7 +79,7 @@ void SideScroller::initialize() {
 
   //Player
   player = new Charlie("charlie", "charlie.mesh", Ogre::Vector3(0,0,0));
-  player->setDamage(1);
+  player->setDamage(.05);
 
   actors.push_back(player);
   
@@ -93,6 +93,7 @@ void SideScroller::initialize() {
     SceneNode * tempSceneNode = temp->getSceneNode();
 		tempSceneNode->yaw(Ogre::Degree(180));
 		temp->setDamage(0.01);
+		temp->setSpeed(0.85);
 		
     //stats need to be less for the enemies
     //temp->speed_ = 1;

@@ -24,7 +24,8 @@ enum MovementDirection {
 enum actorState {
   dead,
   idle,
-  attack
+  attack,
+  flee
 };
 
 const int LEVEL_WIDTH = 1000;
@@ -170,7 +171,7 @@ public:
   //
   // Returns the maximum possible health for this actor
   float getMaxHealth() const {
-    return DEFAULT_MAX_HEALTH;
+    return stats_.getMaxHealth();
   }
   
   //////////////////////////////////////////////////////////////////////////////

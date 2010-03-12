@@ -30,7 +30,6 @@ void AIManager(vector<Actor*> actors){
 		//only if not dead
 		if(actors[i]->getState() != dead)
     {
-			//SceneNode * node = actors[i]->getSceneNode();
 	    if(actors[i]->getState() == idle)
 	    {
 				//check to see if the player is close enough
@@ -55,7 +54,28 @@ void AIManager(vector<Actor*> actors){
 			  	actors[i]->move(kRight, actors);
 			  }
 				actors[i]->attack(actors);
-	    	
+				
+				//if it's severely damaged, then start fleeing
+				if(actors[i]->getHealth() <= actors[i]->getMaxHealth()/4)
+				{
+					actors[i]->setState(flee);
+				}
+				
+	    } else if(actors[i]->getState() == flee)
+	    {
+	    	//move away from the player
+	    	if ((actors[i]->getPosition()[0] - actors[0]->getPosition()[0]) > 3) {
+			  	actors[i]->move(kDown, actors);
+			  }
+			  if ((actors[i]->getPosition()[0] - actors[0]->getPosition()[0]) < -3) {
+			  	actors[i]->move(kUp, actors);
+			  }
+			  if ((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) < -3) {
+			  	actors[i]->move(kRight, actors);
+			  }
+			  if ((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) > 3) {
+			  	actors[i]->move(kLeft, actors);
+			  }	    	
 	    }
 	  }
 	}
