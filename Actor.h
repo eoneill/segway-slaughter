@@ -204,6 +204,23 @@ public:
   void setSpeed(const double& speed) {
     speed_ = speed;
   }
+  
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: getDamage
+  //
+  // Sets the damage of this actor
+  double getDamage() {
+    return damage_;
+  }
+  
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: setDamage
+  //
+  // Sets the damage of this actor
+  void setDamage(const double& damage) {
+    damage_ = damage;
+  }
+  
 protected:
   Ogre::Vector3     position_;
   Ogre::SceneNode*  sceneNode_;
@@ -212,6 +229,7 @@ protected:
   MovementDirection direction_;
   Status            stats_;
   double            speed_;
+  double            damage_;
 };
 
 class Charlie : public Actor {

@@ -69,7 +69,6 @@ public:
 	  {
 	  	if(actors[i]->getState() == dead)
 	  	{
-	  		std::cerr << "Murderfied" << std::endl;
 		 		delete actors[i];
 			  std::vector<Actor*>::iterator it = actors.begin();
 			  std::advance(it, i);
