@@ -44,7 +44,8 @@ void SideScroller::initialize() {
   assert(mSceneMgr != 0);
 
   mSceneMgr->setAmbientLight(ColourValue(0.5f, 0.5f, 0.5f));
-  mSceneMgr->setShadowTechnique(SHADOWTYPE_TEXTURE_MODULATIVE);
+  //mSceneMgr->setShadowTechnique(SHADOWTYPE_TEXTURE_MODULATIVE);
+  mSceneMgr->setShadowTechnique(SHADOWTYPE_NONE);
 
   //Setup the camera
   Camera *mCamera = mSceneMgr->createCamera("MyCamera");
@@ -92,7 +93,7 @@ void SideScroller::initialize() {
   for(int i = 0; i < NumEnemies_; i++){
     char EntName[40] = "Mobster";
     sprintf(EntName,"mobster%d",i);
-    Actor* temp = new Actor(EntName,"mobster.mesh", Status(25),
+    Actor* temp = new Actor(EntName,"brawndo.mesh", Status(25),
     	                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0,-(rand() % 30000+2000)));
     SceneNode * tempSceneNode = temp->getSceneNode();
 		tempSceneNode->yaw(Ogre::Degree(180));
@@ -103,11 +104,11 @@ void SideScroller::initialize() {
   }
 	
 
-	Brawndo b(Ogre::Vector3(0,0,0));
+	//Brawndo b(Ogre::Vector3(0,0,0));
 
   //Static Objects
   ent = mSceneMgr->createEntity("SSPole1", "tel_pole_basic.mesh");
-  ent->setMaterialName("tel_pole_basic");
+  //ent->setMaterialName("tel_pole_basic");
   StaticGeometry *sg = mSceneMgr->createStaticGeometry("SSPole1");
 	for(int i = 0; i < 20; i++)
     sg->addEntity(ent, Ogre::Vector3(-550,0,-6300*i), Quaternion::IDENTITY, Ogre::Vector3(70,70,70));
