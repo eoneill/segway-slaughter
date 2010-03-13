@@ -9,6 +9,7 @@
 int Item::id_ = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
+// Item
 
 Item::Item(const std::string& entityName,
            const std::string& entityMesh,
@@ -39,3 +40,17 @@ Item::~Item() {
   sceneNode_->detachObject(entity_);
   sceneMgr->destroyEntity(entity_);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// Brawndo
+
+Brawndo::Brawndo(const Ogre::Vector3& position)
+	: Item("Brawndo", "brawndo.mesh", position)
+{ }
+
+////////////////////////////////////////////////////////////////////////////////
+// Pizza
+
+Pizza::Pizza(const Ogre::Vector3& position)
+	: Item("Pizza", "pizza.mesh", position)
+{ }

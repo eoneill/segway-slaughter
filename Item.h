@@ -33,9 +33,7 @@ private:
 // Causes the character to speed up and damage people by running them over
 class Brawndo : public Item {
 public:
-  Brawndo()
-    : Item("Brawndo", "brawndo.mesh", Ogre::Vector3::ZERO)
-  { }
+  Brawndo(const Ogre::Vector3& position);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -44,9 +42,7 @@ public:
 // Restores a little bit of health when eaten
 class Pizza : public Item {
 public:
-  Pizza()
-    : Item("Pizza", "pizza.mesh", Ogre::Vector3::ZERO)
-  { }
+  Pizza(const Ogre::Vector3& position);
 };
 
 #endif // ITEM_H__
