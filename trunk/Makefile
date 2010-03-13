@@ -1,6 +1,6 @@
 LIBS = OGRE OIS CEGUI CEGUI-OGRE openal freealut
 CXX = g++
-CXXFLAGS = -Wall -Werror -ansi $(shell pkg-config --cflags $(LIBS))
+CXXFLAGS = -Wall -Werror -ansi $(shell pkg-config --cflags $(LIBS)) -O2 -Os
 OBJS = audio.o \
 	     Actor.o \
 	     InputSystem.o \
