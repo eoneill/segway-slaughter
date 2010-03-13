@@ -1,4 +1,39 @@
-material gobbydeform7_lambert1
+material silver1SG.001
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.500000 0.500000 0.500000 1.000000
+			diffuse 0.216000 0.192000 0.104000 1.000000
+			specular 0.500000 0.500000 0.500000 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+material blinn6SG.001
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.500000 0.500000 0.500000 1.000000
+			diffuse 0.000000 0.000000 0.000000 1.000000
+			specular 0.500000 0.500000 0.500000 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+			texture_unit
+			{
+				texture mob_boss.jpg
+				tex_address_mode wrap
+				filtering trilinear
+				colour_op alpha_blend
+			}
+		}
+	}
+}
+material gobbydeform7_lamb
 {
 	receive_shadows on
 	technique
@@ -12,7 +47,7 @@ material gobbydeform7_lambert1
 		}
 	}
 }
-material Silver_SG
+material phong3SG.001
 {
 	receive_shadows on
 	technique
@@ -20,13 +55,20 @@ material Silver_SG
 		pass
 		{
 			ambient 0.500000 0.500000 0.500000 1.000000
-			diffuse 0.320000 0.312000 0.304000 1.000000
-			specular 0.500000 0.500000 0.500000 1.000000 12.500000
+			diffuse 0.000000 0.000000 0.000000 1.000000
+			specular 0.250000 0.250000 0.250000 1.000000 2.250000
 			emissive 0.000000 0.000000 0.000000 1.000000
+			texture_unit
+			{
+				texture eye.jpg
+				tex_address_mode wrap
+				filtering trilinear
+				colour_op alpha_blend
+			}
 		}
 	}
 }
-material blinn27SG
+material blinn27SG.001
 {
 	receive_shadows on
 	technique
@@ -47,21 +89,7 @@ material blinn27SG
 		}
 	}
 }
-material silver1SG
-{
-	receive_shadows on
-	technique
-	{
-		pass
-		{
-			ambient 0.500000 0.500000 0.500000 1.000000
-			diffuse 0.216000 0.192000 0.104000 1.000000
-			specular 0.500000 0.500000 0.500000 1.000000 12.500000
-			emissive 0.000000 0.000000 0.000000 1.000000
-		}
-	}
-}
-material blinn25SG
+material blinn25SG.001
 {
 	receive_shadows on
 	technique
@@ -82,7 +110,7 @@ material blinn25SG
 		}
 	}
 }
-material blinn6SG
+material Silver_SG.001
 {
 	receive_shadows on
 	technique
@@ -90,20 +118,13 @@ material blinn6SG
 		pass
 		{
 			ambient 0.500000 0.500000 0.500000 1.000000
-			diffuse 0.000000 0.000000 0.000000 1.000000
+			diffuse 0.320000 0.312000 0.304000 1.000000
 			specular 0.500000 0.500000 0.500000 1.000000 12.500000
 			emissive 0.000000 0.000000 0.000000 1.000000
-			texture_unit
-			{
-				texture mobster.jpg
-				tex_address_mode wrap
-				filtering trilinear
-				colour_op alpha_blend
-			}
 		}
 	}
 }
-material blinn26SG
+material blinn26SG.001
 {
 	receive_shadows on
 	technique
@@ -124,7 +145,7 @@ material blinn26SG
 		}
 	}
 }
-material phong3SG
+material blinn29SG
 {
 	receive_shadows on
 	technique
@@ -133,15 +154,8 @@ material phong3SG
 		{
 			ambient 0.500000 0.500000 0.500000 1.000000
 			diffuse 0.000000 0.000000 0.000000 1.000000
-			specular 0.250000 0.250000 0.250000 1.000000 2.250000
+			specular 0.250000 0.250000 0.250000 1.000000 12.500000
 			emissive 0.000000 0.000000 0.000000 1.000000
-			texture_unit
-			{
-				texture eye.jpg
-				tex_address_mode wrap
-				filtering trilinear
-				colour_op alpha_blend
-			}
 		}
 	}
 }

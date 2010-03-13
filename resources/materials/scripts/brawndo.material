@@ -10,7 +10,7 @@ material Default1
 
 			texture_unit
 			{
-				texture brawndotop.tga
+				texture brawndotop.jpg
 			}
 		}
 
@@ -31,7 +31,7 @@ material Default
 
 			texture_unit
 			{
-				texture brawndo.tga
+				texture brawndo.jpg
 			}
 		}
 
