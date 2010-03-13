@@ -51,3 +51,20 @@ material Urban/Building
 		}
 	}
 }
+material PE/blood
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+			scene_blend add
+
+			texture_unit
+			{
+				texture blood2.png
+			}
+		}
+	}
+}

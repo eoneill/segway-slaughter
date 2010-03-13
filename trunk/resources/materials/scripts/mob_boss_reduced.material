@@ -33,7 +33,7 @@ material blinn27SG
 	{
 		pass
 		{
-			ambient 0.500000 0.500000 0.500000 1.000000
+			ambient 0.000000 0.000000 0.000000 1.000000
 			diffuse 0.000000 0.000000 0.000000 1.000000
 			specular 0.250000 0.250000 0.250000 1.000000 12.500000
 			emissive 0.000000 0.000000 0.000000 1.000000
@@ -61,7 +61,21 @@ material silver1SG
 		}
 	}
 }
-material blinn25SG
+material phong3SG
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.500000 0.500000 0.500000 0.000000
+			diffuse 0.000000 0.000000 0.000000 0.000000
+			specular 0.250000 0.250000 0.250000 0.000000 2.250000
+			emissive 0.000000 0.000000 0.000000 0.000000
+		}
+	}
+}
+material blinn29SG
 {
 	receive_shadows on
 	technique
@@ -72,13 +86,6 @@ material blinn25SG
 			diffuse 0.000000 0.000000 0.000000 1.000000
 			specular 0.250000 0.250000 0.250000 1.000000 12.500000
 			emissive 0.000000 0.000000 0.000000 1.000000
-			texture_unit
-			{
-				texture segway2.jpg
-				tex_address_mode wrap
-				filtering trilinear
-				colour_op alpha_blend
-			}
 		}
 	}
 }
@@ -95,7 +102,7 @@ material blinn6SG
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture mobster.jpg
+				texture mob_boss.jpg
 				tex_address_mode wrap
 				filtering trilinear
 				colour_op alpha_blend
@@ -124,7 +131,7 @@ material blinn26SG
 		}
 	}
 }
-material phong3SG
+material blinn25SG
 {
 	receive_shadows on
 	technique
@@ -133,11 +140,11 @@ material phong3SG
 		{
 			ambient 0.500000 0.500000 0.500000 1.000000
 			diffuse 0.000000 0.000000 0.000000 1.000000
-			specular 0.250000 0.250000 0.250000 1.000000 2.250000
+			specular 0.250000 0.250000 0.250000 1.000000 12.500000
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture eye.jpg
+				texture segway2.jpg
 				tex_address_mode wrap
 				filtering trilinear
 				colour_op alpha_blend

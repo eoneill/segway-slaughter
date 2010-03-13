@@ -1,4 +1,32 @@
-material blinn26SG
+material gobbydeform7_lambert1
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.500000 0.500000 0.500000 1.000000
+			diffuse 0.480000 0.800000 0.000000 1.000000
+			specular 0.500000 0.500000 0.500000 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+material Silver_SG
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.500000 0.500000 0.500000 1.000000
+			diffuse 0.320000 0.312000 0.304000 1.000000
+			specular 0.500000 0.500000 0.500000 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+material blinn27SG
 {
 	receive_shadows on
 	technique
@@ -11,7 +39,42 @@ material blinn26SG
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture wheel.tga
+				texture bat.jpg
+				tex_address_mode wrap
+				filtering trilinear
+				colour_op alpha_blend
+			}
+		}
+	}
+}
+material silver1SG
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.500000 0.500000 0.500000 1.000000
+			diffuse 0.216000 0.192000 0.104000 1.000000
+			specular 0.500000 0.500000 0.500000 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+material blinn25SG
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.500000 0.500000 0.500000 1.000000
+			diffuse 0.000000 0.000000 0.000000 1.000000
+			specular 0.250000 0.250000 0.250000 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+			texture_unit
+			{
+				texture segway2.jpg
 				tex_address_mode wrap
 				filtering trilinear
 				colour_op alpha_blend
@@ -32,7 +95,28 @@ material blinn6SG
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture gobbytexture9.tga
+				texture gobbytexture9.psd
+				tex_address_mode wrap
+				filtering trilinear
+				colour_op alpha_blend
+			}
+		}
+	}
+}
+material blinn26SG
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.500000 0.500000 0.500000 1.000000
+			diffuse 0.000000 0.000000 0.000000 1.000000
+			specular 0.250000 0.250000 0.250000 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+			texture_unit
+			{
+				texture wheel.jpg
 				tex_address_mode wrap
 				filtering trilinear
 				colour_op alpha_blend
@@ -53,49 +137,7 @@ material phong3SG
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture eye.tga
-				tex_address_mode wrap
-				filtering trilinear
-				colour_op alpha_blend
-			}
-		}
-	}
-}
-material blinn27SG
-{
-	receive_shadows on
-	technique
-	{
-		pass
-		{
-			ambient 0.500000 0.500000 0.500000 1.000000
-			diffuse 0.000000 0.000000 0.000000 1.000000
-			specular 0.250000 0.250000 0.250000 1.000000 12.500000
-			emissive 0.000000 0.000000 0.000000 1.000000
-			texture_unit
-			{
-				texture bat.tga
-				tex_address_mode wrap
-				filtering trilinear
-				colour_op alpha_blend
-			}
-		}
-	}
-}
-material blinn25SG
-{
-	receive_shadows on
-	technique
-	{
-		pass
-		{
-			ambient 0.500000 0.500000 0.500000 1.000000
-			diffuse 0.000000 0.000000 0.000000 1.000000
-			specular 0.250000 0.250000 0.250000 1.000000 12.500000
-			emissive 0.000000 0.000000 0.000000 1.000000
-			texture_unit
-			{
-				texture segway2.tga
+				texture eye.jpg
 				tex_address_mode wrap
 				filtering trilinear
 				colour_op alpha_blend

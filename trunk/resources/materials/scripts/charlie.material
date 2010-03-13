@@ -10,7 +10,7 @@ material chainsaw_texture
 
 			texture_unit
 			{
-				texture chainsaw_man_6.tga
+				texture chainsaw_man_6.jpg
 			}
 		}
 
@@ -114,7 +114,7 @@ material tires
 
 			texture_unit
 			{
-				texture segway.tga
+				texture segway.jpg
 			}
 		}
 

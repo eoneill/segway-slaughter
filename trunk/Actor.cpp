@@ -41,7 +41,7 @@ Actor::Actor(const std::string& entityName,
   entity_ = sceneMgr->createEntity(entityName, entityMesh);
   pSystem_ = sceneMgr->createParticleSystem( entityName+" particle","Blood");
   pSystem_->getEmitter(0)->setEnabled(false);
-  pSystem_->getEmitter(0)->setDuration(5);
+  pSystem_->getEmitter(0)->setDuration(0.5);
 
   sceneNode_ = sceneMgr->getRootSceneNode()->createChildSceneNode(position_);
   sceneNode_->attachObject(entity_);
