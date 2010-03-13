@@ -7,22 +7,14 @@ using namespace Ogre;
 
 const double ACTIVE_DIST = 1000;
 int AICount = 0;
-int AITick  = 0;
-
+int AITick  = 5000;
 
 double getDist(double pos1[3], double pos2[3]){
 	return sqrt(pow((pos1[0] - pos2[0]), 2) + pow((pos1[2] - pos2[2]), 2));
 }
 
-void AIManager(vector<Actor*> actors){
-	//only do AI once every tick
-	if(AICount != AITick){
-		//cout << "AI count" << endl;
-		AICount++;
-		return;
-	}
-	AICount = 0;
-	//cout << "AI Tick" << endl;
+void AIManager(vector<Actor*>& actors){
+
 
 	//cycle throught all enemies (skip player)
 	for(unsigned int i = 1; i < actors.size(); i++)
@@ -79,4 +71,29 @@ void AIManager(vector<Actor*> actors){
 	    }
 	  }
 	}
+}
+
+
+
+void spawnBehind(vector<Actor*>& actors, int & NumEnemies)
+{
+	//only do AI once every tick
+	if(AICount != AITick){
+		AICount++;
+		return;
+	}
+	AICount = 0;
+	NumEnemies++;
+	char EntName[40] = "Mobster";
+  sprintf(EntName,"mobster%d",NumEnemies);
+//  Ogre::Vector3 pos = actors[0]->getPosition()[2];
+  Actor* temp = new Actor(EntName,"mobster.mesh", Status(25),
+  	                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0, actors[0]->getPosition()[2] + 1000));
+  SceneNode * tempSceneNode = temp->getSceneNode();
+	tempSceneNode->yaw(Ogre::Degree(180));
+	temp->setDamage(0.01);
+	temp->setSpeed(1.1);
+	temp->setState(attack);
+	
+  actors.push_back(temp);
 }

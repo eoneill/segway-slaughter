@@ -1,6 +1,8 @@
 #include "SideScroller.h"
 #include "CasinoLevel.h"
 #include "MainMenu.h"
+#include "AIManager.h"
+#include "Item.h"
 #include <iostream>
 
 using namespace std;
@@ -42,7 +44,7 @@ void SideScroller::initialize() {
   assert(mSceneMgr != 0);
 
   mSceneMgr->setAmbientLight(ColourValue(0.5f, 0.5f, 0.5f));
-  mSceneMgr->setShadowTechnique(SHADOWTYPE_STENCIL_MODULATIVE);
+  mSceneMgr->setShadowTechnique(SHADOWTYPE_TEXTURE_MODULATIVE);
 
   //Setup the camera
   Camera *mCamera = mSceneMgr->createCamera("MyCamera");
@@ -84,8 +86,10 @@ void SideScroller::initialize() {
   actors.push_back(player);
   
   //make some sample enemies
-   srand ( time(NULL) );
-   for(int i = 0; i < 35; i++){
+  srand ( time(NULL) );
+  //Set the number of enemies so that spawnBehind knows what to do
+	NumEnemies_ = 35;
+  for(int i = 0; i < NumEnemies_; i++){
     char EntName[40] = "Mobster";
     sprintf(EntName,"mobster%d",i);
     Actor* temp = new Actor(EntName,"mobster.mesh", Status(25),
@@ -94,15 +98,12 @@ void SideScroller::initialize() {
 		tempSceneNode->yaw(Ogre::Degree(180));
 		temp->setDamage(0.01);
 		temp->setSpeed(0.85);
-		
-    //stats need to be less for the enemies
-    //temp->speed_ = 1;
-    //temp->MaxHealth_ = 25;
-    //temp->CurrentHealth_ = 25;
-    //temp->damage_ = 0.01;
     
     actors.push_back(temp);
   }
+	
+
+	Brawndo b(Ogre::Vector3(0,0,0));
 
   //Static Objects
   ent = mSceneMgr->createEntity("SSPole1", "tel_pole_basic.mesh");
@@ -142,6 +143,8 @@ bool SideScroller::isDone() {
 
 GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 	removeDead();
+	
+	spawnBehind(actors, NumEnemies_);
 
   Ogre::Root* root_ = getRoot();
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");

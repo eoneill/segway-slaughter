@@ -8,6 +8,7 @@
 
 int Item::id_ = 0;
 
+const double ITEM_SCALE = 1000;
 ////////////////////////////////////////////////////////////////////////////////
 // Item
 
@@ -30,7 +31,7 @@ Item::Item(const std::string& entityName,
 	// Attach to item to a scene node for rendering
   sceneNode_ = sceneMgr->getRootSceneNode()->createChildSceneNode(position_);
   sceneNode_->attachObject(entity_);
-  sceneNode_->setScale(10, 10, 10);
+  sceneNode_->setScale(ITEM_SCALE, ITEM_SCALE, ITEM_SCALE);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
