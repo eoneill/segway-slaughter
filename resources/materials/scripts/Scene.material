@@ -11,7 +11,7 @@ material tel_pole_basic
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture tel_pole_basic_tex.jpg
+				texture tel_pole_basic_tex.png
 			}
 		}
 	}
@@ -29,7 +29,7 @@ material tel_pole_basic_tex
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture tel_pole_basic_tex.jpg
+				texture tel_pole_basic_tex.png
 			}
 		}
 	}
