@@ -164,20 +164,31 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   Ogre::Root* root_ = getRoot();
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
   InputSystem* is = Locator::getInput();
+
+  //Sound stuff
+  if (!streetSFX_->audIsPlaying("chainsaw_idle.wav") &&
+      !streetSFX_->audIsPlaying("chainsaw_attack.wav"))
+    streetSFX_->audPlay("chainsaw_idle.wav");
 		
 	//update AI
 	AIManager(actors);
 
   //Move player up, but with constraints
   if (is->isKeyDown(OIS::KC_UP)) {
+      if (!streetSFX_->audIsPlaying("segway_ride.wav"))
+        streetSFX_->audPlay("segway_ride.wav");
  		player->move(kUp, actors);
   }
   //Move player down, but with constraints
   if (is->isKeyDown(OIS::KC_DOWN)) {
+      if (!streetSFX_->audIsPlaying("segway_ride.wav"))
+        streetSFX_->audPlay("segway_ride.wav");
   	player->move(kDown, actors);
   }
   //move player left
     if (is->isKeyDown(OIS::KC_LEFT)) {
+      if (!streetSFX_->audIsPlaying("segway_ride.wav"))
+        streetSFX_->audPlay("segway_ride.wav");
 	    if(player->move(kLeft, actors))
       {
         mCamera->move(Vector3(0,0,DEFAULT_MOVE_SPEED));
@@ -185,6 +196,8 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     }
     //move player right
     if (is->isKeyDown(OIS::KC_RIGHT)) {
+      if (!streetSFX_->audIsPlaying("segway_ride.wav"))
+        streetSFX_->audPlay("segway_ride.wav");
     	if(player->move(kRight, actors))
     	{
 	      mCamera->move(Vector3(0,0,-DEFAULT_MOVE_SPEED));
