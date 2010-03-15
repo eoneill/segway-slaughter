@@ -104,6 +104,7 @@ int audBackground::audGetFilesOfType (string folder, string type) {
     else if ((files.back()).substr(n-typelength) != type && type != "") {
       files.pop_back();
     }
+    
   }
 
   return 0;

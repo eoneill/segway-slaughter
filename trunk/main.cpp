@@ -17,12 +17,12 @@ using namespace Ogre;
 
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 #else
-  int main(int argc, char **argv)
+  int main(int *argc, char **argv)
 #endif
 {
   try
   {
-    Application app("Segway Slaughter");
+    Application app("Segway Slaughter", argc, argv);
     app.startState(new MainMenu());
     app.go();
   }
