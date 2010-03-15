@@ -1,0 +1,20 @@
+// SegwaySlaughter Title Overlay
+Segway/Overlay
+{
+	zorder 500
+	// Stats block
+
+	container Panel(Segway/Logo)
+	{	
+		metrics_mode pixels
+		horz_align center
+		vert_align top
+		top 50
+		left -150
+		width 400
+		height 400
+		material Ogre/Logo
+	}
+}
+
+
