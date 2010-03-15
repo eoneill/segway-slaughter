@@ -12,6 +12,7 @@
 #include "SideScroller.h"
 #include "audio/audio.h"
 #include <iostream>
+#include <OgreOverlay.h>
 #include <CEGUI/elements/CEGUIPushButton.h>
 
 class MainMenu : public GameState, public GuiListener {
@@ -33,12 +34,81 @@ public:
     return true;
   }
 
-  bool onOptions(const CEGUI::EventArgs& e) {
+  bool onAbout(const CEGUI::EventArgs& e) {
+    titleOverlay->hide();
+    CEGUI::WindowManager& wm = CEGUI::WindowManager::getSingleton();
+    CEGUI::PushButton* aboutmenu = (CEGUI::PushButton*)wm.getWindow("About_Menu");
+    CEGUI::PushButton* ok = (CEGUI::PushButton*)wm.getWindow("Ok");
+    CEGUI::PushButton* start = (CEGUI::PushButton*)wm.getWindow("Start");
+    CEGUI::PushButton* about = (CEGUI::PushButton*)wm.getWindow("About");
+    CEGUI::PushButton* credits = (CEGUI::PushButton*)wm.getWindow("Credits");
+    CEGUI::PushButton* quit = (CEGUI::PushButton*)wm.getWindow("Quit");
+
+    aboutmenu->show();
+    ok->show();
+    start->hide();
+    about->hide();
+    quit->hide();
+    credits->show();
     return true;
+  }
+
+  bool onOk(const CEGUI::EventArgs& e) {
+    titleOverlay->show();
+    CEGUI::WindowManager& wm = CEGUI::WindowManager::getSingleton();
+    CEGUI::PushButton* ok = (CEGUI::PushButton*)wm.getWindow("Ok");
+    CEGUI::PushButton* aboutmenu = (CEGUI::PushButton*)wm.getWindow("About_Menu");
+    CEGUI::PushButton* start = (CEGUI::PushButton*)wm.getWindow("Start");
+    CEGUI::PushButton* about = (CEGUI::PushButton*)wm.getWindow("About");
+    CEGUI::PushButton* credits = (CEGUI::PushButton*)wm.getWindow("Credits");
+    CEGUI::PushButton* quit = (CEGUI::PushButton*)wm.getWindow("Quit");
+
+    credits->hide();
+    aboutmenu->hide();
+    ok->hide();
+    start->show();
+    about->show();
+    quit->show();
+    return true;
+  }
+
+  bool onCredits(const CEGUI::EventArgs& e) {
+    CEGUI::WindowManager& wm = CEGUI::WindowManager::getSingleton();
+    CEGUI::PushButton* ok = (CEGUI::PushButton*)wm.getWindow("Ok");
+    CEGUI::PushButton* ok2 = (CEGUI::PushButton*)wm.getWindow("Ok2");
+    CEGUI::PushButton* aboutmenu = (CEGUI::PushButton*)wm.getWindow("About_Menu");
+    CEGUI::PushButton* creditmenu = (CEGUI::PushButton*)wm.getWindow("Credit_Menu");
+    CEGUI::PushButton* credits = (CEGUI::PushButton*)wm.getWindow("Credits");
+
+    ok->hide();
+    ok2->show();
+    aboutmenu->hide();
+    credits->hide();
+    creditmenu->show();
+    return true;
+  }
+  
+  bool onOk2(const CEGUI::EventArgs& e) {
+   titleOverlay->show();
+   CEGUI::WindowManager& wm = CEGUI::WindowManager::getSingleton();
+   CEGUI::PushButton* ok2 = (CEGUI::PushButton*)wm.getWindow("Ok2");
+   CEGUI::PushButton* creditmenu = (CEGUI::PushButton*)wm.getWindow("Credit_Menu");
+   CEGUI::PushButton* start = (CEGUI::PushButton*)wm.getWindow("Start");
+   CEGUI::PushButton* about = (CEGUI::PushButton*)wm.getWindow("About");
+   CEGUI::PushButton* quit = (CEGUI::PushButton*)wm.getWindow("Quit");
+
+   start->show();
+   about->show();
+   quit->show();  
+
+   creditmenu->hide();   
+   ok2->hide();
+   return true;
   }
 private:
   CEGUI::PushButton* makeButton(const std::string& resourcePath,
                                 const std::string& buttonName);
+  Ogre::Overlay* titleOverlay;
   bool isDone_;
   GameState* next_;
   audBackground* menuMusic_;

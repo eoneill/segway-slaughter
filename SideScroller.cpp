@@ -3,6 +3,7 @@
 #include "MainMenu.h"
 #include "AIManager.h"
 #include "Item.h"
+
 #include <iostream>
 
 using namespace std;
@@ -36,6 +37,7 @@ SideScroller::~SideScroller() {
 
   assert(hud_ != 0);
   delete hud_;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -134,10 +136,11 @@ void SideScroller::initialize() {
   hud_ = new HUD();
   hud_->updateTimeLeft(timeLeft_ / 60, timeLeft_ % 60);
 
+
   //AUDIO
   streetMusic_ = new audBackground(1);
   streetMusic_->audLoadDir("resources/audio/music/Street_Level","wav");
-  streetMusic_->audPlay();
+
 }
 
 
