@@ -68,3 +68,22 @@ material PE/blood
 		}
 	}
 }
+
+// ADDED THIS IN FOR TITLE
+material Ogre/Logo
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_check off
+
+			texture_unit
+			{
+				texture logo.png
+			}
+		}
+	}
+}
