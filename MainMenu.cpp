@@ -17,6 +17,8 @@ MainMenu::MainMenu()
 ////////////////////////////////////////////////////////////////////////////////
 
 MainMenu::~MainMenu() {
+  delete menuMusic_;
+
   SceneManager* mSceneMgr = getRoot()->getSceneManager("Default SceneManager");
   mSceneMgr->setSkyBox(false, "Examples/SpaceSkyBox");
   mSceneMgr->destroyAllCameras();
@@ -127,6 +129,11 @@ void MainMenu::initialize() {
   
   //SKYBOX
   mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
+
+  //AUDIO
+  menuMusic_ = new audBackground(1);
+  menuMusic_->audLoadDir("resources/audio/music/Main_Menu","wav");
+  menuMusic_->audPlay();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

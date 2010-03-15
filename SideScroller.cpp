@@ -19,6 +19,8 @@ SideScroller::SideScroller()
 ////////////////////////////////////////////////////////////////////////////////
 
 SideScroller::~SideScroller() {
+  delete streetMusic_;
+
   for(unsigned int i = 0; i < actors.size(); i++) {
   	delete actors[i];
   }
@@ -131,6 +133,11 @@ void SideScroller::initialize() {
   //////////////************
   hud_ = new HUD();
   hud_->updateTimeLeft(timeLeft_ / 60, timeLeft_ % 60);
+
+  //AUDIO
+  streetMusic_ = new audBackground(1);
+  streetMusic_->audLoadDir("resources/audio/music/Street_Level","wav");
+  streetMusic_->audPlay();
 }
 
 

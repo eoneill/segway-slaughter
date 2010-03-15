@@ -8,6 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "Application.h"
 #include "Locator.h"
+#include <AL/alut.h>
 
 #include <iostream>
 using namespace std;
@@ -19,7 +20,7 @@ const char* DEFAULT_SCENE_MGR = "Default SceneManager";
 
 ////////////////////////////////////////////////////////////////////////////////
 
-Application::Application(const std::string& appName)
+Application::Application(const std::string& appName, int *argc, char **argv)
   : root_(new Ogre::Root()),
     inputSystem_(0),
     ceguiRenderer_(0),
@@ -38,6 +39,7 @@ Application::Application(const std::string& appName)
   setupCEGUI();
   createFrameListener();
   root_->getAutoCreatedWindow();
+  alutInit(argc, argv);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

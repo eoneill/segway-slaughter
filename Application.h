@@ -38,7 +38,7 @@ public:
   //   initialState - The initial state the application is in
   //
   // Initializes the application making the title on the window the appName.
-  Application(const std::string& appName);
+  Application(const std::string& appName, int *argc, char **argv);
   ~Application();
 
   //////////////////////////////////////////////////////////////////////////////

@@ -7,6 +7,7 @@
 #include "GameState.h"
 #include "Locator.h"
 #include "AIManager.h"
+#include "audio/audio.h"
 #include "HUD.h"
 //extern const int LEVEL_WIDTH;
 const int TIME_PER_LEVEL = (60 * 5); // 5 minutes = 60 * 5 seconds
@@ -27,6 +28,7 @@ private:
   int timeLeft_;
   Ogre::Timer timer_;
   int NumEnemies_;
+  audBackground *streetMusic_;
 };
 
 #endif

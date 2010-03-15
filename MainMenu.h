@@ -10,6 +10,7 @@
 #include "GameState.h"
 #include "GuiListener.h"
 #include "SideScroller.h"
+#include "audio/audio.h"
 #include <iostream>
 #include <CEGUI/elements/CEGUIPushButton.h>
 
@@ -40,6 +41,7 @@ private:
                                 const std::string& buttonName);
   bool isDone_;
   GameState* next_;
+  audBackground* menuMusic_;
 };
 
 #endif // MAIN_MENU_H_
