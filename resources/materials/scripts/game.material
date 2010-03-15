@@ -70,7 +70,7 @@ material PE/blood
 }
 
 // ADDED THIS IN FOR TITLE
-material Ogre/Logo
+material Segway/Logo
 {
 	technique
 	{
@@ -88,8 +88,8 @@ material Ogre/Logo
 	}
 }
 
-// ADDED THIS IN FOR LITTLEMAN
-material Ogre/Man
+
+material Segway/LittleMan
 {
 	technique
 	{

@@ -137,6 +137,10 @@ void SideScroller::initialize() {
   hud_ = new HUD();
   hud_->updateTimeLeft(timeLeft_ / 60, timeLeft_ % 60);
 
+ //LittleMan OVERLAY
+  Ogre::Overlay* LittleManOverlay;
+  LittleManOverlay = OverlayManager::getSingleton().getByName("LittleMan/Overlay");
+  LittleManOverlay->show();
 
   //AUDIO
   streetMusic_ = new audBackground(1);
