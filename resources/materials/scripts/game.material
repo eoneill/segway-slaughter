@@ -87,3 +87,22 @@ material Ogre/Logo
 		}
 	}
 }
+
+// ADDED THIS IN FOR LITTLEMAN
+material Ogre/Man
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_check off
+
+			texture_unit
+			{
+				texture man.png
+			}
+		}
+	}
+}
