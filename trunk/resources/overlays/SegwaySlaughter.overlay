@@ -13,8 +13,25 @@ Segway/Overlay
 		left -150
 		width 400
 		height 400
-		material Ogre/Logo
+		material Segway/Logo
 	}
 }
 
+// Little Man Overlay
+LittleMan/Overlay
+{
+	zorder 500
+	// Stats block
 
+	container Panel(Little/Man)
+	{	
+		metrics_mode pixels
+		horz_align right
+		vert_align bottom
+		top -75
+		left -165
+		width 150
+		height 75
+		material Segway/LittleMan
+	}
+}
