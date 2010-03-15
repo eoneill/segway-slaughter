@@ -29,6 +29,7 @@ private:
   Ogre::Timer timer_;
   int NumEnemies_;
   audBackground *streetMusic_;
+  audSFX *streetSFX_;
 };
 
 #endif

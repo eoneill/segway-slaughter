@@ -426,6 +426,38 @@ int audSFX::audChangeDir(string folder, string type) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+bool audSFX::audIsPlaying(int index) {
+  ALint value;
+
+  alGetSourcei(*(sfxSource + index), AL_SOURCE_STATE, &value); //Get state of source
+
+  if (value == AL_PLAYING)
+    return true;
+  else
+    return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+bool audSFX::audIsPlaying(string file) {
+  ALint value;
+
+  bool found = false;
+  for (size_t i = 0; i < files.size() && !found; i++) {
+    if(files[i] == file) {
+      alGetSourcei(*(sfxSource + i), AL_SOURCE_STATE, &value); //Get state of source
+      found = true;
+    }
+  }
+
+  if (found && value == AL_PLAYING)
+    return true;
+  else
+    return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 int audSFX::audPlay(int index) {
   alSourcePlayv(1,sfxSource + index);
 
@@ -440,7 +472,7 @@ int audSFX::audPlay(string file) {
     if(files[i] == file) {
       found = true;
       alSourcePlayv(1,sfxSource + i);
-      return 0;
+      return i;
     }
   }
 
