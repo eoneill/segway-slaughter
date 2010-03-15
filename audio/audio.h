@@ -52,6 +52,8 @@ public:
   ~audSFX();
   int audLoadDir(std::string folder, std::string type = "");
   int audChangeDir(std::string folder, std::string type = "");
+  bool audIsPlaying(int index);
+  bool audIsPlaying(std::string file);
   int audPlay(int index);
   int audPlay(std::string file);
   int audStop();

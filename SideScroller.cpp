@@ -21,6 +21,7 @@ SideScroller::SideScroller()
 
 SideScroller::~SideScroller() {
   delete streetMusic_;
+  delete streetSFX_;
 
   for(unsigned int i = 0; i < actors.size(); i++) {
   	delete actors[i];
@@ -140,7 +141,10 @@ void SideScroller::initialize() {
   //AUDIO
   streetMusic_ = new audBackground(1);
   streetMusic_->audLoadDir("resources/audio/music/Street_Level","wav");
+  streetMusic_->audPlay();
 
+  streetSFX_ = new audSFX();
+  streetSFX_->audLoadDir("resources/audio/sfx","wav");
 }
 
 
@@ -188,6 +192,8 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     }
 
     if (is->isKeyDown(OIS::KC_A)) {
+      if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
+        streetSFX_->audPlay("chainsaw_attack.wav");
       player->attack(actors);
       hud_->updateScore(player->getScore());
     }
