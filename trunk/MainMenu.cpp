@@ -7,6 +7,7 @@
 #include "MainMenu.h"
 #include "Locator.h"
 
+
 using namespace Ogre;
 
 MainMenu::MainMenu()
@@ -30,10 +31,17 @@ MainMenu::~MainMenu() {
   //  CEGUI::Window* guiSheet = Locator::getGuiSystem()->getGUISheet();
   CEGUI::WindowManager& wm = CEGUI::WindowManager::getSingleton();
   wm.destroyWindow("Start");
-  wm.destroyWindow("Options");
+  wm.destroyWindow("About");
+  wm.destroyWindow("About_Menu");
+  wm.destroyWindow("Ok");
+  wm.destroyWindow("Ok2");
+  wm.destroyWindow("Credits");
+  wm.destroyWindow("Credit_Menu");
   wm.destroyWindow("Quit");
 
   Locator::getInput()->removeMouseListener(this);
+ 
+  OverlayManager::getSingleton().destroyAll(); 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,28 +49,88 @@ MainMenu::~MainMenu() {
 void MainMenu::initialize() {
   CEGUI::Window* guiSheet = Locator::getGuiSystem()->getGUISheet();
 
+ 
   // Start button
   CEGUI::PushButton* startBtn = makeButton("TaharezLook/Button", "Start");
   startBtn->setPosition(CEGUI::UVector2(cegui_reldim(0.47f),
-                                        cegui_reldim( 0.3f)));
+                                        cegui_reldim( 0.5f)));
   startBtn->setSize(CEGUI::UVector2(cegui_reldim(.09f),
                                     cegui_reldim( .06f)) );
   startBtn->setText("Start");
   guiSheet->addChildWindow(startBtn);
 
-  // Options button
-  CEGUI::PushButton* optnsBtn = makeButton("TaharezLook/Button", "Options");
-  optnsBtn->setPosition(CEGUI::UVector2(cegui_reldim(0.47f),
-                                             cegui_reldim( 0.4f)));
-  optnsBtn->setSize(CEGUI::UVector2(cegui_reldim(.09f),
+  // About button
+  CEGUI::PushButton* aboutBtn = makeButton("TaharezLook/Button", "About");
+  aboutBtn->setPosition(CEGUI::UVector2(cegui_reldim(0.47f),
+                                             cegui_reldim( 0.6f)));
+  aboutBtn->setSize(CEGUI::UVector2(cegui_reldim(.09f),
                                          cegui_reldim( .06f)));
-  optnsBtn->setText("Options");
-  guiSheet->addChildWindow(optnsBtn);
+  aboutBtn->setText("About");
+  guiSheet->addChildWindow(aboutBtn);
+
+  // AboutMenu button
+  CEGUI::PushButton* aboutmenu;
+  aboutmenu = makeButton("TaharezLook/Button", "About_Menu");
+  aboutmenu->setPosition(CEGUI::UVector2(cegui_reldim(0.27f),
+                                             cegui_reldim( 0.1f)));
+  aboutmenu->setSize(CEGUI::UVector2(cegui_reldim(.5f),
+                                         cegui_reldim( .5f)));
+  aboutmenu->setText("Premise:\nYou must defeat Don Johnson....\n \nControls:\nPress 'A' to kill.\nUse Arrow Keys to move.");
+  guiSheet->addChildWindow(aboutmenu);
+  aboutmenu->hide();
+
+  // Ok button
+  CEGUI::PushButton* ok;
+  ok = makeButton("TaharezLook/Button", "Ok");
+  ok->setPosition(CEGUI::UVector2(cegui_reldim(0.36f),
+                                             cegui_reldim( 0.45f)));
+  ok->setSize(CEGUI::UVector2(cegui_reldim(.06f),
+                                         cegui_reldim( .05f)));
+  ok->setText("Ok");
+  ok->setAlwaysOnTop(true);
+  guiSheet->addChildWindow(ok);
+  ok->hide();
+
+  // Credits button
+  CEGUI::PushButton* credits;
+  credits = makeButton("TaharezLook/Button", "Credits");
+  credits->setPosition(CEGUI::UVector2(cegui_reldim(0.62f),
+                                             cegui_reldim( 0.45f)));
+  credits->setSize(CEGUI::UVector2(cegui_reldim(.08f),
+                                         cegui_reldim( .05f)));
+  credits->setText("Credits");
+  credits->setAlwaysOnTop(true);
+  guiSheet->addChildWindow(credits);
+  credits->hide();
+
+   // CreditsMenu button
+  CEGUI::PushButton* creditmenu;
+  creditmenu = makeButton("TaharezLook/Button", "Credit_Menu");
+  creditmenu->setPosition(CEGUI::UVector2(cegui_reldim(0.27f),
+                                             cegui_reldim( 0.06f)));
+  creditmenu->setSize(CEGUI::UVector2(cegui_reldim(.5f),
+                                         cegui_reldim( .7f)));
+  creditmenu->setText("Credits:\n \nGraphics:\n...\n \nAudio:\n...\n \nMisc:...");
+  guiSheet->addChildWindow(creditmenu);
+  creditmenu->hide();
+
+  // Ok2 button
+  CEGUI::PushButton* ok2;
+  ok2 = makeButton("TaharezLook/Button", "Ok2");
+  ok2->setPosition(CEGUI::UVector2(cegui_reldim(0.49f),
+                                          cegui_reldim( 0.6f)));
+  ok2->setSize(CEGUI::UVector2(cegui_reldim(.06f),
+                                         cegui_reldim( .05f)));
+  ok2->setText("Ok");
+  ok2->setAlwaysOnTop(true);
+  guiSheet->addChildWindow(ok2);
+  ok2->hide();
+
 
   // Quit button
   CEGUI::PushButton* quitBtn  = makeButton("TaharezLook/Button", "Quit");
   quitBtn->setPosition(CEGUI::UVector2(cegui_reldim(0.47f),
-                                          cegui_reldim( 0.5f)));
+                                          cegui_reldim( 0.7f)));
   quitBtn->setSize(CEGUI::UVector2(cegui_reldim(.09f),
                                       cegui_reldim( .06f)));
   quitBtn->setText("Quit");
@@ -72,8 +140,20 @@ void MainMenu::initialize() {
   wm->getWindow("Start")->subscribeEvent(CEGUI::PushButton::EventClicked,
                                          CEGUI::Event::Subscriber(&MainMenu::onStart, this));
 
+  wm->getWindow("About")->subscribeEvent(CEGUI::PushButton::EventClicked,
+                                         CEGUI::Event::Subscriber(&MainMenu::onAbout, this));
+
   wm->getWindow("Quit")->subscribeEvent(CEGUI::PushButton::EventClicked,
                                         CEGUI::Event::Subscriber(&MainMenu::onQuit, this));
+
+  wm->getWindow("Ok")->subscribeEvent(CEGUI::PushButton::EventClicked,
+                                        CEGUI::Event::Subscriber(&MainMenu::onOk, this));
+ 
+  wm->getWindow("Credits")->subscribeEvent(CEGUI::PushButton::EventClicked,
+                                        CEGUI::Event::Subscriber(&MainMenu::onCredits, this));
+
+  wm->getWindow("Ok2")->subscribeEvent(CEGUI::PushButton::EventClicked,
+                                        CEGUI::Event::Subscriber(&MainMenu::onOk2, this));
 
 
   //////////////////////////////////////////////////////////////////////////////
@@ -106,11 +186,21 @@ void MainMenu::initialize() {
   node->attachObject(ent);
   node->translate(0,0,0);
 	
-  //Robot
-  Entity *ent2 = mSceneMgr->createEntity( "mobster", "mobster.mesh" );
-  SceneNode *node2 = mSceneMgr->getRootSceneNode()->createChildSceneNode( "mobster", Vector3( 50, 0, 0 ) );
+
+  //Mobster
+  Entity *ent2 = mSceneMgr->createEntity( "Mobster", "mobster.mesh" );
+  SceneNode *node2 = mSceneMgr->getRootSceneNode()->createChildSceneNode( "mobster", Vector3( 50, -0, -0 ) );
   node2->attachObject( ent2 );
-  node2->setScale(12,12,12);
+  node2->yaw( Degree( 25 ) );
+  node2->setScale( 12,12,12 );
+
+  //Charlie
+  Entity *ent3 = mSceneMgr->createEntity( "Charlie", "charlie.mesh" );
+  SceneNode *node3 = mSceneMgr->getRootSceneNode()->createChildSceneNode( "charlie", Vector3( -50, 0, 0 ) );
+  node3->attachObject( ent3 );
+  node3->yaw( Degree( -25 ) );
+  node3->setScale( 12,12,12 );
+
   
   // Light
   mSceneMgr->setAmbientLight(ColourValue(0.4, 0.4, 0.4));
@@ -130,10 +220,17 @@ void MainMenu::initialize() {
   //SKYBOX
   mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
 
+ 
+  //SegwaySlaughter Title OVERLAY
+  titleOverlay = OverlayManager::getSingleton().getByName("Segway/Overlay");
+  titleOverlay->show();
+
+
   //AUDIO
   menuMusic_ = new audBackground(1);
   menuMusic_->audLoadDir("resources/audio/music/Main_Menu","wav");
   menuMusic_->audPlay();
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
