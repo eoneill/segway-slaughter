@@ -88,7 +88,7 @@ void SideScroller::initialize() {
 
   //Player
   player = new Charlie("charlie", "charlie.mesh", Ogre::Vector3(0,0,0));
-  player->setDamage(1);
+  player->setDamage(0.05);
   player->setAttackBox(100);
 
   actors.push_back(player);

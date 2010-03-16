@@ -235,30 +235,11 @@ GameState* Paradise::update(const Ogre::Real& timeSinceLastFrame) {
       for(unsigned int i = 0; i < actors.size(); i++)
         actors[i]->stopBlood();
     }
-    
-		//get to the end, trigger a boss fight
-	  /*if (player->getPosition()[2] <= -33000 && bossFight == false) {
-	    //isDone_ = true;
-	    //return new CasinoLevel;
-	    bossFight = true;
-	    NumEnemies_++;
-			char EntName[40] = "Boss";
-			Actor* temp = new Actor(EntName,"mob_boss.mesh", Status(100),
-				                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0, actors[0]->getPosition()[2] - 1000));
-			SceneNode * tempSceneNode = temp->getSceneNode();
-			tempSceneNode->yaw(Ogre::Degree(180));
-			temp->setDamage(0.01);
-			temp->setSpeed(1.1);
-			temp->setAttackBox(75);
-			temp->setState(attack);
-
-			actors.push_back(temp);
-	  }*/
-
-  /*if (is->isKeyDown(OIS::KC_1)) {
+  if (player->getPosition()[2] <= -63000) {
     isDone_ = true;
-    return new CasinoLevel;
-  }*/
+    return new MainMenu;
+  }  
+
   if (is->isKeyDown(OIS::KC_ESCAPE)) {
     isDone_ = true;
     return new MainMenu;
