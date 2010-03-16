@@ -7,6 +7,9 @@
 #ifndef ITEM_H__
 #define ITEM_H__
 
+#include <map>
+#include <string>
+
 #include "Locator.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -20,6 +23,10 @@ public:
        const Ogre::Vector3& position);
 
   virtual ~Item();
+
+  double getStatusEffect(const std::string& name) const;
+protected:
+  std::map<std::string, double> statEffects_;
 private:
   Ogre::Vector3    position_;
   Ogre::SceneNode* sceneNode_;
