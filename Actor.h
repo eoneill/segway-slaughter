@@ -51,6 +51,9 @@ const float DEFAULT_ATTACK_BOX = 100;
 // The default bounding box width
 const double DEFAULT_BBOX_WIDTH = 100;
 
+// The max amount a chainsaw can over heat
+const float MAX_HEAT = 100;
+
 ////////////////////////////////////////////////////////////////////////////////
 // Class: Status
 //
@@ -262,6 +265,7 @@ public:
   
   
   bool isBoss;
+  float chainsawHeat;
 protected:
   Ogre::Vector3     position_;
   Ogre::SceneNode*  sceneNode_;
