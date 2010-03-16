@@ -17,13 +17,10 @@ GameState::~GameState() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void GameState::removeDead() {
-	for (std::vector<Actor*>::iterator it = actors.begin();
-			 it != actors.end();) {
-		if ((*it)->getState() == dead) {
-			delete *it;
-			it = actors.erase(it);
-		} else {
-			++it;
+	for (unsigned int i = 1; i < actors.size(); i++) {
+		if (actors[i]->getState() == dead) {
+			delete actors[i];
+			actors.erase(actors.begin() + i);
 		}
 	}
 }
