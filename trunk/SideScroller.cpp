@@ -181,7 +181,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   
   //cool down for the chainsaw
   if(player->chainsawHeat >= 0)
-	  player->chainsawHeat -=0.24;
+	  player->chainsawHeat -=0.015;
 	if(player->chainsawHeat == 0)
 	  player->chainsawHeat = 0;
 
@@ -232,7 +232,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 
     if (is->isKeyDown(OIS::KC_A)) {
     if(player->chainsawHeat <= MAX_HEAT)
-		  player->chainsawHeat +=0.25;
+		  player->chainsawHeat +=0.035;
 		if(player->chainsawHeat == MAX_HEAT)
 		  player->chainsawHeat = MAX_HEAT;
     if(player->chainsawHeat <= MAX_HEAT-1)
@@ -277,6 +277,13 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     isDone_ = true;
     return new Paradise;
   }
+  
+  if(player->getState() == dead)
+  {
+  	isDone_ = true;
+    return new MainMenu;
+  }
+  
   if (is->isKeyDown(OIS::KC_ESCAPE)) {
     isDone_ = true;
     return new MainMenu;
