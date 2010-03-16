@@ -24,7 +24,7 @@ public:
 
   virtual ~Item();
 
-  double getStatusEffect(const std::string& name) const;
+  double getStatusEffect(const std::string& name);
 protected:
   std::map<std::string, double> statEffects_;
 private:
