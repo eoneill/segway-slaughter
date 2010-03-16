@@ -68,7 +68,7 @@ void Item::scaleMesh(const double& scaleFactor) {
 Brawndo::Brawndo(const Ogre::Vector3& position)
   : Item("Brawndo", "brawndo.mesh", position)
 {
-	statEffects_["Speed"] = 0.5;
+	statEffects_["Speed"] = 1.0;
 	statEffects_["Time"]  = 10; // 10 seconds
   scaleMesh(100);
 }
