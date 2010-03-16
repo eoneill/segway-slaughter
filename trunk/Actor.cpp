@@ -66,6 +66,27 @@ Actor::~Actor() {
 ////////////////////////////////////////////////////////////////////////////////
 
 bool Actor::move(const MovementDirection& newDirection,
+                 const vector<Actor*>& actors,
+                 vector<Item*>& items) {
+  for (vector<Item*>::iterator it = items.begin();
+       it != items.end();) {
+    if (SquareHit((*it)->getPosition(),
+                  actors[0]->position_,
+                  (*it)->getWidth())) {
+      actors[0]->getStatus().addHealth((*it)->getStatusEffect("Health"));
+      actors[0]->addSpeed((*it)->getStatusEffect("Speed"));
+      delete *it;
+      it = items.erase(it);
+    } else {
+      ++it;
+    }
+  }
+  return move(newDirection, actors);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+bool Actor::move(const MovementDirection& newDirection,
                  const vector<Actor*>& actors) {
   // Compute new position
   Ogre::Vector3 tmp = position_;
@@ -85,7 +106,6 @@ bool Actor::move(const MovementDirection& newDirection,
         validMove = false;
       }
     }//Acute (a), obtuse (b), and straight (c) angles. Here, a and b are supplementary angles.
-
   }
 
   // If no collisions actually move
