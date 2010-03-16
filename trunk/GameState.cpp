@@ -8,7 +8,7 @@ GameState::~GameState() {
     delete actors.back();
     actors.pop_back();
   }
-  
+
   while (!items.empty()) {
     delete items.back();
     items.pop_back();

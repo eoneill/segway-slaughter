@@ -36,7 +36,8 @@ Actor::Actor(const std::string& entityName,
     direction_(kRight),
     stats_(stats),
     speed_(DEFAULT_MOVE_SPEED),
-    deadTime_(0)
+    deadTime_(0),
+    nodeName_(entityName)
 {
   Ogre::SceneManager* sceneMgr = Locator::getSceneManager();
   entity_ = sceneMgr->createEntity(entityName, entityMesh);
@@ -58,11 +59,14 @@ Actor::Actor(const std::string& entityName,
 
 Actor::~Actor() {
   Ogre::SceneManager* sceneMgr = Locator::getSceneManager();
-  sceneNode_->detachObject(entity_);
-  sceneNode_->detachObject(pSystem_);
-  sceneMgr->destroyEntity(entity_);
-  sceneMgr->destroyParticleSystem(pSystem_);
-  sceneMgr->destroySceneNode(sceneNode_);
+
+  if (sceneMgr->hasEntity(nodeName_)) {
+    sceneNode_->detachObject(entity_);
+    sceneMgr->destroyEntity(entity_);
+    sceneNode_->detachObject(pSystem_);
+    sceneMgr->destroyParticleSystem(pSystem_);
+    sceneMgr->destroySceneNode(sceneNode_); // Always do this last!
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

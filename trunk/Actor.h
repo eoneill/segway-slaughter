@@ -349,6 +349,7 @@ protected:
   float             attackBox_;
   int               deadTime_;
   TimedEffect       timedEffect_;
+  std::string       nodeName_;
 };
 
 class Charlie : public Actor {
@@ -356,7 +357,7 @@ public:
   Charlie(const std::string& entityName,
           const std::string& entityMesh,
           const Ogre::Vector3& position = Ogre::Vector3::ZERO)
-  : Actor(entityName, entityMesh, Status(400), position)
+  : Actor(entityName, entityMesh, Status(4000), position)
   {
     direction_ = kRight;
     sceneNode_->yaw(Ogre::Degree(-180));

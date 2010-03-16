@@ -40,6 +40,7 @@ private:
   Ogre::Vector3    position_;
   Ogre::SceneNode* sceneNode_;
   Ogre::Entity*    entity_;
+  std::string      nodeName_;
   static int       id_;
 };
 

@@ -23,7 +23,8 @@ Item::Item(const std::string& entityName,
   std::stringstream ss;
   ss << entityName << id_++;
   std::string entityNameUniq = ss.str();
-	
+  nodeName_ = entityNameUniq;
+
   // Create an entity from the mesh
   Ogre::SceneManager* sceneMgr = Locator::getSceneManager();
   entity_ = sceneMgr->createEntity(entityNameUniq, entityMesh);
@@ -42,8 +43,11 @@ Item::Item(const std::string& entityName,
 
 Item::~Item() {
   Ogre::SceneManager* sceneMgr = Locator::getSceneManager();
-  sceneNode_->detachObject(entity_);
-  sceneMgr->destroyEntity(entity_);
+  if (sceneMgr->hasEntity(nodeName_)) {
+    sceneNode_->detachObject(entity_);
+    sceneMgr->destroyEntity(entity_);
+    sceneMgr->destroySceneNode(sceneNode_);
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
