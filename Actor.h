@@ -248,7 +248,7 @@ public:
   Charlie(const std::string& entityName,
           const std::string& entityMesh,
           const Ogre::Vector3& position = Ogre::Vector3::ZERO)
-  : Actor(entityName, entityMesh, Status(1000), position)
+  : Actor(entityName, entityMesh, Status(400), position)
   {
     direction_ = kRight;
     sceneNode_->yaw(Ogre::Degree(-180));

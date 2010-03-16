@@ -10,6 +10,7 @@ OBJS = audio.o \
        SideScroller.o \
        Application.o \
 	     CasinoLevel.o \
+	     Paradise.o \
 	     MainMenu.o \
        HUD.o \
        AIManager.o \
@@ -37,6 +38,9 @@ SideScroller.o: SideScroller.h SideScroller.cpp
 
 CasinoLevel.o: CasinoLevel.h CasinoLevel.cpp
 	$(CXX) $(CXXFLAGS) -c CasinoLevel.cpp
+	
+Paradise.o: Paradise.h Paradise.cpp
+	$(CXX) $(CXXFLAGS) -c Paradise.cpp
 
 audio.o: audio/audio.h audio/audio.cpp
 	$(CXX) $(CXXFLAGS) -c audio/audio.cpp -o audio.o

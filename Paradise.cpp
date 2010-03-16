@@ -1,6 +1,5 @@
-#include "SideScroller.h"
-#include "CasinoLevel.h"
 #include "Paradise.h"
+#include "CasinoLevel.h"
 #include "MainMenu.h"
 #include "AIManager.h"
 #include "Item.h"
@@ -11,7 +10,7 @@ using namespace std;
 using namespace Ogre;
 
 
-SideScroller::SideScroller()
+Paradise::Paradise()
   : hud_(0),
     isDone_(false),
     timeLeft_(TIME_PER_LEVEL)
@@ -20,7 +19,7 @@ SideScroller::SideScroller()
 
 ////////////////////////////////////////////////////////////////////////////////
 
-SideScroller::~SideScroller() {
+Paradise::~Paradise() {
   delete streetMusic_;
   delete streetSFX_;
 
@@ -44,7 +43,7 @@ SideScroller::~SideScroller() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SideScroller::initialize() {
+void Paradise::initialize() {
   Ogre::Root* root_ = getRoot();
   SceneManager* mSceneMgr = root_->getSceneManager("Default SceneManager");
   assert(mSceneMgr != 0);
@@ -88,7 +87,7 @@ void SideScroller::initialize() {
 
   //Player
   player = new Charlie("charlie", "charlie.mesh", Ogre::Vector3(0,0,0));
-  player->setDamage(0.05);
+  player->setDamage(1);
   player->setAttackBox(100);
 
   actors.push_back(player);
@@ -96,11 +95,25 @@ void SideScroller::initialize() {
   //make some sample enemies
   srand ( time(NULL) );
   //Set the number of enemies so that spawnBehind knows what to do
-	NumEnemies_ = 70;
-  for(int i = 0; i < NumEnemies_; i++){
+	NumEnemies_ = 140;
+  for(int i = 0; i < 70; i++){
     char EntName[40] = "Mobster";
     sprintf(EntName,"mobster%d",i);
-    Actor* temp = new Actor(EntName,"mobster.mesh", Status(25),
+    Actor* temp = new Actor(EntName,"brawndo.mesh", Status(25),
+    	                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0,-(rand() % 60000+2000)));
+    SceneNode * tempSceneNode = temp->getSceneNode();
+		tempSceneNode->yaw(Ogre::Degree(180));
+		temp->setDamage(0.01);
+		temp->setSpeed(0.85);
+		temp->setAttackBox(75);
+    
+    actors.push_back(temp);
+  }
+  
+  for(int i = 71; i < NumEnemies_; i++){
+    char EntName[40] = "Mobster";
+    sprintf(EntName,"mobster%d",i);
+    Actor* temp = new Actor(EntName,"pizza.mesh", Status(25),
     	                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0,-(rand() % 60000+2000)));
     SceneNode * tempSceneNode = temp->getSceneNode();
 		tempSceneNode->yaw(Ogre::Degree(180));
@@ -143,7 +156,7 @@ void SideScroller::initialize() {
 
   //AUDIO
   streetMusic_ = new audBackground(1);
-  streetMusic_->audLoadDir("resources/audio/music/Street_Level","wav");
+  streetMusic_->audLoadDir("resources/audio/music/Paradise","wav");
   streetMusic_->audPlay();
 
   streetSFX_ = new audSFX();
@@ -155,18 +168,18 @@ void SideScroller::initialize() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool SideScroller::isDone() {
+bool Paradise::isDone() {
   return isDone_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
+GameState* Paradise::update(const Ogre::Real& timeSinceLastFrame) {
 	removeDead();
 	
-	if(!bossFight){
+	/*if(!bossFight){
 		spawnBehind(actors, NumEnemies_);
-	}
+	}*/
 
   Ogre::Root* root_ = getRoot();
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
@@ -196,25 +209,19 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     if (is->isKeyDown(OIS::KC_LEFT)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
-      if (!bossFight || (bossFight && player->getPosition()[2] <= -62000))
-      {
-		    if(player->move(kLeft, actors) && !bossFight)
-		    {
-		      mCamera->move(Vector3(0,0,DEFAULT_MOVE_SPEED));
-		    }
-		  }
+	    if(player->move(kLeft, actors) && !bossFight)
+	    {
+	      mCamera->move(Vector3(0,0,DEFAULT_MOVE_SPEED));
+	    }
     }
     //move player right
     if (is->isKeyDown(OIS::KC_RIGHT)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
-      if (player->getPosition()[2] >= -64000)
-      {
-		  	if(player->move(kRight, actors) && !bossFight)
-		  	{
-		      mCamera->move(Vector3(0,0,-DEFAULT_MOVE_SPEED));
-		    }
-		  }
+	  	if(player->move(kRight, actors) && !bossFight)
+	  	{
+	      mCamera->move(Vector3(0,0,-DEFAULT_MOVE_SPEED));
+	    }
     }
 
     if (is->isKeyDown(OIS::KC_A)) {
@@ -230,7 +237,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     }
     
 		//get to the end, trigger a boss fight
-	  if (player->getPosition()[2] <= -63000 && bossFight == false) {
+	  /*if (player->getPosition()[2] <= -33000 && bossFight == false) {
 	    //isDone_ = true;
 	    //return new CasinoLevel;
 	    bossFight = true;
@@ -246,12 +253,12 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 			temp->setState(attack);
 
 			actors.push_back(temp);
-	  }
+	  }*/
 
-  if (is->isKeyDown(OIS::KC_1)) {
+  /*if (is->isKeyDown(OIS::KC_1)) {
     isDone_ = true;
-    return new Paradise;
-  }
+    return new CasinoLevel;
+  }*/
   if (is->isKeyDown(OIS::KC_ESCAPE)) {
     isDone_ = true;
     return new MainMenu;
