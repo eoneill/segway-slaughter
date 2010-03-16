@@ -175,7 +175,7 @@ void MainMenu::initialize() {
                                           ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
                                           150000,150000,20,20,true,1,5,5,Vector3::UNIT_Z);
   Entity* ent = mSceneMgr->createEntity("GroundEntity", "ground");
-  ent->setMaterialName("Examples/Rockwall");
+  ent->setMaterialName("WoodPallet");
   ent->setCastShadows(false);
   
   SceneNode* node = mSceneMgr->getRootSceneNode()->createChildSceneNode();
@@ -214,7 +214,7 @@ void MainMenu::initialize() {
   
   
   //SKYBOX
-  mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
+  mSceneMgr->setSkyBox(true, "Examples/MorningSkyBox");
 
  
   //SegwaySlaughter Title OVERLAY
