@@ -178,6 +178,8 @@ GameState* Paradise::update(const Ogre::Real& timeSinceLastFrame) {
 		spawnBehind(actors, NumEnemies_);
 	}*/
 
+  player->update(timeSinceLastFrame);
+
   Ogre::Root* root_ = getRoot();
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
   InputSystem* is = Locator::getInput();
