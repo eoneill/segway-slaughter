@@ -47,7 +47,8 @@ Actor::Actor(const std::string& entityName,
   sceneNode_->attachObject(entity_);
   sceneNode_->attachObject(pSystem_);
   sceneNode_->setScale(40,40,40);
-  //sceneNode_->showBoundingBox(true);
+  actorSFX_ = new audSFX();
+  actorSFX_->audLoadDir("resources/audio/sfx","wav");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -152,6 +153,7 @@ void Actor::onDeath()
   position_[2]+= 10000;
   sceneNode_->translate(Vector3(0,10000,10000));
   stats_.setState(dead);
+  actorSFX_->audPlay("male_scream.wav");
 }
 
 void Actor::attack(std::vector<Actor*> &actors){
