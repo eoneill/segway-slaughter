@@ -20,7 +20,7 @@ const char* DEFAULT_SCENE_MGR = "Default SceneManager";
 
 ////////////////////////////////////////////////////////////////////////////////
 
-Application::Application(const std::string& appName, int *argc, char **argv)
+Application::Application(const std::string& appName, int argc, char **argv)
   : root_(new Ogre::Root()),
     inputSystem_(0),
     ceguiRenderer_(0),
@@ -39,7 +39,7 @@ Application::Application(const std::string& appName, int *argc, char **argv)
   setupCEGUI();
   createFrameListener();
   root_->getAutoCreatedWindow();
-  alutInit(argc, argv);
+  alutInit(&argc, argv);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
