@@ -303,6 +303,19 @@ public:
   void setAttackBox(const double& size) {
     attackBox_ = size;
   }
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: deadTick
+  //
+  // Ticks each call if actor is dead
+  // Returns the number of ticks
+  int deadTick() {
+    if (stats_.getState() == dead)
+      deadTime_++;
+    else
+      deadTime_ = 0;
+    return deadTime_;
+  }
+    
   
   double subEffectTime(const double& update) {
     if (timedEffect_.getTime() > 0) {
@@ -334,6 +347,7 @@ protected:
   double            damage_;
   //audSFX *          actorSFX_;
   float             attackBox_;
+  int               deadTime_;
   TimedEffect       timedEffect_;
 };
 

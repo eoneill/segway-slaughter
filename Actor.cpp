@@ -35,7 +35,8 @@ Actor::Actor(const std::string& entityName,
   : position_(position),
     direction_(kRight),
     stats_(stats),
-    speed_(DEFAULT_MOVE_SPEED)
+    speed_(DEFAULT_MOVE_SPEED),
+    deadTime_(0)
 {
   Ogre::SceneManager* sceneMgr = Locator::getSceneManager();
   entity_ = sceneMgr->createEntity(entityName, entityMesh);
@@ -116,7 +117,7 @@ bool Actor::move(const MovementDirection& newDirection,
   // Collision detection
   bool validMove = true;
   for (size_t i = 0; i < actors.size(); i++) {
-    if (sceneNode_ != actors[i]->sceneNode_){
+    if (sceneNode_ != actors[i]->sceneNode_ && actors[i]->getState() != dead){
       if(SquareHit(tmp, actors[i]->position_)) {
         validMove = false;
       }
@@ -185,9 +186,11 @@ bool Actor::onDamage(float damage){
 void Actor::onDeath()
 {
   //in leiu of actually destroying it, right now, we'll just move it.
-  position_[1]+= 10000;
-  position_[2]+= 10000;
-  sceneNode_->translate(Vector3(0,10000,10000));
+  //position_[1]+= 10000;
+  //position_[2]+= 10000;
+  //sceneNode_->translate(Vector3(0,10000,10000));
+  sceneNode_->pitch(Ogre::Degree(90));
+  sceneNode_->translate(Vector3(0, 75, 0));
   stats_.setState(dead);
   //actorSFX_->audPlay("male_scream.wav");
 }
@@ -227,7 +230,7 @@ bool Actor::attack(std::vector<Actor*> &actors){
   bool didBossDie = false;
   
 	for (size_t i = start; i < end; i++) {
-	  if (sceneNode_ != actors[i]->sceneNode_) {
+	  if (sceneNode_ != actors[i]->sceneNode_ && actors[i]->getState() != dead) {
 	    if (SquareHit(damagePos, actors[i]->position_, attackBox_)) {
 	      if (actors[i]->onDamage(damage_)) {
 	      	if (actors[i]->isBoss) {
