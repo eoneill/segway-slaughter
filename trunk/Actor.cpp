@@ -201,7 +201,7 @@ void Actor::onDeath()
   //actorSFX_->audPlay("male_scream.wav");
 }
 
-bool Actor::attack(std::vector<Actor*> &actors){
+bool Actor::attack(std::vector<Actor*> &actors, float cycles){
   //find out where the damage box is, based on direction facing
   int vert = 0;
   int horiz = 0;
@@ -238,7 +238,7 @@ bool Actor::attack(std::vector<Actor*> &actors){
 	for (size_t i = start; i < end; i++) {
 	  if (sceneNode_ != actors[i]->sceneNode_ && actors[i]->getState() != dead) {
 	    if (SquareHit(damagePos, actors[i]->position_, attackBox_)) {
-	      if (actors[i]->onDamage(damage_)) {
+	      if (actors[i]->onDamage(damage_*cycles)) {
 	      	if (actors[i]->isBoss) {
 	      		didBossDie = true;
 	      		stats_.addScore(1000);

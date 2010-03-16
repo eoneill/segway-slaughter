@@ -163,7 +163,7 @@ public:
   // Function: attack
   //
   // Attempt to perform an attack on nearby entities
-  bool attack(std::vector<Actor*>& actors);
+  bool attack(std::vector<Actor*>& actors, float cycles);
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: stopBlood
@@ -357,7 +357,7 @@ public:
   Charlie(const std::string& entityName,
           const std::string& entityMesh,
           const Ogre::Vector3& position = Ogre::Vector3::ZERO)
-  : Actor(entityName, entityMesh, Status(4000), position)
+  : Actor(entityName, entityMesh, Status(400), position)
   {
     direction_ = kRight;
     sceneNode_->yaw(Ogre::Degree(-180));

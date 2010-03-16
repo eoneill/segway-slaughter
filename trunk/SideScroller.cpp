@@ -10,6 +10,7 @@
 using namespace std;
 using namespace Ogre;
 
+const int LEVEL_END = -60000;
 
 SideScroller::SideScroller()
   : hud_(0),
@@ -171,7 +172,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 	if(!bossFight){
 		spawnBehind(actors, NumEnemies_);
 	}
-
+	
   player->subEffectTime(timeSinceLastFrame);
 
   Ogre::Root* root_ = getRoot();
@@ -190,7 +191,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     streetSFX_->audPlay("chainsaw_idle.wav");
 		
 	//update AI
-	AIManager(actors);
+	AIManager(actors, timeSinceLastFrame*1000);
 
   //Move player up, but with constraints
   if (is->isKeyDown(OIS::KC_UP)) {
@@ -208,7 +209,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     if (is->isKeyDown(OIS::KC_LEFT)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
-      if (!bossFight || (bossFight && player->getPosition()[2] <= -62000))
+      if (!bossFight || (bossFight && player->getPosition()[2] <= LEVEL_END-2000))
       { 
 		    if(player->move(kLeft, actors, items) && !bossFight)
 		    {
@@ -220,7 +221,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     if (is->isKeyDown(OIS::KC_RIGHT)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
-      if (player->getPosition()[2] >= -64000)
+      if (player->getPosition()[2] >= LEVEL_END-4000)
       {
 		  	if(player->move(kRight, actors, items) && !bossFight)
 		  	{
@@ -238,7 +239,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 	  {
 		    if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
 		      streetSFX_->audPlay("chainsaw_attack.wav");
-		    if(player->attack(actors))
+		    if(player->attack(actors, timeSinceLastFrame*1000))
 		    	{
 		    		isDone_ = true;
 				    return new Paradise;
@@ -253,7 +254,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     }
     
 		//get to the end, trigger a boss fight
-	  if (player->getPosition()[2] <= -63000 && bossFight == false) {
+	  if (player->getPosition()[2] <= LEVEL_END-3000 && bossFight == false) {
 	    //isDone_ = true;
 	    //return new CasinoLevel;
 	    bossFight = true;
