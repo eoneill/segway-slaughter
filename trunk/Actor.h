@@ -26,7 +26,8 @@ enum actorState {
   dead,
   idle,
   attack,
-  flee
+  flee,
+  strat1
 };
 
 const int LEVEL_WIDTH = 1000;

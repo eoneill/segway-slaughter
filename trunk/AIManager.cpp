@@ -14,7 +14,9 @@ double getDist(double pos1[3], double pos2[3]){
 }
 
 void AIManager(vector<Actor*>& actors){
-
+  int minDist = 20;
+  int minDistStratH = 100;
+  int maxDistStratH = 500;
 
 	//cycle throught all enemies (skip player)
 	for(unsigned int i = 1; i < actors.size(); i++)
@@ -33,41 +35,86 @@ void AIManager(vector<Actor*>& actors){
 	    } else if(actors[i]->getState() == attack)
 	    {
 		    //move toward the player
-		    if ((actors[i]->getPosition()[0] - actors[0]->getPosition()[0]) > 3) {
+		    
+		    if ((actors[i]->getPosition()[0] - actors[0]->getPosition()[0]) > minDist) {
 			  	actors[i]->move(kUp, actors);
 			  }
-			  if ((actors[i]->getPosition()[0] - actors[0]->getPosition()[0]) < -3) {
+			  if ((actors[i]->getPosition()[0] - actors[0]->getPosition()[0]) < -minDist) {
 			  	actors[i]->move(kDown, actors);
 			  }
-			  if ((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) < -3) {
+			  if ((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) < -minDist) {
 			  	actors[i]->move(kLeft, actors);
 			  }
-			  if ((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) > 3) {
+			  if ((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) > minDist) {
 			  	actors[i]->move(kRight, actors);
 			  }
+			  
 				actors[i]->attack(actors);
 				
 				//if it's severely damaged, then start fleeing
-				if(actors[i]->getHealth() <= actors[i]->getMaxHealth()/4 && !actors[i]->isBoss)
+				if(actors[i]->getHealth() <= actors[i]->getMaxHealth()/(rand() % 10 + 3) && !actors[i]->isBoss)
 				{
 					actors[i]->setState(flee);
 				}
+				else if(rand() % 500 == 30)
+			   {
+			     actors[i]->setState(strat1);
+			   }
 				
-	    } else if(actors[i]->getState() == flee)
+	    }
+	    else if(actors[i]->getState() == strat1)
+	    {
+	    	// some basic strategy
+		    	
+		    	if ((actors[i]->getPosition()[0] - actors[0]->getPosition()[0]) > minDist) {
+			     actors[i]->move(kDown, actors);
+			   }
+			   if ((actors[i]->getPosition()[0] - actors[0]->getPosition()[0]) < -minDist) {
+			  	  actors[i]->move(kUp, actors);
+			   }
+			   if ((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) < -minDistStratH) {
+			  	  if((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) > -maxDistStratH)
+			  	    actors[i]->move(kRight, actors);
+			   }
+			   if ((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) > minDistStratH) {
+			  	  if((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) < maxDistStratH)
+                actors[i]->move(kLeft, actors);
+			   }
+			   
+			  
+				actors[i]->attack(actors);
+				
+				//if it's severely damaged, then start fleeing
+				
+				if(actors[i]->getHealth() <= actors[i]->getMaxHealth()/(rand() % 10 + 4))
+				{
+				  actors[i]->setState(flee);
+				}
+				else if(rand() % 300 == 10)
+			   {
+			     actors[i]->setState(attack);
+			   }
+	    }
+	    else if(actors[i]->getState() == flee)
 	    {
 	    	//move away from the player
-	    	if ((actors[i]->getPosition()[0] - actors[0]->getPosition()[0]) > 3) {
+	    	if ((actors[i]->getPosition()[0] - actors[0]->getPosition()[0]) > minDist) {
 			  	actors[i]->move(kDown, actors);
 			  }
-			  if ((actors[i]->getPosition()[0] - actors[0]->getPosition()[0]) < -3) {
+			  if ((actors[i]->getPosition()[0] - actors[0]->getPosition()[0]) < -minDist) {
 			  	actors[i]->move(kUp, actors);
 			  }
-			  if ((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) < -3) {
+			  if ((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) < -minDist) {
 			  	actors[i]->move(kRight, actors);
 			  }
-			  if ((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) > 3) {
+			  if ((actors[i]->getPosition()[2] - actors[0]->getPosition()[2]) > minDist) {
 			  	actors[i]->move(kLeft, actors);
-			  }	    	
+			  }
+			  
+			  if(rand() % 1000 == 10)
+			   {
+			     actors[i]->setState(attack);
+			   }
 	    }
 	  }
 	}
