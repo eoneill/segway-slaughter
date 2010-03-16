@@ -24,8 +24,17 @@ public:
 
   virtual ~Item();
 
+  Ogre::Vector3 getPosition() {
+    return position_;
+  }
+
+  virtual double getWidth() {
+    return 50;
+  }
+
   double getStatusEffect(const std::string& name);
 protected:
+  void scaleMesh(const double& scaleFactor);
   std::map<std::string, double> statEffects_;
 private:
   Ogre::Vector3    position_;
@@ -41,6 +50,7 @@ private:
 class Brawndo : public Item {
 public:
   Brawndo(const Ogre::Vector3& position);
+  double getWidth();
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -50,6 +60,7 @@ public:
 class Pizza : public Item {
 public:
   Pizza(const Ogre::Vector3& position);
+  double getWidth();
 };
 
 #endif // ITEM_H__

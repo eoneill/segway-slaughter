@@ -154,22 +154,22 @@ GameState* CasinoLevel::update(const Ogre::Real& timeSinceLastFrame) {
 
   //Move player up, but with constraints
   if (is->isKeyDown(OIS::KC_UP)) {
- 		player->move(kUp, actors);
+ 		player->move(kUp, actors, items);
   }
   //Move player down, but with constraints
   if (is->isKeyDown(OIS::KC_DOWN)) {
-  	player->move(kDown, actors);
+  	player->move(kDown, actors, items);
   }
   //move player left
     if (is->isKeyDown(OIS::KC_LEFT)) {
-	    if(player->move(kLeft, actors))
+	    if(player->move(kLeft, actors, items))
       {
         mCamera->move(Vector3(0,0,DEFAULT_MOVE_SPEED));
       }
     }
     //move player right
     if (is->isKeyDown(OIS::KC_RIGHT)) {
-    	if(player->move(kRight, actors))
+    	if(player->move(kRight, actors, items))
     	{
 	      mCamera->move(Vector3(0,0,-DEFAULT_MOVE_SPEED));
       }

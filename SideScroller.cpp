@@ -24,9 +24,6 @@ SideScroller::~SideScroller() {
   delete streetMusic_;
   delete streetSFX_;
 
-  for(unsigned int i = 0; i < actors.size(); i++) {
-  	delete actors[i];
-  }
   SceneManager* mSceneMgr = getRoot()->getSceneManager("Default SceneManager");
   mSceneMgr->destroyAllCameras();
   mSceneMgr->destroyAllStaticGeometry();
@@ -112,7 +109,7 @@ void SideScroller::initialize() {
   }
 	
   // Items
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 20; i++) {
     Item* tmp;
     if (i % 2 == 0) {
       tmp = new Brawndo(Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH / 2, 0, -(rand() % 60000+2000)));
@@ -192,13 +189,13 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   if (is->isKeyDown(OIS::KC_UP)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
- 		player->move(kUp, actors);
+      player->move(kUp, actors, items);
   }
   //Move player down, but with constraints
   if (is->isKeyDown(OIS::KC_DOWN)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
-  	player->move(kDown, actors);
+      player->move(kDown, actors, items);
   }
   //move player left
     if (is->isKeyDown(OIS::KC_LEFT)) {
@@ -206,9 +203,9 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
         streetSFX_->audPlay("segway_ride.wav");
       if (!bossFight || (bossFight && player->getPosition()[2] <= -62000))
       {
-		    if(player->move(kLeft, actors) && !bossFight)
+		    if(player->move(kLeft, actors, items) && !bossFight)
 		    {
-		      mCamera->move(Vector3(0,0,DEFAULT_MOVE_SPEED));
+		      mCamera->move(Vector3(0,0,player->getSpeed()));
 		    }
 		  }
     }
@@ -218,9 +215,9 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
         streetSFX_->audPlay("segway_ride.wav");
       if (player->getPosition()[2] >= -64000)
       {
-		  	if(player->move(kRight, actors) && !bossFight)
+		  	if(player->move(kRight, actors, items) && !bossFight)
 		  	{
-		      mCamera->move(Vector3(0,0,-DEFAULT_MOVE_SPEED));
+		      mCamera->move(Vector3(0,0,-player->getSpeed()));
 		    }
 		  }
     }

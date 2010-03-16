@@ -197,19 +197,19 @@ GameState* Paradise::update(const Ogre::Real& timeSinceLastFrame) {
   if (is->isKeyDown(OIS::KC_UP)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
- 		player->move(kUp, actors);
+      player->move(kUp, actors, items);
   }
   //Move player down, but with constraints
   if (is->isKeyDown(OIS::KC_DOWN)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
-  	player->move(kDown, actors);
+      player->move(kDown, actors, items);
   }
   //move player left
     if (is->isKeyDown(OIS::KC_LEFT)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
-	    if(player->move(kLeft, actors) && !bossFight)
+	    if(player->move(kLeft, actors, items) && !bossFight)
 	    {
 	      mCamera->move(Vector3(0,0,DEFAULT_MOVE_SPEED));
 	    }
@@ -218,7 +218,7 @@ GameState* Paradise::update(const Ogre::Real& timeSinceLastFrame) {
     if (is->isKeyDown(OIS::KC_RIGHT)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
-	  	if(player->move(kRight, actors) && !bossFight)
+	  	if(player->move(kRight, actors, items) && !bossFight)
 	  	{
 	      mCamera->move(Vector3(0,0,-DEFAULT_MOVE_SPEED));
 	    }

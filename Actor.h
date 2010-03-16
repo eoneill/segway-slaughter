@@ -12,6 +12,7 @@
 #include <iostream>
 #include <Ogre.h>
 #include "audio/audio.h"
+#include "Item.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Constants
@@ -26,8 +27,7 @@ enum actorState {
   dead,
   idle,
   attack,
-  flee,
-  strat1
+  flee
 };
 
 const int LEVEL_WIDTH = 1000;
@@ -68,7 +68,12 @@ public:
   float getMaxHealth() const { return maxHealth_; }
 
   float getHealth() const { return health_; }
-  void  addHealth(float a) { health_ += a; }
+  void  addHealth(float a) {
+    health_ += a;
+    if (health_ > maxHealth_) {
+      health_ = maxHealth_;
+    }
+  }
   void  subHealth(float a) { health_ -= a; }
 
   int getScore() const { return score_; }
@@ -103,6 +108,9 @@ public:
   //
   // Returns true if there was a collision when attempt to move this actor,
   // false otherwise.
+  virtual bool move(const MovementDirection& direction,
+                    const std::vector<Actor*>& actors,
+                    std::vector<Item*>& items);
   virtual bool move(const MovementDirection& direction,
                     const std::vector<Actor*>& actors);
 
@@ -176,6 +184,10 @@ public:
     return stats_.getMaxHealth();
   }
   
+  Status& getStatus() {
+    return stats_;
+  }
+
   //////////////////////////////////////////////////////////////////////////////
   // Function: getPosition
   //
@@ -201,11 +213,27 @@ public:
   Ogre::SceneNode* getSceneNode(){return sceneNode_;}
 
   //////////////////////////////////////////////////////////////////////////////
+  // Function: addSpeed
+  //
+  // Ramp up speed like Charlie just took a big swig of Brawndo cola
+  void addSpeed(const double& speed) {
+    speed_ += speed;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
   // Function: setSpeed
   //
   // Sets the movement speed of this actor
   void setSpeed(const double& speed) {
     speed_ = speed;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: getSpeed
+  //
+  // Returns the current speed of this actor
+  double getSpeed() const {
+    return speed_;
   }
   
   //////////////////////////////////////////////////////////////////////////////

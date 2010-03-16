@@ -1,17 +1,22 @@
 #include "GameState.h"
+#include <iostream>
+#include <iomanip>
+using namespace std;
 
 GameState::~GameState() {
-  /*for (std::vector<Actor*>::iterator it = actors.begin();
-       it != actors.end();) {
-    delete *it;
-    it = actors.erase(it);
+  /*Actor* actor_ptr;
+  while (!actors.empty()) {
+    actor_ptr = actors.front();
+    actors.erase(actors.begin());
+    delete actor_ptr;
   }
-
-  for (std::vector<Item*>::iterator it = items.begin();
-       it != items.end();) {
-    delete *it;
-    it = items.erase(it);
-    }*/
+  
+  Item* item_ptr;
+  while (!items.empty()) {
+    item_ptr = items.front();
+    items.erase(items.begin());
+    delete item_ptr;
+  }*/
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -24,5 +29,3 @@ void GameState::removeDead() {
 		}
 	}
 }
-
-////////////////////////////////////////////////////////////////////////////////
