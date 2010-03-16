@@ -64,4 +64,14 @@ public:
   double getWidth();
 };
 
+////////////////////////////////////////////////////////////////////////////////
+// Class: Claymore
+//
+// Deals health damage when stepped on
+class Claymore : public Item {
+public:
+  Claymore(const Ogre::Vector3& position);
+  double getWidth();
+};
+
 #endif // ITEM_H__
