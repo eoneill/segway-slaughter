@@ -23,7 +23,7 @@ GameState::~GameState() {
 
 void GameState::removeDead() {
 	for (unsigned int i = 1; i < actors.size(); i++) {
-		if (actors[i]->deadTick() == 1000) {
+		if (actors[i]->deadTick() == 100000) {
 			delete actors[i];
 			actors.erase(actors.begin() + i);
 		}
