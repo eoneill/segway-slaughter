@@ -11,6 +11,7 @@
 #include <vector>
 #include <iostream>
 #include <Ogre.h>
+#include "audio/audio.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Constants
@@ -231,6 +232,7 @@ protected:
   Status            stats_;
   double            speed_;
   double            damage_;
+  audSFX * actorSFX_;
 };
 
 class Charlie : public Actor {
