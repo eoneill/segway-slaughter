@@ -27,6 +27,7 @@ enum actorState {
   dead,
   idle,
   attack,
+  strat1,
   flee
 };
 
