@@ -185,12 +185,14 @@ bool Actor::onDamage(float damage){
 
 void Actor::onDeath()
 {
-  //in leiu of actually destroying it, right now, we'll just move it.
-  //position_[1]+= 10000;
-  //position_[2]+= 10000;
-  //sceneNode_->translate(Vector3(0,10000,10000));
+  //Fall over
   sceneNode_->pitch(Ogre::Degree(90));
   sceneNode_->translate(Vector3(0, 75, 0));
+  //Change blood and keep it going
+  pSystem_->getEmitter(0)->setDirection(Vector3(0,0,-1));
+  pSystem_->getEmitter(0)->setParticleVelocity(500,600);
+  pSystem_->getEmitter(0)->setDuration(60);
+  pSystem_->getEmitter(0)->setEnabled(true);
   stats_.setState(dead);
   //actorSFX_->audPlay("male_scream.wav");
 }
