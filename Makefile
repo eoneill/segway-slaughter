@@ -2,6 +2,7 @@ LIBS = OGRE OIS CEGUI CEGUI-OGRE openal freealut
 CXX = g++
 CXXFLAGS = -Wall -Werror -ansi $(shell pkg-config --cflags $(LIBS)) -O2 -Os
 OBJS = audio.o \
+			 GameState.o \
 	     Actor.o \
 	     InputSystem.o \
        Locator.o \
@@ -57,6 +58,9 @@ HUD.o: HUD.h HUD.cpp
 
 Item.o: Item.h Item.cpp
 	$(CXX) $(CXXFLAGS) -c Item.cpp
+
+GameState.o: GameState.h GameState.cpp
+	$(CXX) $(CXXFLAGS) -c GameState.cpp
 
 clean:
 	rm -rf SegwaySlaughter *~ *.o

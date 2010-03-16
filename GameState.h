@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-02-19 18:38:38 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-03-15 19:54:43 by Eric Scrivner>
 //
 // Description:
 //   Describes an object for defining and managing the state of the game as well
@@ -26,8 +26,7 @@ public:
     : root_(Locator::getRoot())
   { }
 
-  virtual ~GameState()
-  { }
+  virtual ~GameState();
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: initialize
@@ -61,21 +60,14 @@ public:
   // Called when a state returns to the top of the stack
   // virtual void resume() = 0;
   
-  std::vector <Actor*> actors; //All the actors in the application
-  
-	void removeDead()
-	{
-	  for(unsigned int i = 1; i < actors.size(); i++)
-	  {
-	  	if(actors[i]->getState() == dead)
-	  	{
-		 		delete actors[i];
-			  std::vector<Actor*>::iterator it = actors.begin();
-			  std::advance(it, i);
-			  actors.erase(it); 
-			}
-	  }
-  }
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: removeDead
+  //
+  // Cleanup any dead actors
+	void removeDead();
+
+  std::vector <Actor*> actors; // All the actors in the application
+  std::vector <Item*>  items; // All items in the level
 protected:
   //////////////////////////////////////////////////////////////////////////////
   // Function: getRoot
