@@ -222,6 +222,13 @@ public:
   void setDamage(const double& damage) {
     damage_ = damage;
   }
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: setAttackBox
+  //
+  // Sets the size of the attack box for this character
+  void setAttackBox(const double& size) {
+    attackBox_ = size;
+  }
   
 protected:
   Ogre::Vector3     position_;
@@ -232,7 +239,8 @@ protected:
   Status            stats_;
   double            speed_;
   double            damage_;
-  audSFX * actorSFX_;
+  audSFX *          actorSFX_;
+  float             attackBox_;
 };
 
 class Charlie : public Actor {
