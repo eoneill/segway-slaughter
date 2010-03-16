@@ -7,7 +7,7 @@ GameState::~GameState() {
 ////////////////////////////////////////////////////////////////////////////////
 
 void GameState::removeDead() {
-	for (std::vector<Actor>*::iterator it = actors.begin();
+	for (std::vector<Actor*>::iterator it = actors.begin();
 			 it != actors.end(); it++) {
 		if ((*it)->getState() == dead) {
 			delete *it;
