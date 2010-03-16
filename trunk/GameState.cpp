@@ -11,7 +11,7 @@ void GameState::removeDead() {
 			 it != actors.end(); it++) {
 		if ((*it)->getState() == dead) {
 			delete *it;
-			actors.erase(it);
+			it = actors.erase(it);
 		} else {
 			++it;
 		}
