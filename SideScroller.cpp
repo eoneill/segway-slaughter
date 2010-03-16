@@ -24,17 +24,7 @@ SideScroller::~SideScroller() {
   delete streetMusic_;
   delete streetSFX_;
 
-  while (!actors.empty()) {
-    delete actors.back();
-    actors.pop_back();
-  }
-  
-  while (!items.empty()) {
-    delete items.back();
-    items.pop_back();
-  }
-
-  SceneManager* mSceneMgr = getRoot()->getSceneManager("Default SceneManager");
+  SceneManager* mSceneMgr = Locator::getSceneManager();
   mSceneMgr->destroyAllCameras();
   mSceneMgr->destroyAllStaticGeometry();
   mSceneMgr->destroyAllEntities();
