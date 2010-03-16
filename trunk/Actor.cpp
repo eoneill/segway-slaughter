@@ -71,6 +71,24 @@ Actor::~Actor() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+void Actor::update(const double& secsSinceLastUpdate) {
+  // If there's time left
+  if (timedEffect_.getTime() > 0) {
+    // Subtract the number of seconds
+    timedEffect_.subTime(secsSinceLastUpdate);
+    
+    // If there is now no time left
+    if (timedEffect_.getTime() <= 0) {
+      // Reverse the status effect (Brawndo)
+      if (timedEffect_.getEffect() == "Speed") {
+        speed_ -= timedEffect_.getValue();
+      }
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 bool Actor::move(const MovementDirection& newDirection,
                  const vector<Actor*>& actors,
                  vector<Item*>& items) {
@@ -79,21 +97,27 @@ bool Actor::move(const MovementDirection& newDirection,
     if (SquareHit((*it)->getPosition(),
                   actors[0]->position_,
                   (*it)->getWidth())) {
-      if (timedEffect_.getTime() <= 0) {
-        double time = (*it)->getStatusEffect("Time");
-        
-        if ((*it)->getStatusEffect("Health") > 0) {
-          if ((*it)->getStatusEffect("Time") > 0) {
-            timedEffect_ = TimedEffect(time, "Health", (*it)->getStatusEffect("Health"));
+
+      double time = (*it)->getStatusEffect("Time");
+      
+      // A timed status effect
+      if (time > 0) {
+        // Speed boost (Brawndo)
+        if ((*it)->getStatusEffect("Speed") > 0) {
+          // If they already have another speed boost
+          if (timedEffect_.getTime() > 0) {
+            // Just make it last longer
+            timedEffect_.setTime(time);
+          } else {
+            // Otherwise increase their speed
+            timedEffect_ = TimedEffect(time, "Speed", (*it)->getStatusEffect("Speed"));
+            actors[0]->addSpeed((*it)->getStatusEffect("Speed"));
           }
         } else {
-          timedEffect_ = TimedEffect(time, "Speed", (*it)->getStatusEffect("Speed"));
+          actors[0]->addSpeed((*it)->getStatusEffect("Speed"));
+          actors[0]->getStatus().addHealth((*it)->getStatusEffect("Health"));
         }
-
-        actors[0]->addSpeed((*it)->getStatusEffect("Speed"));
       }
-
-      actors[0]->getStatus().addHealth((*it)->getStatusEffect("Health"));
 
       delete *it;
       it = items.erase(it);
@@ -107,7 +131,8 @@ bool Actor::move(const MovementDirection& newDirection,
 ////////////////////////////////////////////////////////////////////////////////
 
 bool Actor::move(const MovementDirection& newDirection,
-                 const vector<Actor*>& actors) {
+                 const vector<Actor*>& actors)
+{
   // Compute new position
   Ogre::Vector3 tmp = position_;
   switch(newDirection) {
@@ -176,6 +201,7 @@ bool Actor::move(const MovementDirection& newDirection,
   return validMove;
 }
 
+////////////////////////////////////////////////////////////////////////////////
 
 bool Actor::onDamage(float damage){
   pSystem_->getEmitter(0)->setEnabled(true);
@@ -186,6 +212,8 @@ bool Actor::onDamage(float damage){
   }
   return false;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 void Actor::onDeath()
 {
@@ -201,37 +229,39 @@ void Actor::onDeath()
   //actorSFX_->audPlay("male_scream.wav");
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 bool Actor::attack(std::vector<Actor*> &actors, float cycles){
   //find out where the damage box is, based on direction facing
   int vert = 0;
   int horiz = 0;
         
   switch(direction_) {
-		case kUp: vert = -1; break;
-		case kDown: vert = 1; break;
-		case kLeft: horiz = 1; break;
-		case kRight: horiz = -1; break;
-		default: break;
+  case kUp: vert = -1; break;
+  case kDown: vert = 1; break;
+  case kLeft: horiz = 1; break;
+  case kRight: horiz = -1; break;
+  default: break;
   }
         
         
   Ogre::Vector3 damagePos = Ogre::Vector3(position_[0] + ( 2*attackBox_*vert ),
                                           position_[1], position_[2] + ( 2*attackBox_*horiz ));
 
-	bool isPlayer = false;
-	if (sceneNode_ == actors[0]->sceneNode_)
-	{
-		isPlayer = true;
-	}
+  bool isPlayer = false;
+  if (sceneNode_ == actors[0]->sceneNode_)
+  {
+    isPlayer = true;
+  }
 
-	unsigned int start = 1;
-	unsigned int end = actors.size();
+  unsigned int start = 1;
+  unsigned int end = actors.size();
 	
-	if(isPlayer == false)
-	{
-		start = 0;
-		end = 1;
-	}
+  if(isPlayer == false)
+  {
+    start = 0;
+    end = 1;
+  }
 
   bool didBossDie = false;
   
@@ -245,9 +275,9 @@ bool Actor::attack(std::vector<Actor*> &actors, float cycles){
 	      	} else {
             stats_.addScore(10);
           }
-	      }
-	    }
-	  }
+        }
+      }
+    }
   }
   
   return didBossDie;
