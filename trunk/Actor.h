@@ -109,7 +109,7 @@ public:
   // Function: attack
   //
   // Attempt to perform an attack on nearby entities
-  void attack(std::vector<Actor*>& actors);
+  bool attack(std::vector<Actor*>& actors);
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: stopBlood
@@ -230,6 +230,8 @@ public:
     attackBox_ = size;
   }
   
+  
+  bool isBoss;
 protected:
   Ogre::Vector3     position_;
   Ogre::SceneNode*  sceneNode_;
