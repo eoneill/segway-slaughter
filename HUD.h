@@ -15,9 +15,11 @@ public:
 
   void updateHealth(const double& healthPercent);
   void updateScore(const int& score);
+  void updateHeat(const float& heat);
   void updateTimeLeft(const int& mins, const int& secs);
 private:
   CEGUI::Window* scoreText_; // The text display for the score
+  CEGUI::ProgressBar* chainsawHeat_; //display how much heating the chainsaw has
   CEGUI::Window* timeLeft_; // The time left in the level
   CEGUI::ProgressBar* healthBar_; // The health bar
 };

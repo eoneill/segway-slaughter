@@ -25,6 +25,13 @@ HUD::HUD()
     healthBar_->setPosition(CEGUI::UVector2(cegui_reldim(0.01f), cegui_reldim(0.01f)));
     healthBar_->setSize(CEGUI::UVector2(cegui_reldim(0.107f), cegui_reldim(0.02f)));
     guiSheet->addChildWindow(healthBar_);
+    
+    //create chainsaw heat bar
+    chainsawHeat_ = (CEGUI::ProgressBar*)CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/ProgressBar",
+                                                                                        "HUDHeat");
+    chainsawHeat_->setPosition(CEGUI::UVector2(cegui_reldim(0.01f), cegui_reldim(0.05f)));
+    chainsawHeat_->setSize(CEGUI::UVector2(cegui_reldim(0.107f), cegui_reldim(0.02f)));
+    guiSheet->addChildWindow(chainsawHeat_);
 
     // Create timer
     timeLeft_ = CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/StaticText", "HUDTimer");
@@ -40,12 +47,19 @@ HUD::~HUD() {
     CEGUI::WindowManager::getSingleton().destroyWindow("HUDScore");
     CEGUI::WindowManager::getSingleton().destroyWindow("HUDHealth");
     CEGUI::WindowManager::getSingleton().destroyWindow("HUDTimer");
+    CEGUI::WindowManager::getSingleton().destroyWindow("HUDHeat");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void HUD::updateHealth(const double& healthPercent) {
   healthBar_->setProgress(healthPercent);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void HUD::updateHeat(const float& heat){
+  chainsawHeat_->setProgress(heat);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

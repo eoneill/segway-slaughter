@@ -181,7 +181,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   
   //cool down for the chainsaw
   if(player->chainsawHeat >= 0)
-	  player->chainsawHeat -=.6;
+	  player->chainsawHeat -=0.24;
 	if(player->chainsawHeat == 0)
 	  player->chainsawHeat = 0;
 
@@ -232,19 +232,19 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 
     if (is->isKeyDown(OIS::KC_A)) {
     if(player->chainsawHeat <= MAX_HEAT)
-    {
- 				if(player->chainsawHeat <= MAX_HEAT)
-				  player->chainsawHeat +=1;
-				if(player->chainsawHeat == MAX_HEAT)
-				  player->chainsawHeat = MAX_HEAT;
-	      if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
-	        streetSFX_->audPlay("chainsaw_attack.wav");
-	      if(player->attack(actors))
-	      	{
-	      		isDone_ = true;
+		  player->chainsawHeat +=0.25;
+		if(player->chainsawHeat == MAX_HEAT)
+		  player->chainsawHeat = MAX_HEAT;
+    if(player->chainsawHeat <= MAX_HEAT-1)
+	  {
+		    if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
+		      streetSFX_->audPlay("chainsaw_attack.wav");
+		    if(player->attack(actors))
+		    	{
+		    		isDone_ = true;
 				    return new Paradise;
-	      	}
-	      hud_->updateScore(player->getScore());
+		    	}
+		    hud_->updateScore(player->getScore());
     	}
     }
     else{
@@ -287,6 +287,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   }
 
   hud_->updateHealth(player->getHealth() / player->getMaxHealth());
+  hud_->updateHeat(player->chainsawHeat/MAX_HEAT);
 
   unsigned int millis = timer_.getMilliseconds() / 1000;
 
