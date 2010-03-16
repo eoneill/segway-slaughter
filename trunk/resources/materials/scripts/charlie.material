@@ -5,7 +5,7 @@ material chainsaw_texture
 	{
 		pass
 		{
-			ambient 0 0 0 1
+			ambient 0.5 0.5 0.5 1
 			specular 0.5 0.5 0.5 1 89.6
 
 			texture_unit
@@ -26,7 +26,7 @@ material eye_texture
 	{
 		pass
 		{
-			ambient 0 0 0 1
+			ambient 0.5 0.5 0.5 1
 			specular 0.5 0.5 0.5 1 89.6
 		}
 
@@ -42,7 +42,7 @@ material glasses_frame_texture
 	{
 		pass
 		{
-			ambient 0 0 0 1
+			ambient 0.5 0.5 0.5 1
 			diffuse 0.5 0.5 0.5 1
 			specular 0.5 0.5 0.5 1 89.6
 		}
@@ -59,7 +59,7 @@ material glasses_lens_texture
 	{
 		pass
 		{
-			ambient 0 0 0 1
+			ambient 0.5 0.5 0.5 1
 			diffuse 0.821 0.625048 0.045976 1
 			specular 0.5 0.5 0.5 1 89.6
 		}
@@ -76,7 +76,7 @@ material lambert1
 	{
 		pass
 		{
-			ambient 0 0 0 1
+			ambient 0.5 0.5 0.5 1
 			diffuse 0.5 0.5 0.5 1
 		}
 
@@ -92,7 +92,7 @@ material segway_texture
 	{
 		pass
 		{
-			ambient 0 0 0 1
+			ambient 0.5 0.5 0.5 1
 			diffuse 0.5 0.5 0.5 1
 			specular 0.5 0.5 0.5 1 89.6
 		}
@@ -109,7 +109,7 @@ material tires
 	{
 		pass
 		{
-			ambient 0 0 0 1
+			ambient 0.5 0.5 0.5 1
 			specular 0.5 0.5 0.5 1 89.6
 
 			texture_unit

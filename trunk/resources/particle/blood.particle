@@ -1,32 +1,32 @@
 // Example particle systems
 
 // Blood
-particle_system Blood_Eug
+particle_system Blood
 {
-	quota	100
-	material	PE/blood
-	particle_width	55
-	particle_height	50
+	quota	400
+	material	Texture/Blood
+	particle_width	4
+	particle_height	3
 	cull_each	false
 	renderer	billboard
 	billboard_type	oriented_common
-	common_direction	0.0636921 -0.957396 0.533799
+	common_direction	0.0636921 -2 0.533799
 
 	emitter Point
 	{
-		angle	16.55
-		colour	0.733813 0 0 1
-		colour_range_start	0.733813 0 0 1
+		angle	7
+		colour	.755 0 0 1
+		colour_range_start	.755 0 0 1
 		colour_range_end	0.345324 0 0 1
-		direction	0 0 1
-		emission_rate	1000
+		direction	.25 0 0
+		emission_rate	2000
 		position	0 7.5 0
-		velocity	100
-		velocity_min	100
-		velocity_max	100
-		time_to_live	0.5
+		velocity	1000
+		velocity_min	1000
+		velocity_max	1000
+		time_to_live	0.8
 		time_to_live_min	0.5
-		time_to_live_max	0.5
+		time_to_live_max	1.0
 		duration	0
 		duration_min	0
 		duration_max	0
@@ -45,7 +45,7 @@ particle_system Blood_Eug
 
 	affector LinearForce
 	{
-		force_vector	0 -100 0
+		force_vector	0 -2000 0
 		force_application	add
 	}
 
@@ -57,7 +57,7 @@ particle_system Blood_Eug
 		rotation_range_end	10
 	}
 }
-particle_system Blood
+particle_system Blood_old
 {
   material        	Texture/Blood
   particle_width  	55
