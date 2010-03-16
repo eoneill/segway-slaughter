@@ -176,7 +176,7 @@ GameState* CasinoLevel::update(const Ogre::Real& timeSinceLastFrame) {
     }
 
     if (is->isKeyDown(OIS::KC_A)) {
-      player->attack(actors);
+      player->attack(actors, timeSinceLastFrame*1000);
       CEGUI::Window* text_ = CEGUI::WindowManager::getSingleton().getWindow("HealthText");
       static char buf[255];
       sprintf(buf, "Score: %d", player->getScore());

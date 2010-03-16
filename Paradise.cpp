@@ -188,7 +188,7 @@ GameState* Paradise::update(const Ogre::Real& timeSinceLastFrame) {
     streetSFX_->audPlay("chainsaw_idle.wav");
 		
 	//update AI
-	AIManager(actors);
+	AIManager(actors, timeSinceLastFrame*1000);
 
   //Move player up, but with constraints
   if (is->isKeyDown(OIS::KC_UP)) {
@@ -224,7 +224,7 @@ GameState* Paradise::update(const Ogre::Real& timeSinceLastFrame) {
     if (is->isKeyDown(OIS::KC_A)) {
       if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
         streetSFX_->audPlay("chainsaw_attack.wav");
-      player->attack(actors);
+      player->attack(actors, timeSinceLastFrame*1000);
       hud_->updateScore(player->getScore());
     }
     else{

@@ -13,7 +13,7 @@ double getDist(double pos1[3], double pos2[3]){
 	return sqrt(pow((pos1[0] - pos2[0]), 2) + pow((pos1[2] - pos2[2]), 2));
 }
 
-void AIManager(vector<Actor*>& actors){
+void AIManager(vector<Actor*>& actors, float cycles){
   int minDist = 20;
   int minDistStratH = 100;
   int maxDistStratH = 500;
@@ -49,7 +49,7 @@ void AIManager(vector<Actor*>& actors){
 			  	actors[i]->move(kRight, actors);
 			  }
 			  
-				actors[i]->attack(actors);
+				actors[i]->attack(actors, cycles);
 				
 				//if it's severely damaged, then start fleeing
 				if(actors[i]->getHealth() <= actors[i]->getMaxHealth()/(rand() % 10 + 3) && !actors[i]->isBoss)
@@ -82,7 +82,7 @@ void AIManager(vector<Actor*>& actors){
 			   }
 			   
 			  
-				actors[i]->attack(actors);
+				actors[i]->attack(actors, cycles);
 				
 				//if it's severely damaged, then start fleeing
 				
