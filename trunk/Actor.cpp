@@ -48,6 +48,7 @@ Actor::Actor(const std::string& entityName,
   sceneNode_->attachObject(pSystem_);
   sceneNode_->setScale(40,40,40);
   isBoss = false;
+  chainsawHeat = 0;
   //actorSFX_ = new audSFX();
   //actorSFX_->audLoadDir("resources/audio/sfx","wav");
 }

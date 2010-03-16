@@ -176,6 +176,12 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   Ogre::Root* root_ = getRoot();
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
   InputSystem* is = Locator::getInput();
+  
+  //cool down for the chainsaw
+  if(player->chainsawHeat >= 0)
+	  player->chainsawHeat -=.6;
+	if(player->chainsawHeat == 0)
+	  player->chainsawHeat = 0;
 
   //Sound stuff
   if (!streetSFX_->audIsPlaying("chainsaw_idle.wav") &&
@@ -202,7 +208,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
       if (!bossFight || (bossFight && player->getPosition()[2] <= -62000))
-      {
+      { 
 		    if(player->move(kLeft, actors, items) && !bossFight)
 		    {
 		      mCamera->move(Vector3(0,0,player->getSpeed()));
@@ -223,14 +229,21 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     }
 
     if (is->isKeyDown(OIS::KC_A)) {
-      if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
-        streetSFX_->audPlay("chainsaw_attack.wav");
-      if(player->attack(actors))
-      	{
-      		isDone_ = true;
-			    return new Paradise;
-      	}
-      hud_->updateScore(player->getScore());
+    if(player->chainsawHeat <= MAX_HEAT)
+    {
+ 				if(player->chainsawHeat <= MAX_HEAT)
+				  player->chainsawHeat +=1;
+				if(player->chainsawHeat == MAX_HEAT)
+				  player->chainsawHeat = MAX_HEAT;
+	      if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
+	        streetSFX_->audPlay("chainsaw_attack.wav");
+	      if(player->attack(actors))
+	      	{
+	      		isDone_ = true;
+				    return new Paradise;
+	      	}
+	      hud_->updateScore(player->getScore());
+    	}
     }
     else{
       player->stopBlood();
