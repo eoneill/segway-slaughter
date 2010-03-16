@@ -111,8 +111,16 @@ void SideScroller::initialize() {
     actors.push_back(temp);
   }
 	
-
-	//Brawndo b(Ogre::Vector3(0,0,0));
+  // Items
+  for (int i = 0; i < 4; i++) {
+    Item* tmp;
+    if (i % 2 == 0) {
+      tmp = new Brawndo(Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH / 2, 0, -(rand() % 60000+2000)));
+    } else {
+      tmp = new Pizza(Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH / 2, 0, -(rand() % 60000+2000)));
+    }
+    items.push_back(tmp);
+  }
 
   //Static Objects
   ent = mSceneMgr->createEntity("SSPole1", "tel_pole_basic.mesh");
