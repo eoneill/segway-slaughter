@@ -48,7 +48,7 @@ void AIManager(vector<Actor*>& actors){
 				actors[i]->attack(actors);
 				
 				//if it's severely damaged, then start fleeing
-				if(actors[i]->getHealth() <= actors[i]->getMaxHealth()/4)
+				if(actors[i]->getHealth() <= actors[i]->getMaxHealth()/4 && !actors[i]->isBoss)
 				{
 					actors[i]->setState(flee);
 				}
