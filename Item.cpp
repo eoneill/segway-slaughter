@@ -49,7 +49,7 @@ Item::~Item() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-double Item::getStatusEffect(const std::string& name) const {
+double Item::getStatusEffect(const std::string& name) {
 	if (statEffects_.find(name) == statEffects_.end()) {
 		return 0;
 	}
