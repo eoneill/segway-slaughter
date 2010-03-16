@@ -87,7 +87,7 @@ void SideScroller::initialize() {
 
   //Player
   player = new Charlie("charlie", "charlie.mesh", Ogre::Vector3(0,0,0));
-  player->setDamage(.05);
+  player->setDamage(1);
   player->setAttackBox(100);
 
   actors.push_back(player);
@@ -147,6 +147,8 @@ void SideScroller::initialize() {
 
   streetSFX_ = new audSFX();
   streetSFX_->audLoadDir("resources/audio/sfx","wav");
+  
+  bossFight = false;
 }
 
 
@@ -161,7 +163,9 @@ bool SideScroller::isDone() {
 GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 	removeDead();
 	
-	spawnBehind(actors, NumEnemies_);
+	if(!bossFight){
+		spawnBehind(actors, NumEnemies_);
+	}
 
   Ogre::Root* root_ = getRoot();
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
@@ -191,19 +195,25 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     if (is->isKeyDown(OIS::KC_LEFT)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
-	    if(player->move(kLeft, actors))
+      if (!bossFight || (bossFight && player->getPosition()[2] <= -32000))
       {
-        mCamera->move(Vector3(0,0,DEFAULT_MOVE_SPEED));
-      }
+		    if(player->move(kLeft, actors) && !bossFight)
+		    {
+		      mCamera->move(Vector3(0,0,DEFAULT_MOVE_SPEED));
+		    }
+		  }
     }
     //move player right
     if (is->isKeyDown(OIS::KC_RIGHT)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
-    	if(player->move(kRight, actors))
-    	{
-	      mCamera->move(Vector3(0,0,-DEFAULT_MOVE_SPEED));
-      }
+      if (player->getPosition()[2] >= -34000)
+      {
+		  	if(player->move(kRight, actors) && !bossFight)
+		  	{
+		      mCamera->move(Vector3(0,0,-DEFAULT_MOVE_SPEED));
+		    }
+		  }
     }
 
     if (is->isKeyDown(OIS::KC_A)) {
@@ -218,11 +228,24 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
         actors[i]->stopBlood();
     }
     
-/*
-	  if (player.position[2] <= -33000) {
-	    isDone_ = true;
-	    return new CasinoLevel;
-	  }*/
+		//get to the end, trigger a boss fight
+	  if (player->getPosition()[2] <= -33000 && bossFight == false) {
+	    //isDone_ = true;
+	    //return new CasinoLevel;
+	    bossFight = true;
+	    NumEnemies_++;
+			char EntName[40] = "Boss";
+			Actor* temp = new Actor(EntName,"mob_boss.mesh", Status(100),
+				                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0, actors[0]->getPosition()[2] - 1000));
+			SceneNode * tempSceneNode = temp->getSceneNode();
+			tempSceneNode->yaw(Ogre::Degree(180));
+			temp->setDamage(0.01);
+			temp->setSpeed(1.1);
+			temp->setAttackBox(75);
+			temp->setState(attack);
+
+			actors.push_back(temp);
+	  }
 
   if (is->isKeyDown(OIS::KC_1)) {
     isDone_ = true;

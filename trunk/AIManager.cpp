@@ -93,7 +93,9 @@ void spawnBehind(vector<Actor*>& actors, int & NumEnemies)
 	tempSceneNode->yaw(Ogre::Degree(180));
 	temp->setDamage(0.01);
 	temp->setSpeed(1.1);
+	temp->setAttackBox(75);
 	temp->setState(attack);
+	
 	
   actors.push_back(temp);
 }

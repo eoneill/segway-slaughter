@@ -30,6 +30,7 @@ private:
   int NumEnemies_;
   audBackground *streetMusic_;
   audSFX *streetSFX_;
+  bool bossFight;
 };
 
 #endif
