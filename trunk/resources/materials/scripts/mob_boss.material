@@ -81,7 +81,7 @@ material blinn27SG.001
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture bat.jpg
+				texture bat2.jpg
 				tex_address_mode wrap
 				filtering trilinear
 				colour_op alpha_blend
