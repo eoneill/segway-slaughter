@@ -1,0 +1,67 @@
+
+material phong2
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0.311176 0.802 0.71447 1
+			specular 0.5 0.5 0.5 1 25.6
+		}
+
+	}
+
+}
+
+
+
+material lambert2
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0.431 0.282487 0.164211 1
+		}
+
+	}
+
+}
+
+
+
+material phong1
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 1 0.952263 0.829 1
+			specular 0.5 0.5 0.5 1 25.6
+		}
+
+	}
+
+}
+
+
+
+material phong3
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0.5 0.165 0 1
+			specular 0.5 0.5 0.5 1 25.6
+		}
+
+	}
+
+}
+
+
