@@ -170,8 +170,8 @@ void Actor::attack(std::vector<Actor*> &actors){
   }
         
         
-  Ogre::Vector3 damagePos = Ogre::Vector3(position_[0] + ( 2*DEFAULT_ATTACK_BOX*vert ),
-                                          position_[1], position_[2] + ( 2*DEFAULT_ATTACK_BOX*horiz ));
+  Ogre::Vector3 damagePos = Ogre::Vector3(position_[0] + ( 2*attackBox_*vert ),
+                                          position_[1], position_[2] + ( 2*attackBox_*horiz ));
 
 	bool isPlayer = false;
 	if (sceneNode_ == actors[0]->sceneNode_)
@@ -190,7 +190,7 @@ void Actor::attack(std::vector<Actor*> &actors){
 
 	for (size_t i = start; i < end; i++) {
 	  if (sceneNode_ != actors[i]->sceneNode_) {
-	    if (SquareHit(damagePos, actors[i]->position_, DEFAULT_BBOX_WIDTH / 2 + 5)) {
+	    if (SquareHit(damagePos, actors[i]->position_, attackBox_)) {
 	      if (actors[i]->onDamage(damage_)) {
           stats_.addScore(10);
 	      }

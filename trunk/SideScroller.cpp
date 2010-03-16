@@ -88,6 +88,7 @@ void SideScroller::initialize() {
   //Player
   player = new Charlie("charlie", "charlie.mesh", Ogre::Vector3(0,0,0));
   player->setDamage(.05);
+  player->setAttackBox(100);
 
   actors.push_back(player);
   
@@ -98,12 +99,13 @@ void SideScroller::initialize() {
   for(int i = 0; i < NumEnemies_; i++){
     char EntName[40] = "Mobster";
     sprintf(EntName,"mobster%d",i);
-    Actor* temp = new Actor(EntName,"brawndo.mesh", Status(25),
+    Actor* temp = new Actor(EntName,"mobster.mesh", Status(25),
     	                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0,-(rand() % 30000+2000)));
     SceneNode * tempSceneNode = temp->getSceneNode();
 		tempSceneNode->yaw(Ogre::Degree(180));
 		temp->setDamage(0.01);
 		temp->setSpeed(0.85);
+		temp->setAttackBox(75);
     
     actors.push_back(temp);
   }
