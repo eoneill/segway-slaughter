@@ -4,26 +4,22 @@
 using namespace std;
 
 GameState::~GameState() {
-  /*Actor* actor_ptr;
   while (!actors.empty()) {
-    actor_ptr = actors.front();
-    actors.erase(actors.begin());
-    delete actor_ptr;
+    delete actors.back();
+    actors.pop_back();
   }
   
-  Item* item_ptr;
   while (!items.empty()) {
-    item_ptr = items.front();
-    items.erase(items.begin());
-    delete item_ptr;
-  }*/
+    delete items.back();
+    items.pop_back();
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void GameState::removeDead() {
 	for (unsigned int i = 1; i < actors.size(); i++) {
-		if (actors[i]->deadTick() == 100000) {
+		if (actors[i]->deadTick() == 2000) { //Delete dead after some time
 			delete actors[i];
 			actors.erase(actors.begin() + i);
 		}

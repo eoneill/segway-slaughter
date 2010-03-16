@@ -24,6 +24,16 @@ SideScroller::~SideScroller() {
   delete streetMusic_;
   delete streetSFX_;
 
+  while (!actors.empty()) {
+    delete actors.back();
+    actors.pop_back();
+  }
+  
+  while (!items.empty()) {
+    delete items.back();
+    items.pop_back();
+  }
+
   SceneManager* mSceneMgr = getRoot()->getSceneManager("Default SceneManager");
   mSceneMgr->destroyAllCameras();
   mSceneMgr->destroyAllStaticGeometry();
@@ -36,7 +46,6 @@ SideScroller::~SideScroller() {
 
   assert(hud_ != 0);
   delete hud_;
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////
