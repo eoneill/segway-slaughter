@@ -23,9 +23,6 @@ Paradise::~Paradise() {
   delete streetMusic_;
   delete streetSFX_;
 
-  for(unsigned int i = 0; i < actors.size(); i++) {
-  	delete actors[i];
-  }
   SceneManager* mSceneMgr = getRoot()->getSceneManager("Default SceneManager");
   mSceneMgr->destroyAllCameras();
   mSceneMgr->destroyAllStaticGeometry();
