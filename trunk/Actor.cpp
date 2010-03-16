@@ -122,15 +122,15 @@ bool Actor::move(const MovementDirection& newDirection,
       break;
     default: break;
     }
-                
-    sceneNode_->yaw(Ogre::Degree(90*(newDirection-direction_)));
-    direction_ = newDirection;
-
 
     if (wasTranslated) {
       position_ = tmp;
     }
   }
+
+  //Turn character
+  sceneNode_->yaw(Ogre::Degree(90*(newDirection-direction_)));
+  direction_ = newDirection;
     
   return validMove;
 }
