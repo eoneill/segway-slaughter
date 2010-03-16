@@ -47,6 +47,7 @@ Actor::Actor(const std::string& entityName,
   sceneNode_->attachObject(entity_);
   sceneNode_->attachObject(pSystem_);
   sceneNode_->setScale(40,40,40);
+  isBoss = false;
   //actorSFX_ = new audSFX();
   //actorSFX_->audLoadDir("resources/audio/sfx","wav");
 }
@@ -156,7 +157,7 @@ void Actor::onDeath()
   //actorSFX_->audPlay("male_scream.wav");
 }
 
-void Actor::attack(std::vector<Actor*> &actors){
+bool Actor::attack(std::vector<Actor*> &actors){
   //find out where the damage box is, based on direction facing
   int vert = 0;
   int horiz = 0;
@@ -188,15 +189,24 @@ void Actor::attack(std::vector<Actor*> &actors){
 		end = 1;
 	}
 
+  bool didBossDie = false;
+  
 	for (size_t i = start; i < end; i++) {
 	  if (sceneNode_ != actors[i]->sceneNode_) {
 	    if (SquareHit(damagePos, actors[i]->position_, attackBox_)) {
 	      if (actors[i]->onDamage(damage_)) {
-          stats_.addScore(10);
+	      	if (actors[i]->isBoss) {
+	      		didBossDie = true;
+	      		stats_.addScore(1000);
+	      	} else {
+            stats_.addScore(10);
+          }
 	      }
 	    }
 	  }
   }
+  
+  return didBossDie;
 }
 
 

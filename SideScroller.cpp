@@ -88,7 +88,7 @@ void SideScroller::initialize() {
 
   //Player
   player = new Charlie("charlie", "charlie.mesh", Ogre::Vector3(0,0,0));
-  player->setDamage(0.05);
+  player->setDamage(1);
   player->setAttackBox(100);
 
   actors.push_back(player);
@@ -228,7 +228,11 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     if (is->isKeyDown(OIS::KC_A)) {
       if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
         streetSFX_->audPlay("chainsaw_attack.wav");
-      player->attack(actors);
+      if(player->attack(actors))
+      	{
+      		isDone_ = true;
+			    return new Paradise;
+      	}
       hud_->updateScore(player->getScore());
     }
     else{
@@ -243,8 +247,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 	    //return new CasinoLevel;
 	    bossFight = true;
 	    NumEnemies_++;
-			char EntName[40] = "Boss";
-			Actor* temp = new Actor(EntName,"mob_boss.mesh", Status(100),
+			Actor* temp = new Actor("Boss","mob_boss.mesh", Status(100),
 				                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0, actors[0]->getPosition()[2] - 1000));
 			SceneNode * tempSceneNode = temp->getSceneNode();
 			tempSceneNode->yaw(Ogre::Degree(180));
@@ -252,8 +255,10 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 			temp->setSpeed(1.1);
 			temp->setAttackBox(75);
 			temp->setState(attack);
+			temp->isBoss = true;
 
 			actors.push_back(temp);
+
 	  }
 
   if (is->isKeyDown(OIS::KC_1)) {
