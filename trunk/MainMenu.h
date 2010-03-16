@@ -28,6 +28,7 @@ public:
     LittleManOverlay->show();
     isDone_ = true;
     next_ = new SideScroller();
+	
     return true;
   }
 
