@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Segway Slaughter
 //
-// Time-stamp: <Last modified 2010-03-15 19:54:43 by Eric Scrivner>
+// Time-stamp: <Last modified 2010-03-15 19:58:06 by Eric Scrivner>
 //
 // Description:
 //   Describes an object for defining and managing the state of the game as well
@@ -10,8 +10,10 @@
 #ifndef GAME_STATE_H_
 #define GAME_STATE_H_
 
-#include "Locator.h"
 #include "Actor.h"
+#include "Item.h"
+#include "Locator.h"
+
 #include <vector>
 
 #include <Ogre.h>
