@@ -12,6 +12,7 @@ using namespace Ogre;
 MainMenu::MainMenu()
   : isDone_(false), next_(NULL) {
   Locator::getInput()->addMouseListener(this);
+  CEGUI::MouseCursor::getSingleton().show();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -39,6 +40,7 @@ MainMenu::~MainMenu() {
   wm.destroyWindow("Quit");
 
   Locator::getInput()->removeMouseListener(this);
+  CEGUI::MouseCursor::getSingleton().hide();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
