@@ -74,8 +74,22 @@ bool Actor::move(const MovementDirection& newDirection,
     if (SquareHit((*it)->getPosition(),
                   actors[0]->position_,
                   (*it)->getWidth())) {
+      if (timedEffect_.getTime() <= 0) {
+        double time = (*it)->getStatusEffect("Time");
+        
+        if ((*it)->getStatusEffect("Health") > 0) {
+          if ((*it)->getStatusEffect("Time") > 0) {
+            timedEffect_ = TimedEffect(time, "Health", (*it)->getStatusEffect("Health"));
+          }
+        } else {
+          timedEffect_ = TimedEffect(time, "Speed", (*it)->getStatusEffect("Speed"));
+        }
+
+        actors[0]->addSpeed((*it)->getStatusEffect("Speed"));
+      }
+
       actors[0]->getStatus().addHealth((*it)->getStatusEffect("Health"));
-      actors[0]->addSpeed((*it)->getStatusEffect("Speed"));
+
       delete *it;
       it = items.erase(it);
     } else {

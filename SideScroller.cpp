@@ -173,6 +173,8 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 		spawnBehind(actors, NumEnemies_);
 	}
 
+  player->subEffectTime(timeSinceLastFrame);
+
   Ogre::Root* root_ = getRoot();
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
   InputSystem* is = Locator::getInput();

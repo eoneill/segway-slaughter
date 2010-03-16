@@ -95,6 +95,47 @@ private:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+// Class: TimedEffect
+//
+// A status effect with a time-limit placed on it
+class TimedEffect {
+public:
+  TimedEffect()
+    : active_(false),
+      time_(0),
+      effect_(""),
+      value_(0)
+  { }
+
+  TimedEffect(const double& time,
+              const std::string& effect,
+              const double& value)
+    : active_(true),
+      time_(time),
+      effect_(effect),
+      value_(value)
+  { }
+
+  double getTime() const { return time_; }
+  double subTime(const double& update) {
+    time_ -= update;
+    return time_;
+  }
+
+  bool isActive() { return active_; }
+  void deactivate() { active_ = false; }
+
+  std::string getEffect() const { return effect_; }
+
+  double getValue() { return value_; }
+private:
+  bool active_;
+  double time_;
+  std::string effect_;
+  double value_;
+};
+
+////////////////////////////////////////////////////////////////////////////////
 // Class: Actor
 //
 // Movable meshes
@@ -263,7 +304,23 @@ public:
     attackBox_ = size;
   }
   
-  
+  double subEffectTime(const double& update) {
+    if (timedEffect_.getTime() > 0) {
+      timedEffect_.subTime(update);
+      
+      if (timedEffect_.getTime() <= 0) {
+        timedEffect_.deactivate();
+        if (timedEffect_.getEffect() == "Speed") {
+          speed_ -= timedEffect_.getValue();
+        }
+      }
+
+      return timedEffect_.getTime();
+    }
+
+    return 0;
+  }
+
   bool isBoss;
   float chainsawHeat;
 protected:
@@ -277,6 +334,7 @@ protected:
   double            damage_;
   //audSFX *          actorSFX_;
   float             attackBox_;
+  TimedEffect       timedEffect_;
 };
 
 class Charlie : public Actor {
