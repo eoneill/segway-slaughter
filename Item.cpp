@@ -90,6 +90,7 @@ Pizza::Pizza(const Ogre::Vector3& position)
   : Item("Pizza", "pizza.mesh", position)
 {
 	statEffects_["Health"] = 100;
+	statEffects_["Time"] = 0;
   scaleMesh(50);
 }
 
@@ -100,7 +101,7 @@ double Pizza::getWidth() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Pizza
+// Claymore
 
 Claymore::Claymore(const Ogre::Vector3& position)
   : Item("Claymore", "claymore.mesh", position)
