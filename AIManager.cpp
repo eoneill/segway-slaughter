@@ -16,7 +16,7 @@ double getDist(double pos1[3], double pos2[3]){
 void AIManager(vector<Actor*>& actors){
   int minDist = 20;
   int minDistStratH = 100;
-  int maxDistStratH = 500;
+  int maxDistStratH = 350;
 
 	//cycle throught all enemies (skip player)
 	for(unsigned int i = 1; i < actors.size(); i++)
@@ -111,7 +111,7 @@ void AIManager(vector<Actor*>& actors){
 			  	actors[i]->move(kLeft, actors);
 			  }
 			  
-			  if(rand() % 1000 == 10)
+			  if(rand() % 500 == 10)
 			   {
 			     actors[i]->setState(attack);
 			   }
