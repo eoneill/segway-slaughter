@@ -103,7 +103,7 @@ material blinn25
 
 			texture_unit
 			{
-				texture segway.jpg
+				texture segway2.jpg
 			}
 		}
 
