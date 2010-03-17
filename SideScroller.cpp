@@ -196,6 +196,13 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 			spawnBehind(actors, NumEnemies_, timeSinceLastFrame);
 		}
 		
+		if (timeLeft_ <= 0) {
+	    //isDone_ = true;
+	    //return new MainMenu;
+	    player->setState(dead);
+	    player->onDeath();
+	  }
+		
 	  // Update the actors's timer
 	  for(unsigned int i = 0; i < actors.size(); i++)
 		{
@@ -313,22 +320,20 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 	    isDone_ = true;
 	    return new MainMenu;
 	  }
-	  if (timeLeft_ <= 0) {
-	    isDone_ = true;
-	    return new MainMenu;
+	  
+	  
+	  hud_->updateHealth(player->getHealth() / player->getMaxHealth());
+	  hud_->updateHeat(player->chainsawHeat/MAX_HEAT);
+
+	  unsigned int millis = timer_.getMilliseconds() / 1000;
+
+	  if (millis >= 1) {
+	    timeLeft_ -= millis;
+	    hud_->updateTimeLeft(timeLeft_ / 60, timeLeft_ % 60);
+	    timer_.reset();
 	  }
   }
 
-  hud_->updateHealth(player->getHealth() / player->getMaxHealth());
-  hud_->updateHeat(player->chainsawHeat/MAX_HEAT);
-
-  unsigned int millis = timer_.getMilliseconds() / 1000;
-
-  if (millis >= 1) {
-    timeLeft_ -= millis;
-    hud_->updateTimeLeft(timeLeft_ / 60, timeLeft_ % 60);
-    timer_.reset();
-  }
 	
   return NULL;
 }
