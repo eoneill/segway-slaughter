@@ -63,7 +63,7 @@ material anisotropic6
 
 
 
-material blinn2
+material blinn2_2
 {
 	technique
 	{

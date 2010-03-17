@@ -1,5 +1,5 @@
 
-material blinn24
+material blinn24_2
 {
 	technique
 	{
@@ -20,7 +20,7 @@ material blinn24
 
 
 
-material blinn27
+material blinn27_2
 {
 	technique
 	{
@@ -41,7 +41,7 @@ material blinn27
 
 
 
-material earimgs
+material earimgs_2
 {
 	technique
 	{
@@ -58,7 +58,7 @@ material earimgs
 
 
 
-material blinn23
+material blinn23_2
 {
 	technique
 	{
@@ -81,19 +81,19 @@ material blinn23
 
 material NoMaterial
 {
-	technique
-	{
-		pass
-		{
-		}
-
-	}
-
+   technique
+   {
+      pass
+      {
+         depth_write off
+         scene_blend alpha_blend
+      }
+   }
 }
 
 
 
-material blinn25
+material blinn25_2
 {
 	technique
 	{
@@ -114,7 +114,7 @@ material blinn25
 
 
 
-material blinn26
+material blinn26_2
 {
 	technique
 	{
