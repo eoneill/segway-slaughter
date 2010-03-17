@@ -1,0 +1,94 @@
+
+material NoMaterial
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+
+
+material segway_texture
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.5 0.5 0.5 1
+			specular 0.5 0.5 0.5 1 89.6
+		}
+
+	}
+
+}
+
+
+
+material chainsaw_texture
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.5 0.5 0.5 1
+			specular 0.5 0.5 0.5 1 89.6
+
+			texture_unit
+			{
+				texture chainsaw_man_6.jpg
+			}
+		}
+
+	}
+
+}
+
+
+
+material blinn2
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.5 0.5 0.5 1
+			specular 0.5 0.5 0.5 1 89.6
+
+			texture_unit
+			{
+				texture chainsaw_body_texture.jpg
+			}
+		}
+
+	}
+
+}
+
+
+
+material tires
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.5 0.5 0.5 1
+			specular 0.5 0.5 0.5 1 89.6
+
+			texture_unit
+			{
+				texture segway.jpg
+			}
+		}
+
+	}
+
+}
+
+
