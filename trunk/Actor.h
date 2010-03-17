@@ -13,6 +13,7 @@
 #include <Ogre.h>
 #include "audio/audio.h"
 #include "Item.h"
+#include <OgreAnimationState.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Constants
@@ -312,6 +313,30 @@ public:
       deadTime_ = 0;
     return deadTime_;
   }
+  
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: setupAnimation
+  //
+  // Setup the animations
+  void setupAnimation();
+  
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: attackAnimation
+  //
+  // start the attack animation
+  void attackAnimation();
+  
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: attackAnimation
+  //
+  // start the attack animation
+  void deathAnimation();
+  
+  //////////////////////////////////////////////////////////////////////////////
+  // Function: stopAttackAnimation()
+  //
+  // stop attack animation
+  void stopAnimation();
     
   //////////////////////////////////////////////////////////////////////////////
   // Function: update
@@ -319,9 +344,13 @@ public:
   // Updates the character with the number of seconds that have ellapsed since
   // the last frame.
   void update(const double& secsSinceLastUpdate);
+  
+  
 
   bool isBoss;
   float chainsawHeat;
+  bool isEnemy;
+  
 protected:
   Ogre::Vector3     position_;
   Ogre::SceneNode*  sceneNode_;
@@ -337,6 +366,9 @@ protected:
   int               deadTime_;
   TimedEffect       timedEffect_;
   std::string       nodeName_;
+  Ogre::AnimationState*   mAnimState;
+  Ogre::AnimationState*   mAnimState2;
+  Ogre::AnimationState*   mAnimState3;
 };
 
 class Charlie : public Actor {
@@ -348,6 +380,7 @@ public:
   {
     direction_ = kRight;
     sceneNode_->yaw(Ogre::Degree(-180));
+    
   }
 };
 

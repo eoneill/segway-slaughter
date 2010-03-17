@@ -135,7 +135,7 @@ void spawnBehind(vector<Actor*>& actors, int & NumEnemies, double timeSinceLastF
 	char EntName[40] = "Mobster";
   sprintf(EntName,"mobster%d",NumEnemies);
 //  Ogre::Vector3 pos = actors[0]->getPosition()[2];
-  Actor* temp = new Actor(EntName,"mobster.mesh", Status(25),
+  Actor* temp = new Actor(EntName,"mobster_fullanim.mesh", Status(25),
   	                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0, actors[0]->getPosition()[2] + 1200));
   SceneNode * tempSceneNode = temp->getSceneNode();
 	tempSceneNode->yaw(Ogre::Degree(180));
@@ -143,6 +143,8 @@ void spawnBehind(vector<Actor*>& actors, int & NumEnemies, double timeSinceLastF
 	temp->setSpeed(1.2);
 	temp->setAttackBox(75);
 	temp->setState(attack);
+	temp->isEnemy = true;
+	temp->setupAnimation();
 	
 	
   actors.push_back(temp);
