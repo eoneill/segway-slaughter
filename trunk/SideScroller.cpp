@@ -163,6 +163,7 @@ void SideScroller::initialize() {
   streetSFX_->audLoadDir("resources/audio/sfx","wav");
   
   bossFight = false;
+  deathTimer_ = 0;
 }
 
 
@@ -177,138 +178,146 @@ bool SideScroller::isDone() {
 GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 	removeDead();
 	
-	if(!bossFight){
-		spawnBehind(actors, NumEnemies_, timeSinceLastFrame);
-	}
-	
-  // Update the actors's timer
-  for(unsigned int i = 0; i < actors.size(); i++)
-	{
-	  actors[i]->update(timeSinceLastFrame);
-	}
-
-  Ogre::Root* root_ = getRoot();
-  Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
-  InputSystem* is = Locator::getInput();
-  
-  //cool down for the chainsaw
-  if(player->chainsawHeat >= 0)
-	  player->chainsawHeat -=0.021*timeSinceLastFrame*1000;
-	if(player->chainsawHeat == 0)
-	  player->chainsawHeat = 0;
-
-  //Sound stuff
-  if (!streetSFX_->audIsPlaying("chainsaw_idle.wav") &&
-      !streetSFX_->audIsPlaying("chainsaw_attack.wav"))
-    streetSFX_->audPlay("chainsaw_idle.wav");
-		
-	//update AI
-	AIManager(actors);
-
-  //Move player up, but with constraints
-  if (is->isKeyDown(OIS::KC_UP)) {
-      if (!streetSFX_->audIsPlaying("segway_ride.wav"))
-        streetSFX_->audPlay("segway_ride.wav");
-      player->move(kUp, actors, items);
-  }
-  //Move player down, but with constraints
-  if (is->isKeyDown(OIS::KC_DOWN)) {
-      if (!streetSFX_->audIsPlaying("segway_ride.wav"))
-        streetSFX_->audPlay("segway_ride.wav");
-      player->move(kDown, actors, items);
-  }
-  //move player left
-    if (is->isKeyDown(OIS::KC_LEFT)) {
-      if (!streetSFX_->audIsPlaying("segway_ride.wav"))
-        streetSFX_->audPlay("segway_ride.wav");
-      if (!bossFight || (bossFight && player->getPosition()[2] <= LEVEL_END-2000))
-      { 
-		    if(player->move(kLeft, actors, items) && !bossFight)
-		    {
-		      mCamera->move(Vector3(0,0,player->getSpeed()*timeSinceLastFrame*1000));
-		    }
-		  }
-    }
-    //move player right
-    if (is->isKeyDown(OIS::KC_RIGHT)) {
-      if (!streetSFX_->audIsPlaying("segway_ride.wav"))
-        streetSFX_->audPlay("segway_ride.wav");
-      if (player->getPosition()[2] >= LEVEL_END-4000)
-      {
-		  	if(player->move(kRight, actors, items) && !bossFight)
-		  	{
-		      mCamera->move(Vector3(0,0,-player->getSpeed()*timeSinceLastFrame*1000));
-		    }
-		  }
-    }
-
-    if (is->isKeyDown(OIS::KC_SPACE)) {
-    if(player->chainsawHeat <= MAX_HEAT)
-		  player->chainsawHeat +=0.040*timeSinceLastFrame*1000;
-		if(player->chainsawHeat == MAX_HEAT)
-		  player->chainsawHeat = MAX_HEAT;
-    if(player->chainsawHeat <= MAX_HEAT-1)
-	  {
-		    if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
-		      streetSFX_->audPlay("chainsaw_attack.wav");
-		    player->attackAnimation();
-		    if(player->attack(actors))
-		    	{
-		    		isDone_ = true;
-				   return new Paradise;
-		    	}
-		    hud_->updateScore(player->getScore());
-    	}
-    }
-    else{
-		player->stopAnimation();
-      player->stopBlood();
-      for(unsigned int i = 0; i < actors.size(); i++)
-        actors[i]->stopBlood();
-    }
-    
-		//get to the end, trigger a boss fight
-	  if (player->getPosition()[2] <= LEVEL_END-3000 && bossFight == false) {
-	    //isDone_ = true;
-	    //return new CasinoLevel;
-	    bossFight = true;
-	    NumEnemies_++;
-			Actor* temp = new Actor("Boss","mobboss_fullanim.mesh", Status(100),
-				                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0, actors[0]->getPosition()[2] - 1000));
-			SceneNode * tempSceneNode = temp->getSceneNode();
-			tempSceneNode->yaw(Ogre::Degree(180));
-			temp->setDamage(0.01);
-			temp->setSpeed(1.1);
-			temp->setAttackBox(75);
-			temp->setState(attack);
-			temp->isBoss = true;
-			temp->isEnemy = true;
-			temp->setupAnimation();
-
-			actors.push_back(temp);
-
-	  }
-
-  if (is->isKeyDown(OIS::KC_1)) {
-    isDone_ = true;
-    return new Paradise;
-  }
-  
-  if(player->getState() == dead)
+	if(player->getState() == dead)
   {
-  	isDone_ = true;
-    return new MainMenu;
+  	if(deathTimer_ <= 5000)
+  	{
+			deathTimer_+= 1000*timeSinceLastFrame;
+  	}
+  	else
+  	{
+			isDone_ = true;
+		  return new MainMenu;
+    }
+  } else
+  {
+		
+		if(!bossFight){
+			spawnBehind(actors, NumEnemies_, timeSinceLastFrame);
+		}
+		
+	  // Update the actors's timer
+	  for(unsigned int i = 0; i < actors.size(); i++)
+		{
+		  actors[i]->update(timeSinceLastFrame);
+		}
+
+	  Ogre::Root* root_ = getRoot();
+	  Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
+	  InputSystem* is = Locator::getInput();
+	  
+	  //cool down for the chainsaw
+	  if(player->chainsawHeat >= 0)
+		  player->chainsawHeat -=0.021*timeSinceLastFrame*1000;
+		if(player->chainsawHeat == 0)
+		  player->chainsawHeat = 0;
+
+	  //Sound stuff
+	  if (!streetSFX_->audIsPlaying("chainsaw_idle.wav") &&
+	      !streetSFX_->audIsPlaying("chainsaw_attack.wav"))
+	    streetSFX_->audPlay("chainsaw_idle.wav");
+			
+		//update AI
+		AIManager(actors);
+
+	  //Move player up, but with constraints
+	  if (is->isKeyDown(OIS::KC_UP)) {
+	      if (!streetSFX_->audIsPlaying("segway_ride.wav"))
+	        streetSFX_->audPlay("segway_ride.wav");
+	      player->move(kUp, actors, items);
+	  }
+	  //Move player down, but with constraints
+	  if (is->isKeyDown(OIS::KC_DOWN)) {
+	      if (!streetSFX_->audIsPlaying("segway_ride.wav"))
+	        streetSFX_->audPlay("segway_ride.wav");
+	      player->move(kDown, actors, items);
+	  }
+	  //move player left
+	    if (is->isKeyDown(OIS::KC_LEFT)) {
+	      if (!streetSFX_->audIsPlaying("segway_ride.wav"))
+	        streetSFX_->audPlay("segway_ride.wav");
+	      if (!bossFight || (bossFight && player->getPosition()[2] <= LEVEL_END-2000))
+	      { 
+			    if(player->move(kLeft, actors, items) && !bossFight)
+			    {
+			      mCamera->move(Vector3(0,0,player->getSpeed()*timeSinceLastFrame*1000));
+			    }
+			  }
+	    }
+	    //move player right
+	    if (is->isKeyDown(OIS::KC_RIGHT)) {
+	      if (!streetSFX_->audIsPlaying("segway_ride.wav"))
+	        streetSFX_->audPlay("segway_ride.wav");
+	      if (player->getPosition()[2] >= LEVEL_END-4000)
+	      {
+			  	if(player->move(kRight, actors, items) && !bossFight)
+			  	{
+			      mCamera->move(Vector3(0,0,-player->getSpeed()*timeSinceLastFrame*1000));
+			    }
+			  }
+	    }
+
+	    if (is->isKeyDown(OIS::KC_SPACE)) {
+	    if(player->chainsawHeat <= MAX_HEAT)
+			  player->chainsawHeat +=0.040*timeSinceLastFrame*1000;
+			if(player->chainsawHeat == MAX_HEAT)
+			  player->chainsawHeat = MAX_HEAT;
+	    if(player->chainsawHeat <= MAX_HEAT-1)
+		  {
+			    if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
+			      streetSFX_->audPlay("chainsaw_attack.wav");
+			    player->attackAnimation();
+			    if(player->attack(actors))
+			    	{
+			    		isDone_ = true;
+					   return new Paradise;
+			    	}
+			    hud_->updateScore(player->getScore());
+	    	}
+	    }
+	    else{
+			player->stopAnimation();
+	      player->stopBlood();
+	      for(unsigned int i = 0; i < actors.size(); i++)
+	        actors[i]->stopBlood();
+	    }
+	    
+			//get to the end, trigger a boss fight
+		  if (player->getPosition()[2] <= LEVEL_END-3000 && bossFight == false) {
+		    //isDone_ = true;
+		    //return new CasinoLevel;
+		    bossFight = true;
+		    NumEnemies_++;
+				Actor* temp = new Actor("Boss","mobboss_fullanim.mesh", Status(400),
+					                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0, actors[0]->getPosition()[2] - 1000));
+				SceneNode * tempSceneNode = temp->getSceneNode();
+				tempSceneNode->yaw(Ogre::Degree(180));
+				temp->setDamage(0.01);
+				temp->setSpeed(1.0);
+				temp->setAttackBox(75);
+				temp->setState(attack);
+				temp->isBoss = true;
+				temp->isEnemy = true;
+				temp->setupAnimation();
+
+				actors.push_back(temp);
+
+		  }
+
+	  if (is->isKeyDown(OIS::KC_1)) {
+	    isDone_ = true;
+	    return new Paradise;
+	  }
+	  
+	  if (is->isKeyDown(OIS::KC_ESCAPE)) {
+	    isDone_ = true;
+	    return new MainMenu;
+	  }
+	  if (timeLeft_ <= 0) {
+	    isDone_ = true;
+	    return new MainMenu;
+	  }
   }
-  
-  if (is->isKeyDown(OIS::KC_ESCAPE)) {
-    isDone_ = true;
-    return new MainMenu;
-  }
-  if (timeLeft_ <= 0) {
-    isDone_ = true;
-    return new MainMenu;
-  }
-  
 
   hud_->updateHealth(player->getHealth() / player->getMaxHealth());
   hud_->updateHeat(player->chainsawHeat/MAX_HEAT);
