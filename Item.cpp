@@ -116,3 +116,20 @@ Claymore::Claymore(const Ogre::Vector3& position)
 double Claymore::getWidth() {
   return 100;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// Caltrope
+
+Caltrope::Caltrope(const Ogre::Vector3& position)
+  : Item("Caltrope", "caltrope.mesh", position)
+{
+	statEffects_["Health"] = -20;
+	statEffects_["Time"] = 0;
+  scaleMesh(50);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+double Caltrope::getWidth() {
+  return 100;
+}

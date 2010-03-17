@@ -74,4 +74,14 @@ public:
   double getWidth();
 };
 
+////////////////////////////////////////////////////////////////////////////////
+// Class: Caltrope
+//
+// Deals health damage when stepped on
+class Caltrope : public Item {
+public:
+  Caltrope(const Ogre::Vector3& position);
+  double getWidth();
+};
+
 #endif // ITEM_H__
