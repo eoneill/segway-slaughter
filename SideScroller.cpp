@@ -193,7 +193,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   
   //cool down for the chainsaw
   if(player->chainsawHeat >= 0)
-	  player->chainsawHeat -=0.015;
+	  player->chainsawHeat -=0.021*timeSinceLastFrame*1000;
 	if(player->chainsawHeat == 0)
 	  player->chainsawHeat = 0;
 
@@ -244,7 +244,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 
     if (is->isKeyDown(OIS::KC_SPACE)) {
     if(player->chainsawHeat <= MAX_HEAT)
-		  player->chainsawHeat +=0.035;
+		  player->chainsawHeat +=0.040*timeSinceLastFrame*1000;
 		if(player->chainsawHeat == MAX_HEAT)
 		  player->chainsawHeat = MAX_HEAT;
     if(player->chainsawHeat <= MAX_HEAT-1)
