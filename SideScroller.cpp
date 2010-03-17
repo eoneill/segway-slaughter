@@ -185,7 +185,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   
   //cool down for the chainsaw
   if(player->chainsawHeat >= 0)
-	  player->chainsawHeat -=0.020;
+	  player->chainsawHeat -=0.025;
 	if(player->chainsawHeat == 0)
 	  player->chainsawHeat = 0;
 
@@ -223,7 +223,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     }
     
  		//kill block - don't let the player go to far if they haven't killed enough
-    int killBlock = -((player->getScore()/10)*(-LEVEL_END/(NumEnemies_/2))) - 5000;
+    int killBlock = -((player->getScore()/ENEMY_KILL_POINTS)*(-LEVEL_END/(NumEnemies_/2))) - 5000;
     
     //move player right
     if (is->isKeyDown(OIS::KC_RIGHT)) {
@@ -269,11 +269,11 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 	    //return new CasinoLevel;
 	    bossFight = true;
 	    NumEnemies_++;
-			Actor* temp = new Actor("Boss","mob_boss.mesh", Status(100),
+			Actor* temp = new Actor("Boss","mob_boss.mesh", Status(400),
 				                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0, actors[0]->getPosition()[2] - 1000));
 			SceneNode * tempSceneNode = temp->getSceneNode();
 			tempSceneNode->yaw(Ogre::Degree(180));
-			temp->setDamage(0.01);
+			temp->setDamage(0.02);
 			temp->setSpeed(1.1);
 			temp->setAttackBox(75);
 			temp->setState(attack);
