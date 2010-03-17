@@ -83,17 +83,32 @@ void Paradise::initialize() {
   node->attachObject(ent);
 
   //Player
-  player = new Charlie("charlie", "charlie.mesh", Ogre::Vector3(0,0,0));
+  player = new Charlie("charlie", "charlie_fullanim.mesh", Ogre::Vector3(0,0,0));
   player->setDamage(1);
   player->setAttackBox(100);
+  player->isEnemy = false;
+  player->setupAnimation();
 
   actors.push_back(player);
   
   //make some sample enemies
   srand ( time(NULL) );
   //Set the number of enemies so that spawnBehind knows what to do
-	NumEnemies_ = 140;
-  for(int i = 0; i < 70; i++){
+	NumEnemies_ = 0;
+	
+	// Items
+  for (int i = 0; i < 200; i++) {
+    Item* tmp;
+    if (i % 2 == 0) {
+      tmp = new Brawndo(Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH / 2, 0, -(rand() % 60000+2000)));
+    } 
+    else {
+      tmp = new Pizza(Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH / 2, 0, -(rand() % 60000+2000)));
+    }
+    items.push_back(tmp);
+  }
+	
+  /*for(int i = 0; i < 70; i++){
     char EntName[40] = "Mobster";
     sprintf(EntName,"mobster%d",i);
     Actor* temp = new Actor(EntName,"brawndo.mesh", Status(25),
@@ -119,7 +134,7 @@ void Paradise::initialize() {
 		temp->setAttackBox(75);
     
     actors.push_back(temp);
-  }
+  }*/
 	
 
 	//Brawndo b(Ogre::Vector3(0,0,0));
@@ -214,7 +229,7 @@ GameState* Paradise::update(const Ogre::Real& timeSinceLastFrame) {
         streetSFX_->audPlay("segway_ride.wav");
 	    if(player->move(kLeft, actors, items) && !bossFight)
 	    {
-	      mCamera->move(Vector3(0,0,DEFAULT_MOVE_SPEED*timeSinceLastFrame*1000));
+	      mCamera->move(Vector3(0,0,player->getSpeed()*timeSinceLastFrame*1000));
 	    }
     }
     //move player right
@@ -223,21 +238,35 @@ GameState* Paradise::update(const Ogre::Real& timeSinceLastFrame) {
         streetSFX_->audPlay("segway_ride.wav");
 	  	if(player->move(kRight, actors, items) && !bossFight)
 	  	{
-	      mCamera->move(Vector3(0,0,-DEFAULT_MOVE_SPEED*timeSinceLastFrame*1000));
+	      mCamera->move(Vector3(0,0,-player->getSpeed()*timeSinceLastFrame*1000));
 	    }
     }
 
-    if (is->isKeyDown(OIS::KC_A)) {
-      if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
-        streetSFX_->audPlay("chainsaw_attack.wav");
-      player->attack(actors);
-      hud_->updateScore(player->getScore());
+    if (is->isKeyDown(OIS::KC_SPACE)) {
+    if(player->chainsawHeat <= MAX_HEAT)
+		  player->chainsawHeat +=0.035;
+		if(player->chainsawHeat == MAX_HEAT)
+		  player->chainsawHeat = MAX_HEAT;
+    if(player->chainsawHeat <= MAX_HEAT-1)
+	  {
+		    if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
+		      streetSFX_->audPlay("chainsaw_attack.wav");
+		    player->attackAnimation();
+		    if(player->attack(actors))
+		    	{
+		    		//isDone_ = true;
+				   // return new Paradise;
+		    	}
+		    hud_->updateScore(player->getScore());
+    	}
     }
     else{
+		player->stopAnimation();
       player->stopBlood();
       for(unsigned int i = 0; i < actors.size(); i++)
         actors[i]->stopBlood();
     }
+    
   if (player->getPosition()[2] <= -63000) {
     isDone_ = true;
     return new MainMenu;
