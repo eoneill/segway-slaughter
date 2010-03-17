@@ -85,7 +85,7 @@ void SideScroller::initialize() {
 
   //Player
   player = new Charlie("charlie", "charlie_fullanim.mesh", Ogre::Vector3(0,0,0));
-  player->setDamage(0.05);
+  player->setDamage(1);//(0.05);
   player->setAttackBox(100);
   player->isEnemy = false;
   player->setupAnimation();
@@ -254,8 +254,8 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 		    player->attackAnimation();
 		    if(player->attack(actors))
 		    	{
-		    		isDone_ = true;
-				    return new Paradise;
+		    		//isDone_ = true;
+				   // return new Paradise;
 		    	}
 		    hud_->updateScore(player->getScore());
     	}
@@ -273,7 +273,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 	    //return new CasinoLevel;
 	    bossFight = true;
 	    NumEnemies_++;
-			Actor* temp = new Actor("Boss","mobboss_fullanim.mesh", Status(100),
+			Actor* temp = new Actor("Boss","mobster_fullanim.mesh", Status(100),
 				                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0, actors[0]->getPosition()[2] - 1000));
 			SceneNode * tempSceneNode = temp->getSceneNode();
 			tempSceneNode->yaw(Ogre::Degree(180));

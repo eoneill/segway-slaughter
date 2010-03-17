@@ -120,12 +120,14 @@ bool Actor::move(const MovementDirection& newDirection,
             // Otherwise increase their speed
             timedEffect_ = TimedEffect(time, "Speed", (*it)->getStatusEffect("Speed"));
             actors[0]->addSpeed((*it)->getStatusEffect("Speed"));
-          }
-        } else {
-          actors[0]->addSpeed((*it)->getStatusEffect("Speed"));
-          actors[0]->getStatus().addHealth((*it)->getStatusEffect("Health"));
-        }
+                  }
+             }
+      } else {
+       actors[0]->addSpeed((*it)->getStatusEffect("Speed"));
+      	actors[0]->getStatus().addHealth((*it)->getStatusEffect("Health"));
+
       }
+      
 
       delete *it;
       it = items.erase(it);
