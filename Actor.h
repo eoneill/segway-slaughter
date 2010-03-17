@@ -306,9 +306,9 @@ public:
   //
   // Ticks each call if actor is dead
   // Returns the number of ticks
-  int deadTick() {
+  float deadTick() {
     if (stats_.getState() == dead)
-      deadTime_++;
+      deadTime_+=timeSinceLast_*1000;
     else
       deadTime_ = 0;
     return deadTime_;
@@ -363,7 +363,7 @@ protected:
   double            timeSinceLast_;
   //audSFX *          actorSFX_;
   float             attackBox_;
-  int               deadTime_;
+  float             deadTime_;
   TimedEffect       timedEffect_;
   std::string       nodeName_;
   Ogre::AnimationState*   mAnimState;

@@ -19,7 +19,7 @@ GameState::~GameState() {
 
 void GameState::removeDead() {
 	for (unsigned int i = 1; i < actors.size(); i++) {
-		if (actors[i]->deadTick() == 2000) { //Delete dead after some time
+		if (actors[i]->deadTick() >= 5000) { //Delete dead after some time
 			delete actors[i];
 			actors.erase(actors.begin() + i);
 		}
