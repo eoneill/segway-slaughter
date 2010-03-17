@@ -1,0 +1,23 @@
+
+material wood1Material
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0.5 0.5 0.5 1
+			texture_unit
+			{
+				texture wood.jpg
+				tex_address_mode wrap
+				filtering trilinear
+				colour_op alpha_blend
+			}
+		}
+
+	}
+
+}
+
+
