@@ -51,6 +51,7 @@ Actor::Actor(const std::string& entityName,
   sceneNode_->setScale(40,40,40);
   isBoss = false;
   chainsawHeat = 0;
+  
   //actorSFX_ = new audSFX();
   //actorSFX_->audLoadDir("resources/audio/sfx","wav");
 }
@@ -86,6 +87,11 @@ void Actor::update(const double& secsSinceLastUpdate) {
     }
   }
   
+  mAnimState->addTime(secsSinceLastUpdate);
+  mAnimState2->addTime(secsSinceLastUpdate);
+  if(isEnemy)
+    mAnimState3->addTime(secsSinceLastUpdate);	// for goblin
+  
   timeSinceLast_ = secsSinceLastUpdate;
 }
 
@@ -115,10 +121,10 @@ bool Actor::move(const MovementDirection& newDirection,
             timedEffect_ = TimedEffect(time, "Speed", (*it)->getStatusEffect("Speed"));
             actors[0]->addSpeed((*it)->getStatusEffect("Speed"));
           }
+        } else {
+          actors[0]->addSpeed((*it)->getStatusEffect("Speed"));
+          actors[0]->getStatus().addHealth((*it)->getStatusEffect("Health"));
         }
-      } else {
-      	actors[0]->addSpeed((*it)->getStatusEffect("Speed"));
-        actors[0]->getStatus().addHealth((*it)->getStatusEffect("Health"));
       }
 
       delete *it;
@@ -221,13 +227,15 @@ void Actor::onDeath()
 {
   //Fall over
   sceneNode_->pitch(Ogre::Degree(90));
+  sceneNode_->yaw(Ogre::Degree(180));
   sceneNode_->translate(Vector3(0, 75, 0));
   //Change blood and keep it going
-  pSystem_->getEmitter(0)->setDirection(Vector3(0,0,-1));
+  pSystem_->getEmitter(0)->setDirection(Vector3(0,0,1));
   pSystem_->getEmitter(0)->setParticleVelocity(500,600);
   pSystem_->getEmitter(0)->setDuration(60);
   pSystem_->getEmitter(0)->setEnabled(true);
   stats_.setState(dead);
+  deathAnimation();
   //actorSFX_->audPlay("male_scream.wav");
 }
 
@@ -283,6 +291,74 @@ bool Actor::attack(std::vector<Actor*> &actors){
   }
   
   return didBossDie;
+}
+
+
+//animation calls
+void Actor::attackAnimation()
+{
+   mAnimState->setEnabled(true);
+   mAnimState2->setEnabled(true);
+   if(isEnemy)
+     mAnimState3->setEnabled(true);
+}
+
+void Actor::deathAnimation()
+{
+  if(!isEnemy)
+  {
+	mAnimState = entity_->getAnimationState("charlie_body_death");
+   mAnimState->setEnabled(true);
+   mAnimState->setLoop(false);
+   mAnimState2 = entity_->getAnimationState("charlie_chainsaw_death");
+   mAnimState2->setEnabled(true);
+   mAnimState2->setLoop(false);
+  }
+  else
+  {
+  	mAnimState = entity_->getAnimationState("goblin_bat_death");
+      mAnimState->setEnabled(true);
+      mAnimState->setLoop(false);
+      mAnimState2 = entity_->getAnimationState("goblin_body_death");
+      mAnimState2->setEnabled(true);
+      mAnimState2->setLoop(false);
+      mAnimState3 = entity_->getAnimationState("goblin_head_death");
+      mAnimState3->setEnabled(true);
+      mAnimState3->setLoop(false);
+  }
+}
+
+void Actor::stopAnimation()
+{
+	mAnimState->setEnabled(false);
+   mAnimState2->setEnabled(false);
+   if(isEnemy)
+     mAnimState3->setEnabled(false);
+}
+
+void Actor::setupAnimation()
+{
+  if(!isEnemy)
+  {
+	mAnimState = entity_->getAnimationState("charlie_body_swing");
+   mAnimState->setEnabled(false);
+   mAnimState->setLoop(true);
+   mAnimState2 = entity_->getAnimationState("charlie_chainsaw_swing");
+   mAnimState2->setEnabled(false);
+   mAnimState2->setLoop(true);
+  }
+  else
+  {
+  	mAnimState = entity_->getAnimationState("goblin_bat_animation");
+      mAnimState->setEnabled(true);
+      mAnimState->setLoop(true);
+      mAnimState2 = entity_->getAnimationState("goblin_body_swing");
+      mAnimState2->setEnabled(true);
+      mAnimState2->setLoop(true);
+      mAnimState3 = entity_->getAnimationState("goblin_head_animation");
+      mAnimState3->setEnabled(true);
+      mAnimState3->setLoop(true);
+  }
 }
 
 

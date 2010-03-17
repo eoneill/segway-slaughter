@@ -84,9 +84,11 @@ void SideScroller::initialize() {
   node->attachObject(ent);
 
   //Player
-  player = new Charlie("charlie", "charlie.mesh", Ogre::Vector3(0,0,0));
+  player = new Charlie("charlie", "charlie_fullanim.mesh", Ogre::Vector3(0,0,0));
   player->setDamage(0.05);
   player->setAttackBox(100);
+  player->isEnemy = false;
+  player->setupAnimation();
 
   actors.push_back(player);
   
@@ -97,13 +99,15 @@ void SideScroller::initialize() {
   for(int i = 0; i < NumEnemies_; i++){
     char EntName[40] = "Mobster";
     sprintf(EntName,"mobster%d",i);
-    Actor* temp = new Actor(EntName,"mobster.mesh", Status(25),
+    Actor* temp = new Actor(EntName,"mobster_fullanim.mesh", Status(25),
     	                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0,-(rand() % 60000+2000)));
     SceneNode * tempSceneNode = temp->getSceneNode();
-		tempSceneNode->yaw(Ogre::Degree(180));
-		temp->setDamage(0.01);
-		temp->setSpeed(0.85);
-		temp->setAttackBox(75);
+	tempSceneNode->yaw(Ogre::Degree(180));
+	temp->setDamage(0.01);
+	temp->setSpeed(0.85);
+	temp->setAttackBox(75);
+	temp->isEnemy = true;
+	temp->setupAnimation();
     
     actors.push_back(temp);
   }
@@ -189,7 +193,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   
   //cool down for the chainsaw
   if(player->chainsawHeat >= 0)
-	  player->chainsawHeat -=0.025;
+	  player->chainsawHeat -=0.015;
 	if(player->chainsawHeat == 0)
 	  player->chainsawHeat = 0;
 
@@ -225,17 +229,11 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 		    }
 		  }
     }
-    
- 		//kill block - don't let the player go to far if they haven't killed enough
-    int killBlock = -((player->getScore()/ENEMY_KILL_POINTS)*(-LEVEL_END/(NumEnemies_/2))) - 5000;
-    
     //move player right
     if (is->isKeyDown(OIS::KC_RIGHT)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
-      if ((player->getPosition()[2] >= LEVEL_END-4000) &&
-      		player->getPosition()[2] >= killBlock
-      	 )
+      if (player->getPosition()[2] >= LEVEL_END-4000)
       {
 		  	if(player->move(kRight, actors, items) && !bossFight)
 		  	{
@@ -244,15 +242,16 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 		  }
     }
 
-    if (is->isKeyDown(OIS::KC_A)) {
+    if (is->isKeyDown(OIS::KC_SPACE)) {
     if(player->chainsawHeat <= MAX_HEAT)
-		  player->chainsawHeat +=0.040;
+		  player->chainsawHeat +=0.035;
 		if(player->chainsawHeat == MAX_HEAT)
 		  player->chainsawHeat = MAX_HEAT;
     if(player->chainsawHeat <= MAX_HEAT-1)
 	  {
 		    if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
 		      streetSFX_->audPlay("chainsaw_attack.wav");
+		    player->attackAnimation();
 		    if(player->attack(actors))
 		    	{
 		    		isDone_ = true;
@@ -262,6 +261,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     	}
     }
     else{
+		player->stopAnimation();
       player->stopBlood();
       for(unsigned int i = 0; i < actors.size(); i++)
         actors[i]->stopBlood();
@@ -273,15 +273,17 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 	    //return new CasinoLevel;
 	    bossFight = true;
 	    NumEnemies_++;
-			Actor* temp = new Actor("Boss","mob_boss.mesh", Status(400),
+			Actor* temp = new Actor("Boss","mobboss_fullanim.mesh", Status(100),
 				                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0, actors[0]->getPosition()[2] - 1000));
 			SceneNode * tempSceneNode = temp->getSceneNode();
 			tempSceneNode->yaw(Ogre::Degree(180));
-			temp->setDamage(0.02);
+			temp->setDamage(0.01);
 			temp->setSpeed(1.1);
 			temp->setAttackBox(75);
 			temp->setState(attack);
 			temp->isBoss = true;
+			temp->isEnemy = true;
+			temp->setupAnimation();
 
 			actors.push_back(temp);
 
@@ -306,6 +308,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     isDone_ = true;
     return new MainMenu;
   }
+  
 
   hud_->updateHealth(player->getHealth() / player->getMaxHealth());
   hud_->updateHeat(player->chainsawHeat/MAX_HEAT);
