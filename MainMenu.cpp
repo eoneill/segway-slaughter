@@ -73,7 +73,7 @@ void MainMenu::initialize() {
                                              cegui_reldim( 0.1f)));
   aboutmenu->setSize(CEGUI::UVector2(cegui_reldim(.5f),
                                          cegui_reldim( .5f)));
-  aboutmenu->setText("Premise:\nYou must defeat Don Johnson....\n \nControls:\nPress 'A' to kill.\nUse Arrow Keys to move.");
+  aboutmenu->setText("Premise:\nYou must defeat Don Johnson....\n \nControls:\nPress 'Space Bar' to kill.\nUse Arrow Keys to move.");
   guiSheet->addChildWindow(aboutmenu);
   aboutmenu->hide();
 
@@ -108,7 +108,7 @@ void MainMenu::initialize() {
                                              cegui_reldim( 0.06f)));
   creditmenu->setSize(CEGUI::UVector2(cegui_reldim(.5f),
                                          cegui_reldim( 0.9f)));
-  creditmenu->setText("Credits:\n \nEric Scrivner:\nProgrammer/Visionary\n \nBill Wetson:\nProgrammer/Visionary\n \nJeff Price:\nProgrammer/Visionary\n \nJesus Reyes:\nProgrammer/Visionary/Pizza Model\n \nEugene O'Neil:\nProgrammer/Visionary/Graphics Guru\n \nKanehoku:\nCharlie/Mobster Models\n \nJonathan Waton:\nMusic");
+  creditmenu->setText("Credits:\n \nEric Scrivner:\nProgrammer/Visionary\n \nBill Wetson:\nProgrammer/Visionary\n \nJeff Price:\nProgrammer/Visionary\n \nJesus Reyes:\nProgrammer/Visionary/Item Models\n \nEugene O'Neil:\nProgrammer/Visionary/Graphics Guru\n \nKanehoku:\nCharlie/Mobster Models\n \nJonathan Waton:\nMusic");
   guiSheet->addChildWindow(creditmenu);
   creditmenu->hide();
 
