@@ -1,0 +1,136 @@
+
+material blinn24
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			specular 0.5 0.5 0.5 1 89.6
+
+			texture_unit
+			{
+				texture mob_boss.jpg
+			}
+		}
+
+	}
+
+}
+
+
+
+material blinn27
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			specular 0.5 0.5 0.5 1 89.6
+
+			texture_unit
+			{
+				texture bat2.jpg
+			}
+		}
+
+	}
+
+}
+
+
+
+material earimgs
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0.93 0.774063 0.26691 1
+			specular 1 0.848744 0.221 1 89.6
+		}
+
+	}
+
+}
+
+
+
+material blinn23
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			specular 0.5 0.5 0.5 1 89.6
+
+			texture_unit
+			{
+				texture gobbytexture9_newhead2.jpg
+			}
+		}
+
+	}
+
+}
+
+
+
+material NoMaterial
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+
+
+material blinn25
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			specular 0.5 0.5 0.5 1 89.6
+
+			texture_unit
+			{
+				texture segway2.jpg
+			}
+		}
+
+	}
+
+}
+
+
+
+material blinn26
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			specular 0.5 0.5 0.5 1 89.6
+
+			texture_unit
+			{
+				texture wheel.jpg
+			}
+		}
+
+	}
+
+}
+
+
