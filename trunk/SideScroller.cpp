@@ -303,9 +303,10 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 					                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0, actors[0]->getPosition()[2] - 1000));
 				SceneNode * tempSceneNode = temp->getSceneNode();
 				tempSceneNode->yaw(Ogre::Degree(180));
+				tempSceneNode->setScale(70, 70, 70);
 				temp->setDamage(0.01);
 				temp->setSpeed(1.0);
-				temp->setAttackBox(75);
+				temp->setAttackBox(100);
 				temp->setState(attack);
 				temp->isBoss = true;
 				temp->isEnemy = true;
