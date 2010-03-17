@@ -6,14 +6,14 @@ using namespace std;
 using namespace Ogre;
 
 const double ACTIVE_DIST = 1000;
-int AICount = 0;
-int AITick  = 5000;
+double AICount = 0;
+double AITick  = 5000;
 
 double getDist(double pos1[3], double pos2[3]){
 	return sqrt(pow((pos1[0] - pos2[0]), 2) + pow((pos1[2] - pos2[2]), 2));
 }
 
-void AIManager(vector<Actor*>& actors, float cycles){
+void AIManager(vector<Actor*>& actors){
   int minDist = 20;
   int minDistStratH = 100;
   int maxDistStratH = 500;
@@ -49,7 +49,7 @@ void AIManager(vector<Actor*>& actors, float cycles){
 			  	actors[i]->move(kRight, actors);
 			  }
 			  
-				actors[i]->attack(actors, cycles);
+				actors[i]->attack(actors);
 				
 				//if it's severely damaged, then start fleeing
 				if(actors[i]->getHealth() <= actors[i]->getMaxHealth()/(rand() % 10 + 3) && !actors[i]->isBoss)
@@ -82,7 +82,7 @@ void AIManager(vector<Actor*>& actors, float cycles){
 			   }
 			   
 			  
-				actors[i]->attack(actors, cycles);
+				actors[i]->attack(actors);
 				
 				//if it's severely damaged, then start fleeing
 				
@@ -122,11 +122,12 @@ void AIManager(vector<Actor*>& actors, float cycles){
 
 
 
-void spawnBehind(vector<Actor*>& actors, int & NumEnemies)
+void spawnBehind(vector<Actor*>& actors, int & NumEnemies, double timeSinceLastFrame)
 {
+
 	//only do AI once every tick
-	if(AICount != AITick){
-		AICount++;
+	if(AICount <= AITick){
+		AICount+= 1000*timeSinceLastFrame;
 		return;
 	}
 	AICount = 0;
@@ -135,11 +136,11 @@ void spawnBehind(vector<Actor*>& actors, int & NumEnemies)
   sprintf(EntName,"mobster%d",NumEnemies);
 //  Ogre::Vector3 pos = actors[0]->getPosition()[2];
   Actor* temp = new Actor(EntName,"mobster.mesh", Status(25),
-  	                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0, actors[0]->getPosition()[2] + 1000));
+  	                      Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH/2,0, actors[0]->getPosition()[2] + 1200));
   SceneNode * tempSceneNode = temp->getSceneNode();
 	tempSceneNode->yaw(Ogre::Degree(180));
 	temp->setDamage(0.01);
-	temp->setSpeed(1.1);
+	temp->setSpeed(1.2);
 	temp->setAttackBox(75);
 	temp->setState(attack);
 	

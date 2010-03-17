@@ -85,6 +85,8 @@ void Actor::update(const double& secsSinceLastUpdate) {
       }
     }
   }
+  
+  timeSinceLast_ = secsSinceLastUpdate;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -136,10 +138,10 @@ bool Actor::move(const MovementDirection& newDirection,
   // Compute new position
   Ogre::Vector3 tmp = position_;
   switch(newDirection) {
-  case kUp: tmp.x -= speed_; break;
-  case kDown: tmp.x += speed_; break;
-  case kLeft: tmp.z += speed_; break;
-  case kRight: tmp.z -= speed_; break;
+  case kUp: tmp.x -= speed_*timeSinceLast_*1000; break;
+  case kDown: tmp.x += speed_*timeSinceLast_*1000; break;
+  case kLeft: tmp.z += speed_*timeSinceLast_*1000; break;
+  case kRight: tmp.z -= speed_*timeSinceLast_*1000; break;
   default: break;
   }
 
@@ -161,7 +163,7 @@ bool Actor::move(const MovementDirection& newDirection,
     case kUp:
       {
         if (tmp.x > -LEVEL_WIDTH / 2) {
-          sceneNode_->translate(Vector3(-speed_, 0, 0));
+          sceneNode_->translate(Vector3(-speed_*timeSinceLast_*1000, 0, 0));
           wasTranslated = true;
         }
       }
@@ -169,20 +171,20 @@ bool Actor::move(const MovementDirection& newDirection,
     case kDown:
       {
         if (tmp.x < LEVEL_WIDTH / 2) {
-          sceneNode_->translate(Vector3(speed_, 0, 0));
+          sceneNode_->translate(Vector3(speed_*timeSinceLast_*1000, 0, 0));
           wasTranslated = true;
         }
       }
       break;
     case kLeft:
       {
-        sceneNode_->translate(Vector3(0, 0, speed_));
+        sceneNode_->translate(Vector3(0, 0, speed_*timeSinceLast_*1000));
         wasTranslated = true;
       }
       break;
     case kRight:
       {
-        sceneNode_->translate(Vector3(0, 0, -speed_));
+        sceneNode_->translate(Vector3(0, 0, -speed_*timeSinceLast_*1000));
         wasTranslated = true;
       }
       break;
@@ -231,7 +233,7 @@ void Actor::onDeath()
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool Actor::attack(std::vector<Actor*> &actors, float cycles){
+bool Actor::attack(std::vector<Actor*> &actors){
   //find out where the damage box is, based on direction facing
   int vert = 0;
   int horiz = 0;
@@ -268,7 +270,7 @@ bool Actor::attack(std::vector<Actor*> &actors, float cycles){
 	for (size_t i = start; i < end; i++) {
 	  if (sceneNode_ != actors[i]->sceneNode_ && actors[i]->getState() != dead) {
 	    if (SquareHit(damagePos, actors[i]->position_, attackBox_)) {
-	      if (actors[i]->onDamage(damage_*cycles)) {
+	      if (actors[i]->onDamage(damage_*timeSinceLast_*1000)) {
 	      	if (actors[i]->isBoss) {
 	      		didBossDie = true;
 	      		stats_.addScore(1000);

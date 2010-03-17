@@ -170,11 +170,14 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 	removeDead();
 	
 	if(!bossFight){
-		spawnBehind(actors, NumEnemies_);
+		spawnBehind(actors, NumEnemies_, timeSinceLastFrame);
 	}
 	
-  // Update the player's timer
-  player->update(timeSinceLastFrame);
+  // Update the actors's timer
+  for(unsigned int i = 0; i < actors.size(); i++)
+	{
+	  actors[i]->update(timeSinceLastFrame);
+	}
 
   Ogre::Root* root_ = getRoot();
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
@@ -192,7 +195,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
     streetSFX_->audPlay("chainsaw_idle.wav");
 		
 	//update AI
-	AIManager(actors, timeSinceLastFrame*1000);
+	AIManager(actors);
 
   //Move player up, but with constraints
   if (is->isKeyDown(OIS::KC_UP)) {
@@ -214,7 +217,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
       { 
 		    if(player->move(kLeft, actors, items) && !bossFight)
 		    {
-		      mCamera->move(Vector3(0,0,player->getSpeed()));
+		      mCamera->move(Vector3(0,0,player->getSpeed()*timeSinceLastFrame*1000));
 		    }
 		  }
     }
@@ -226,7 +229,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
       {
 		  	if(player->move(kRight, actors, items) && !bossFight)
 		  	{
-		      mCamera->move(Vector3(0,0,-player->getSpeed()));
+		      mCamera->move(Vector3(0,0,-player->getSpeed()*timeSinceLastFrame*1000));
 		    }
 		  }
     }
@@ -240,7 +243,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 	  {
 		    if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
 		      streetSFX_->audPlay("chainsaw_attack.wav");
-		    if(player->attack(actors, timeSinceLastFrame*1000))
+		    if(player->attack(actors))
 		    	{
 		    		isDone_ = true;
 				    return new Paradise;
