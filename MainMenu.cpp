@@ -104,19 +104,19 @@ void MainMenu::initialize() {
    // CreditsMenu button
   CEGUI::PushButton* creditmenu;
   creditmenu = makeButton("TaharezLook/Button", "Credit_Menu");
-  creditmenu->setPosition(CEGUI::UVector2(cegui_reldim(0.27f),
+  creditmenu->setPosition(CEGUI::UVector2(cegui_reldim(0.25f),
                                              cegui_reldim( 0.06f)));
   creditmenu->setSize(CEGUI::UVector2(cegui_reldim(.5f),
-                                         cegui_reldim( .7f)));
-  creditmenu->setText("Credits:\n \nGraphics:\n...\n \nAudio:\n...\n \nMisc:...");
+                                         cegui_reldim( 0.9f)));
+  creditmenu->setText("Credits:\n \nEric Scrivner:\nProgrammer/Visionary\n \nBill Wetson:\nProgrammer/Visionary\n \nJeff Price:\nProgrammer/Visionary\n \nJesus Reyes:\nProgrammer/Visionary/Pizza Model\n \nEugene O'Neil:\nProgrammer/Visionary/Graphics Guru\n \nKanehoku:\nCharlie/Mobster Models\n \nJonathan Waton:\nMusic");
   guiSheet->addChildWindow(creditmenu);
   creditmenu->hide();
 
   // Ok2 button
   CEGUI::PushButton* ok2;
   ok2 = makeButton("TaharezLook/Button", "Ok2");
-  ok2->setPosition(CEGUI::UVector2(cegui_reldim(0.49f),
-                                          cegui_reldim( 0.6f)));
+  ok2->setPosition(CEGUI::UVector2(cegui_reldim(0.47f),
+                                          cegui_reldim( 0.8f)));
   ok2->setSize(CEGUI::UVector2(cegui_reldim(.06f),
                                          cegui_reldim( .05f)));
   ok2->setText("Ok");
