@@ -253,13 +253,13 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 	    }
 	    
 	    //kill block - don't let the player go to far if they haven't killed enough
- 	    int killBlock = -((player->getScore()/10)*(-LEVEL_END/(NumEnemies_/2))) - 5000;
+ 	    //int killBlock = -((player->getScore()/10)*(-LEVEL_END/(NumEnemies_/2))) - 5000;
 	    
 	    //move player right
 	    if (is->isKeyDown(OIS::KC_RIGHT)) {
 	      if (!streetSFX_->audIsPlaying("segway_ride.wav"))
 	        streetSFX_->audPlay("segway_ride.wav");
-	      if (player->getPosition()[2] >= LEVEL_END-4000 && player->getPosition()[2] >= killBlock)
+	      if (player->getPosition()[2] >= LEVEL_END-4000)// && player->getPosition()[2] >= killBlock)
 	      {
 			  	if(player->move(kRight, actors, items) && !bossFight)
 			  	{
