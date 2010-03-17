@@ -185,7 +185,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
   
   //cool down for the chainsaw
   if(player->chainsawHeat >= 0)
-	  player->chainsawHeat -=0.015;
+	  player->chainsawHeat -=0.020;
 	if(player->chainsawHeat == 0)
 	  player->chainsawHeat = 0;
 
@@ -221,11 +221,17 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 		    }
 		  }
     }
+    
+ 		//kill block - don't let the player go to far if they haven't killed enough
+    int killBlock = -((player->getScore()/10)*(-LEVEL_END/(NumEnemies_/2))) - 5000;
+    
     //move player right
     if (is->isKeyDown(OIS::KC_RIGHT)) {
       if (!streetSFX_->audIsPlaying("segway_ride.wav"))
         streetSFX_->audPlay("segway_ride.wav");
-      if (player->getPosition()[2] >= LEVEL_END-4000)
+      if ((player->getPosition()[2] >= LEVEL_END-4000) &&
+      		player->getPosition()[2] >= killBlock
+      	 )
       {
 		  	if(player->move(kRight, actors, items) && !bossFight)
 		  	{
@@ -236,7 +242,7 @@ GameState* SideScroller::update(const Ogre::Real& timeSinceLastFrame) {
 
     if (is->isKeyDown(OIS::KC_A)) {
     if(player->chainsawHeat <= MAX_HEAT)
-		  player->chainsawHeat +=0.035;
+		  player->chainsawHeat +=0.040;
 		if(player->chainsawHeat == MAX_HEAT)
 		  player->chainsawHeat = MAX_HEAT;
     if(player->chainsawHeat <= MAX_HEAT-1)
