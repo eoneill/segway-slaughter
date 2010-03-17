@@ -5,7 +5,7 @@ material blinn24
 	{
 		pass
 		{
-			ambient 0 0 0 1
+			ambient 0.5 0.5 0.5 1
 			specular 0.5 0.5 0.5 1 89.6
 
 			texture_unit
@@ -26,7 +26,7 @@ material blinn27
 	{
 		pass
 		{
-			ambient 0 0 0 1
+			ambient 0.5 0.5 0.5 1
 			specular 0.5 0.5 0.5 1 89.6
 
 			texture_unit
@@ -47,7 +47,7 @@ material earimgs
 	{
 		pass
 		{
-			ambient 0 0 0 1
+			ambient 0.5 0.5 0.5 1
 			diffuse 0.93 0.774063 0.26691 1
 			specular 1 0.848744 0.221 1 89.6
 		}
@@ -64,7 +64,7 @@ material blinn23
 	{
 		pass
 		{
-			ambient 0 0 0 1
+			ambient 0.5 0.5 0.5 1
 			specular 0.5 0.5 0.5 1 89.6
 
 			texture_unit
@@ -99,7 +99,7 @@ material blinn25
 	{
 		pass
 		{
-			ambient 0 0 0 1
+			ambient 0.5 0.5 0.5 1
 			specular 0.5 0.5 0.5 1 89.6
 
 			texture_unit
@@ -120,7 +120,7 @@ material blinn26
 	{
 		pass
 		{
-			ambient 0 0 0 1
+			ambient 0.5 0.5 0.5 1
 			specular 0.5 0.5 0.5 1 89.6
 
 			texture_unit
