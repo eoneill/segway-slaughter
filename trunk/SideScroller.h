@@ -10,7 +10,7 @@
 #include "audio/audio.h"
 #include "HUD.h"
 //extern const int LEVEL_WIDTH;
-const int TIME_PER_LEVEL = (60 * 3) + 30; // 5 minutes = 60 * 5 seconds
+const int TIME_PER_LEVEL = (60 * 2); // 2 minutes = (60 * 2) seconds
 
 
 class SideScroller : public GameState {
