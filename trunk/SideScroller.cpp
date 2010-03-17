@@ -116,7 +116,7 @@ void SideScroller::initialize() {
   for (int i = 0; i < 21; i++) {
     Item* tmp;
     if (i % 3 == 0) {
-      tmp = new Claymore(Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH / 2, 0, -(rand() % 60000+2000)));
+      tmp = new Caltrope(Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH / 2, 0, -(rand() % 60000+2000)));
     } 
     else if (i % 2 == 0) {
       tmp = new Brawndo(Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH / 2, 0, -(rand() % 60000+2000)));
