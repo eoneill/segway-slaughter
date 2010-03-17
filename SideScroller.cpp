@@ -109,11 +109,15 @@ void SideScroller::initialize() {
   }
 	
   // Items
-  for (int i = 0; i < 20; i++) {
+  for (int i = 0; i < 21; i++) {
     Item* tmp;
-    if (i % 2 == 0) {
+    if (i % 3 == 0) {
+      tmp = new Claymore(Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH / 2, 0, -(rand() % 60000+2000)));
+    } 
+    else if (i % 2 == 0) {
       tmp = new Brawndo(Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH / 2, 0, -(rand() % 60000+2000)));
-    } else {
+    } 
+    else {
       tmp = new Pizza(Ogre::Vector3(rand() % LEVEL_WIDTH - LEVEL_WIDTH / 2, 0, -(rand() % 60000+2000)));
     }
     items.push_back(tmp);
