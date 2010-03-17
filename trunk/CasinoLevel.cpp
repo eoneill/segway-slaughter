@@ -151,6 +151,12 @@ GameState* CasinoLevel::update(const Ogre::Real& timeSinceLastFrame) {
 		
 	//update AI
 	//AIManager(actors, root_);
+	
+	// Update the actors's timer
+  for(unsigned int i = 0; i < actors.size(); i++)
+	{
+	  actors[i]->update(timeSinceLastFrame);
+	}
 
   //Move player up, but with constraints
   if (is->isKeyDown(OIS::KC_UP)) {
@@ -176,7 +182,7 @@ GameState* CasinoLevel::update(const Ogre::Real& timeSinceLastFrame) {
     }
 
     if (is->isKeyDown(OIS::KC_A)) {
-      player->attack(actors, timeSinceLastFrame*1000);
+      player->attack(actors);
       CEGUI::Window* text_ = CEGUI::WindowManager::getSingleton().getWindow("HealthText");
       static char buf[255];
       sprintf(buf, "Score: %d", player->getScore());

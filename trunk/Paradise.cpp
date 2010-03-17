@@ -178,7 +178,11 @@ GameState* Paradise::update(const Ogre::Real& timeSinceLastFrame) {
 		spawnBehind(actors, NumEnemies_);
 	}*/
 
-  player->update(timeSinceLastFrame);
+  // Update the actors's timer
+  for(unsigned int i = 0; i < actors.size(); i++)
+	{
+	  actors[i]->update(timeSinceLastFrame);
+	}
 
   Ogre::Root* root_ = getRoot();
   Camera* mCamera = root_->getSceneManager("Default SceneManager")->getCamera("MyCamera");
@@ -190,7 +194,7 @@ GameState* Paradise::update(const Ogre::Real& timeSinceLastFrame) {
     streetSFX_->audPlay("chainsaw_idle.wav");
 		
 	//update AI
-	AIManager(actors, timeSinceLastFrame*1000);
+	AIManager(actors);
 
   //Move player up, but with constraints
   if (is->isKeyDown(OIS::KC_UP)) {
@@ -210,7 +214,7 @@ GameState* Paradise::update(const Ogre::Real& timeSinceLastFrame) {
         streetSFX_->audPlay("segway_ride.wav");
 	    if(player->move(kLeft, actors, items) && !bossFight)
 	    {
-	      mCamera->move(Vector3(0,0,DEFAULT_MOVE_SPEED));
+	      mCamera->move(Vector3(0,0,DEFAULT_MOVE_SPEED*timeSinceLastFrame*1000));
 	    }
     }
     //move player right
@@ -219,14 +223,14 @@ GameState* Paradise::update(const Ogre::Real& timeSinceLastFrame) {
         streetSFX_->audPlay("segway_ride.wav");
 	  	if(player->move(kRight, actors, items) && !bossFight)
 	  	{
-	      mCamera->move(Vector3(0,0,-DEFAULT_MOVE_SPEED));
+	      mCamera->move(Vector3(0,0,-DEFAULT_MOVE_SPEED*timeSinceLastFrame*1000));
 	    }
     }
 
     if (is->isKeyDown(OIS::KC_A)) {
       if (!streetSFX_->audIsPlaying("chainsaw_attack.wav"))
         streetSFX_->audPlay("chainsaw_attack.wav");
-      player->attack(actors, timeSinceLastFrame*1000);
+      player->attack(actors);
       hud_->updateScore(player->getScore());
     }
     else{

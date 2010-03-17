@@ -160,7 +160,7 @@ public:
   // Function: attack
   //
   // Attempt to perform an attack on nearby entities
-  bool attack(std::vector<Actor*>& actors, float cycles);
+  bool attack(std::vector<Actor*>& actors);
 
   //////////////////////////////////////////////////////////////////////////////
   // Function: stopBlood
@@ -331,6 +331,7 @@ protected:
   Status            stats_;
   double            speed_;
   double            damage_;
+  double            timeSinceLast_;
   //audSFX *          actorSFX_;
   float             attackBox_;
   int               deadTime_;
