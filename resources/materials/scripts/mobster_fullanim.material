@@ -15,7 +15,6 @@ material blinn24
 		}
 
 	}
-
 }
 
 
@@ -81,14 +80,14 @@ material blinn23
 
 material NoMaterial
 {
-	technique
-	{
-		pass
-		{
-		}
-
-	}
-
+   technique
+   {
+      pass
+      {
+         depth_write off
+         scene_blend alpha_blend
+      }
+   }
 }
 
 
