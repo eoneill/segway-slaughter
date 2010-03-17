@@ -107,6 +107,7 @@ Claymore::Claymore(const Ogre::Vector3& position)
   : Item("Claymore", "claymore.mesh", position)
 {
 	statEffects_["Health"] = -20;
+	statEffects_["Time"] = 0;
   scaleMesh(50);
 }
 
