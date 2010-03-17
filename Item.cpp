@@ -106,7 +106,7 @@ double Pizza::getWidth() {
 Claymore::Claymore(const Ogre::Vector3& position)
   : Item("Claymore", "claymore.mesh", position)
 {
-	statEffects_["Health"] = -20;
+	statEffects_["Health"] = -50;
 	statEffects_["Time"] = 0;
   scaleMesh(50);
 }
@@ -123,9 +123,9 @@ double Claymore::getWidth() {
 Caltrope::Caltrope(const Ogre::Vector3& position)
   : Item("Caltrope", "caltrope.mesh", position)
 {
-	statEffects_["Health"] = -20;
+	statEffects_["Health"] = -50;
 	statEffects_["Time"] = 0;
-  scaleMesh(50);
+  scaleMesh(25);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
