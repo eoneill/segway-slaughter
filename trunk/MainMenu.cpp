@@ -108,7 +108,7 @@ void MainMenu::initialize() {
                                              cegui_reldim( 0.06f)));
   creditmenu->setSize(CEGUI::UVector2(cegui_reldim(.5f),
                                          cegui_reldim( 0.9f)));
-  creditmenu->setText("Credits:\n \nEric Scrivner:\nProgrammer/Visionary\n \nBill Wetson:\nProgrammer/Visionary\n \nJeff Price:\nProgrammer/Visionary\n \nJesus Reyes:\nProgrammer/Visionary/Item Models\n \nEugene O'Neill:\nProgrammer/Visionary/Graphics Guru\n \nKanehoku:\nMain Character Animations\n \nJonathan Waton:\nMusic");
+  creditmenu->setText("Credits:\n \nEric Scrivner:\nProgrammer/Visionary\n \nBill Wetson:\nProgrammer/Visionary\n \nJeff Price:\nProgrammer/Visionary\n \nJesus Reyes:\nProgrammer/Visionary/Item Models\n \nEugene O'Neill:\nProgrammer/Visionary/Graphics Guru\n \nChad \"Kanehoku\" Van Wye :\nMain Character Animations\n \nJonathan Walton:\nMusic");
   guiSheet->addChildWindow(creditmenu);
   creditmenu->hide();
 
